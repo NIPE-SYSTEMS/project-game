@@ -42,7 +42,7 @@ Each module consists of one source file. It has the name of the module. If the m
 
 #### part of the module
 
-A module can be splitted into multiple parts. The parts are summarized in a single module file. If a part has multiple words the words are separated by `_`-characters. An example function name can be found in the next paragraph.
+A module can be splitted into multiple parts. The parts are summarized in a single module file. If a part has multiple words the words are separated by `_`-characters. An example function name can be found in the next paragraph. The part can be omitted if the module only has one part.
 
 #### action to perform
 
