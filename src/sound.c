@@ -4,6 +4,8 @@
 
 #include "sound.h"
 
+static char sound_initialized = 0;
+
 /**
  * This function initializes a new audio device of SDL_mixer.
  * 
@@ -12,6 +14,8 @@
 int sound_initialize(void)
 {
 	const SDL_version *sdl_mixer_version = Mix_Linked_Version();
+	
+	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Initializing SDL_mixer...");
 	
 	if(Mix_OpenAudio(AUDIO_FREQUENCY, AUDIO_FORMAT, AUDIO_CHANNELS, AUDIO_BUFFER) < 0)
 	{
@@ -23,12 +27,19 @@ int sound_initialize(void)
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "SDL_mixer initialized");
 	SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "SDL_mixer version: %i.%i.%i", sdl_mixer_version->major, sdl_mixer_version->minor, sdl_mixer_version->patch);
 	
+	sound_initialized = 1;
+	
 	return 0;
 }
 
 void sound_cleanup(void)
 {
-	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Shutting down SDL_mixer...");
-	
-	Mix_CloseAudio();
+	if(sound_initialized == 1)
+	{
+		SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Shutting down SDL_mixer...");
+		
+		Mix_CloseAudio();
+		
+		SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "SDL_mixer shut down");
+	}
 }

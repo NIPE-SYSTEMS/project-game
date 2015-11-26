@@ -3,5 +3,6 @@
 
 int core_initialize(void);
 void core_cleanup(void);
+void core_surface_clear(void);
 
 #endif /* __CORE_H__ */
