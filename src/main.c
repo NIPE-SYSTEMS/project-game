@@ -10,7 +10,7 @@ int main(void)
 		return -1;
 	}
 	
-	sleep(10);
+	core_main();
 	
 	core_cleanup();
 	

@@ -5,6 +5,7 @@
 #include "sound.h"
 
 static SDL_Window *core_window = NULL;
+static char core_running = 0;
 
 static void core_log_output(void *userdata, int category, SDL_LogPriority priority, const char *message)
 {
@@ -133,4 +134,55 @@ void core_surface_clear(void)
 	
 	// update window surface
 	SDL_UpdateWindowSurface(core_window);
+}
+
+/**
+ * This function acts as a main loop in the game. This main loop processes input
+ * events and draws something on the screen.
+ */
+void core_main(void)
+{
+	SDL_Surface *surface = NULL;
+	SDL_Event event;
+	
+	core_running = 1;
+	
+	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Starting main loop...");
+	
+	while(core_running == 1)
+	{
+		SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Handling events...");
+		
+		while(SDL_PollEvent(&event) != 0)
+		{
+			if(event.type == SDL_QUIT)
+			{
+				SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Got quit event. Initiating shutdown.");
+				core_running = 0;
+			}
+		}
+		
+		// possible jump out of the main loop
+		if(core_running == 0)
+		{
+			break;
+		}
+		
+		SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Rendering surface...");
+		
+		surface = SDL_GetWindowSurface(core_window);
+		if(surface == NULL)
+		{
+			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to retrieve window surface: %s", SDL_GetError());
+			return;
+		}
+		
+		// fill entire surface with white color
+		SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 255, 255, 255));
+		
+		// update window surface
+		SDL_UpdateWindowSurface(core_window);
+		
+		SDL_Delay(500);
+	}
 }
