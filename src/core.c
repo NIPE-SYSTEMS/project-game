@@ -3,13 +3,14 @@
 #include <time.h>
 
 #include "core.h"
+#include "timing.h"
 #include "sound.h"
 #include "unused.h"
 
 static SDL_Window *core_window = NULL;
 static SDL_Renderer *core_renderer = NULL;
 static char core_running = 0;
-static clock_t core_last_tick = 0;
+static double core_last_tick = 0;
 static int core_refresh_rate = 0;
 // static int core_fullscreen = 0;
 
@@ -113,7 +114,7 @@ int core_initialize(void)
 {
 	SDL_version sdl_version;
 	SDL_RendererInfo renderer_info;
-	// SDL_DisplayMode display_mode;
+	SDL_DisplayMode display_mode;
 	
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
@@ -161,9 +162,9 @@ int core_initialize(void)
 	SDL_RenderClear(core_renderer);
 	SDL_RenderPresent(core_renderer);
 	
-	// SDL_GetWindowDisplayMode(core_window, &display_mode);
-	// core_refresh_rate = display_mode.refresh_rate;
-	// SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Refresh rate: %i Hz", core_refresh_rate);
+	SDL_GetWindowDisplayMode(core_window, &display_mode);
+	core_refresh_rate = display_mode.refresh_rate;
+	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Refresh rate: %i Hz", core_refresh_rate);
 	
 	// SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
 	// SDL_RenderSetLogicalSize(core_renderer, 1280 * 2, 720 * 2);
@@ -175,7 +176,7 @@ int core_initialize(void)
 		core_cleanup();
 	}
 	
-	core_last_tick = clock();
+	core_last_tick = timing_timestamp_get();
 	
 	return 0;
 }
@@ -217,8 +218,10 @@ void core_cleanup(void)
 void core_main(void)
 {
 	SDL_Event event;
-	clock_t current_tick = 0;
+	double current_tick = 0;
 	int vsync_wait = 0;
+	int vsync_wait_dropped_frames = 0;
+	double interval_last = 0;
 	
 	SDL_Rect rect0 = { 100, 100, 100, 100 };
 	SDL_Rect rect1 = { 100, 100, 100, 100 };
@@ -240,7 +243,7 @@ void core_main(void)
 	
 	while(core_running == 1)
 	{
-		current_tick = clock();
+		current_tick = timing_timestamp_get();
 		
 		while(SDL_PollEvent(&event) != 0)
 		{
@@ -286,6 +289,22 @@ void core_main(void)
 			break;
 		}
 		
+		// interval called every second
+		if(timing_timestamp_get() - interval_last > 1)
+		{
+			// run defined interval callbacks
+			timing_interval_callbacks_run();
+			
+			// print dropped frames error
+			if(vsync_wait_dropped_frames > 0)
+			{
+				SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "%i of %i frames dropped", vsync_wait_dropped_frames, core_refresh_rate);
+				vsync_wait_dropped_frames = 0;
+			}
+			
+			interval_last = timing_timestamp_get();
+		}
+		
 		// clear surface with white
 		SDL_SetRenderDrawColor(core_renderer, 255, 255, 255, 255);
 		SDL_RenderClear(core_renderer);
@@ -311,10 +330,10 @@ void core_main(void)
 		SDL_RenderFillRect(core_renderer, &rect4);
 		
 		// wait the rest of the frame to prevent busy waiting in SDL_RenderPresent()
-		vsync_wait = (((float)1 / core_refresh_rate) - (float)(clock() - current_tick) / CLOCKS_PER_SEC - CORE_VSYNC_BUSY_WAITING) * 1000;
+		vsync_wait = (((double)1 / core_refresh_rate) - timing_timestamp_get() + current_tick) * 1000 - CORE_VSYNC_BUSY_WAITING;
 		if(vsync_wait < 0)
 		{
-			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Frame dropped");
+			vsync_wait_dropped_frames++;
 		}
 		else
 		{
