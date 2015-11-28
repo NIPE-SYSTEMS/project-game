@@ -4,12 +4,14 @@
 
 #include "core.h"
 #include "sound.h"
+#include "unused.h"
 
 static SDL_Window *core_window = NULL;
 static SDL_Renderer *core_renderer = NULL;
 static char core_running = 0;
 static clock_t core_last_tick = 0;
 static int core_refresh_rate = 0;
+// static int core_fullscreen = 0;
 
 /**
  * This function is used to output fancy log messages. The function acts as a
@@ -22,6 +24,9 @@ static int core_refresh_rate = 0;
  */
 static void core_log_output(void *userdata, int category, SDL_LogPriority priority, const char *message)
 {
+	UNUSED(userdata);
+	UNUSED(category);
+	
 	switch(priority)
 	{
 		case SDL_LOG_PRIORITY_VERBOSE:
@@ -54,6 +59,7 @@ static void core_log_output(void *userdata, int category, SDL_LogPriority priori
 			fprintf(stderr, "\e[0;31mCRITICAL: ");
 			break;
 		}
+		default: break;
 	}
 	
 	fprintf(stderr, message);
@@ -107,7 +113,7 @@ int core_initialize(void)
 {
 	SDL_version sdl_version;
 	SDL_RendererInfo renderer_info;
-	SDL_DisplayMode display_mode;
+	// SDL_DisplayMode display_mode;
 	
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
@@ -155,9 +161,9 @@ int core_initialize(void)
 	SDL_RenderClear(core_renderer);
 	SDL_RenderPresent(core_renderer);
 	
-	SDL_GetWindowDisplayMode(core_window, &display_mode);
-	core_refresh_rate = display_mode.refresh_rate;
-	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Refresh rate: %i Hz", core_refresh_rate);
+	// SDL_GetWindowDisplayMode(core_window, &display_mode);
+	// core_refresh_rate = display_mode.refresh_rate;
+	// SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Refresh rate: %i Hz", core_refresh_rate);
 	
 	// SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
 	// SDL_RenderSetLogicalSize(core_renderer, 1280 * 2, 720 * 2);
@@ -210,7 +216,6 @@ void core_cleanup(void)
  */
 void core_main(void)
 {
-	SDL_Surface *surface = NULL;
 	SDL_Event event;
 	clock_t current_tick = 0;
 	int vsync_wait = 0;
@@ -239,10 +244,39 @@ void core_main(void)
 		
 		while(SDL_PollEvent(&event) != 0)
 		{
-			if(event.type == SDL_QUIT)
+			switch(event.type)
 			{
-				SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Got quit event. Initiating shutdown.");
-				core_running = 0;
+				case SDL_QUIT:
+				{
+					SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Got quit event. Initiating shutdown.");
+					core_running = 0;
+					
+					break;
+				}
+				case SDL_KEYDOWN: case SDL_KEYUP:
+				{
+					SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "KeyEvent");
+					
+					if(event.key.type == SDL_KEYUP && event.key.keysym.sym == SDLK_F11)
+					{
+						SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Toggle fullscreen");
+						SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Fullscreen not implemented.");
+						
+						// if(core_fullscreen == 0)
+						// {
+						// 	SDL_SetWindowFullscreen(core_window, SDL_WINDOW_FULLSCREEN);
+						// 	core_fullscreen = 1;
+						// }
+						// else
+						// {
+						// 	SDL_SetWindowFullscreen(core_window, 0);
+						// 	core_fullscreen = 0;
+						// }
+					}
+					
+					break;
+				}
+				default: break;
 			}
 		}
 		
@@ -278,7 +312,14 @@ void core_main(void)
 		
 		// wait the rest of the frame to prevent busy waiting in SDL_RenderPresent()
 		vsync_wait = (((float)1 / core_refresh_rate) - (float)(clock() - current_tick) / CLOCKS_PER_SEC - CORE_VSYNC_BUSY_WAITING) * 1000;
-		SDL_Delay((vsync_wait < 0)?(0):(vsync_wait));
+		if(vsync_wait < 0)
+		{
+			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Frame dropped");
+		}
+		else
+		{
+			SDL_Delay(vsync_wait);
+		}
 		
 		SDL_RenderPresent(core_renderer);
 		
