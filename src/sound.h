@@ -1,7 +1,13 @@
 #ifndef __SOUND_H__
 #define __SOUND_H__
 
+#if defined(_MSC_VER)
+#include <al.h>
+#elif defined(__APPLE__)
+#include <OpenAL/al.h>
+#else
 #include <AL/al.h>
+#endif
 
 #define SOUND_LISTENER_DISTANCE 1.0
 #define SOUND_SOURCE_MAX_X 1.0
