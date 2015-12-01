@@ -1,8 +1,17 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <unistd.h>
+
+#if defined(_MSC_VER)
+#include <alc.h>
+#include <al.h>
+#elif defined(__APPLE__)
+#include <OpenAL/alc.h>
+#include <OpenAL/al.h>
+#else
 #include <AL/al.h>
 #include <AL/alc.h>
-#include <unistd.h>
+#endif
 
 #include "sound.h"
 
