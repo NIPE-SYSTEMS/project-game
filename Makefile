@@ -21,7 +21,6 @@ CFLAGS += `sdl2-config --cflags`
 CFLAGS += `pkg-config --cflags openal`
 
 LIBS += `sdl2-config --libs`
-LIBS += -lSDL2_mixer
 LIBS += `pkg-config --libs openal`
 
 PROGRAM_NAME = project-game
