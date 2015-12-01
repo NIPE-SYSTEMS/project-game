@@ -1,0 +1,5 @@
+Story des Spiels "Mirror"
+
+Der Spieler wird in eine schwarz/weiße/graue Welt, die ohne Buntefarben auskommt, aber nicht zwangsläufig ohne freundliche Elemente, wie Blumen und ähnlichem. Um den Charakter herum gibt es keine anderen Kreaturen, Lebewesen, Charaktere mit denen dieser interargiren, komunizieren oder ähliches kann oder auch nur könnte, sprich er ist allein. Zunächst sollten in der Spielewelt keine Spuren eines menschlichen Lebens erkennbar sein. Der Charakter befindet sich also in einer einsamen verlassenen Landschaft, ohne Farben.
+
+Dem Spieler wird kein Tutorial geboten und es gibt keine Einleitung in die Spielewelt, das Fehlen des Tutorials könnte zu Problemen im Spiel und der Kommunikation zwischen Spieler und Spiel führen kann. Daher sollte die Seuerung und die Steuerungsmöglichkeiten minimal und so einfach wie möglich gehalten werden. Sprich es gibt nur Tasten für die Bewegung und eine zum interargieren mit Objekten, wie Seilen, Türen oder sonstigem. Die Tastebelegung ist dabei standardmäßig vom Spiel festgelegt, da es kein Menü gibt in dem diese umgestellt werden könnte.

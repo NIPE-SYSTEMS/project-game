@@ -217,7 +217,9 @@ void core_main(void)
 	SDL_Event event;
 	double current_tick = 0;
 	int vsync_wait = 0;
+	int vsync_wait_waited_frames = 0;
 	int vsync_wait_dropped_frames = 0;
+	int vsync_wait_total_frames = 0;
 	double interval_last = 0;
 	
 	SDL_Rect rect0 = { 100, 100, 100, 100 };
@@ -295,8 +297,10 @@ void core_main(void)
 			// print dropped frames error
 			if(vsync_wait_dropped_frames > 0)
 			{
-				SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "%i of %i frames dropped", vsync_wait_dropped_frames, core_refresh_rate);
+				SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "%i of %i frames dropped, %i frames waited", vsync_wait_dropped_frames, vsync_wait_total_frames, vsync_wait_waited_frames);
+				vsync_wait_waited_frames = 0;
 				vsync_wait_dropped_frames = 0;
+				vsync_wait_total_frames = 0;
 			}
 			
 			interval_last = timing_timestamp_get();
@@ -328,12 +332,14 @@ void core_main(void)
 		
 		// wait the rest of the frame to prevent busy waiting in SDL_RenderPresent()
 		vsync_wait = (((double)1 / core_refresh_rate) - timing_timestamp_get() + current_tick) * 1000 - CORE_VSYNC_BUSY_WAITING;
+		vsync_wait_total_frames++;
 		if(vsync_wait < 0)
 		{
 			vsync_wait_dropped_frames++;
 		}
 		else
 		{
+			vsync_wait_waited_frames++;
 			SDL_Delay(vsync_wait);
 		}
 		
