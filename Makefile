@@ -30,6 +30,7 @@ SRC += main.c
 SRC += core.c
 SRC += sound.c
 SRC += timing.c
+SRC += rendering.c
 
 OBJS = $(addprefix bin/obj/, $(SRC:%.c=%.o))
 

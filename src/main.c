@@ -1,23 +1,17 @@
-#include <AL/al.h>
+#include <stdlib.h>
 
-#include "sound.h"
+#include "core.h"
 
 int main(void)
 {
-	sound_initialize();
+	if(core_initialize() < 0)
+	{
+		return -1;
+	}
 	
-	sound_test();
+	core_main();
 	
-	sound_cleanup();
-	
-	// if(core_initialize() < 0)
-	// {
-	// 	return -1;
-	// }
-	
-	// core_main();
-	
-	// core_cleanup();
+	core_cleanup();
 	
 	return 0;
 }

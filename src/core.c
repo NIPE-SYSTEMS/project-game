@@ -6,6 +6,7 @@
 #include "timing.h"
 #include "sound.h"
 #include "unused.h"
+#include "rendering.h"
 
 static SDL_Window *core_window = NULL;
 static SDL_Renderer *core_renderer = NULL;
@@ -222,12 +223,6 @@ void core_main(void)
 	int vsync_wait_total_frames = 0;
 	double interval_last = 0;
 	
-	SDL_Rect rect0 = { 100, 100, 100, 100 };
-	SDL_Rect rect1 = { 100, 100, 100, 100 };
-	SDL_Rect rect2 = { 100, 100, 100, 100 };
-	SDL_Rect rect3 = { 100, 100, 100, 100 };
-	SDL_Rect rect4 = { 100, 100, 100, 100 };
-	
 	if(core_renderer == NULL)
 	{
 		SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Invalid renderer in main loop");
@@ -306,29 +301,8 @@ void core_main(void)
 			interval_last = timing_timestamp_get();
 		}
 		
-		// clear surface with white
-		SDL_SetRenderDrawColor(core_renderer, 255, 255, 255, 255);
-		SDL_RenderClear(core_renderer);
-		
-		// update rectangle positions to random coordinates
-		rect0.x = rand() % 1180;
-		rect0.y = rand() % 620;
-		rect1.x = rand() % 1180;
-		rect1.y = rand() % 620;
-		rect2.x = rand() % 1180;
-		rect2.y = rand() % 620;
-		rect3.x = rand() % 1180;
-		rect3.y = rand() % 620;
-		rect4.x = rand() % 1180;
-		rect4.y = rand() % 620;
-		
-		// actually render rectangles
-		SDL_SetRenderDrawColor(core_renderer, 0, 0, 0, 255);
-		SDL_RenderFillRect(core_renderer, &rect0);
-		SDL_RenderFillRect(core_renderer, &rect1);
-		SDL_RenderFillRect(core_renderer, &rect2);
-		SDL_RenderFillRect(core_renderer, &rect3);
-		SDL_RenderFillRect(core_renderer, &rect4);
+		// render the current frame
+		rendering_main(core_renderer, current_tick - core_last_tick);
 		
 		// wait the rest of the frame to prevent busy waiting in SDL_RenderPresent()
 		vsync_wait = (((double)1 / core_refresh_rate) - timing_timestamp_get() + current_tick) * 1000 - CORE_VSYNC_BUSY_WAITING;
