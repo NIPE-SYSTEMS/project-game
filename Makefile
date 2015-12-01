@@ -27,6 +27,7 @@ PROGRAM_NAME = project-game
 SRC += main.c
 SRC += core.c
 SRC += sound.c
+SRC += timing.c
 
 OBJS = $(addprefix bin/obj/, $(SRC:%.c=%.o))
 
