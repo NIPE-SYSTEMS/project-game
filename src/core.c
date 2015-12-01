@@ -171,10 +171,7 @@ int core_initialize(void)
 	
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Renderer created");
 	
-	if(sound_initialize() < 0)
-	{
-		core_cleanup();
-	}
+	sound_initialize();
 	
 	core_last_tick = timing_timestamp_get();
 	
