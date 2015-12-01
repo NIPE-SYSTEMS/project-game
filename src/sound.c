@@ -9,6 +9,12 @@
 static ALCdevice *device = NULL;
 static ALCcontext *context = NULL;
 
+/**
+ * This function loads a valid WAVE file and creates an OpenAL-buffer.
+ * 
+ * @param path The path of the WAVE file.
+ * @return The generated OpenAL-buffer.
+ */
 static ALuint sound_source_load(char *path)
 {
 	FILE *sound_file = NULL;
@@ -138,6 +144,12 @@ static ALuint sound_source_load(char *path)
 	return buffer;
 }
 
+/**
+ * This function initializes the sound system (OpenAL). The function is required
+ * for all following interactions with the sound system.
+ * 
+ * @return Negative value on error, 0 on success.
+ */
 int sound_initialize(void)
 {
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Initializing sound...");
@@ -175,6 +187,9 @@ int sound_initialize(void)
 	return 0;
 }
 
+/**
+ * This function cleans up the sound system.
+ */
 void sound_cleanup(void)
 {
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Shutting down sound...");
@@ -192,6 +207,9 @@ void sound_cleanup(void)
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Sound is shut down");
 }
 
+/**
+ * This function initializes the listener of the sound system.
+ */
 void sound_listener_initialize(void)
 {
 	ALfloat listener_position[] = { 0.0, 0.0, SOUND_LISTENER_DISTANCE };
@@ -205,6 +223,12 @@ void sound_listener_initialize(void)
 	alDistanceModel(AL_EXPONENT_DISTANCE);
 }
 
+/**
+ * This function creates and initializes a sound source with a given WAVE file.
+ * 
+ * @param path The WAVE file to be loaded.
+ * @return The generated source.
+ */
 ALuint sound_source_initialize(char *path)
 {
 	ALuint source = 0;
@@ -251,6 +275,11 @@ ALuint sound_source_initialize(char *path)
 	return source;
 }
 
+/**
+ * This function sets the position of a sound source. The position must be in
+ * [-1, 1] where -1 is the left side and 1 is the right side. This property is
+ * needed for 3D sound.
+ */
 void sound_source_position_set(ALuint source, ALfloat x) // [-1, 1]
 {
 	ALfloat source_position[] = { x * SOUND_SOURCE_MAX_X, 0.0, 0.0 };
@@ -263,6 +292,11 @@ void sound_source_position_set(ALuint source, ALfloat x) // [-1, 1]
 	alSourcefv(source, AL_POSITION, source_position);
 }
 
+/**
+ * This function cleans a sound source and deletes all associated data.
+ * 
+ * @param source The sound source.
+ */
 void sound_source_cleanup(ALuint source)
 {
 	ALuint source_buffer = 0;
@@ -279,6 +313,9 @@ void sound_source_cleanup(ALuint source)
 	alDeleteBuffers(1, &source_buffer);
 }
 
+/**
+ * This function is a test function which should not be used in production code.
+ */
 void sound_test(void)
 {
 	ALuint source;
