@@ -15,13 +15,34 @@
 
 CC = gcc
 
+# default platform equals to Linux
+PLATFORM = LINUX
+
 CFLAGS += -Wall
 CFLAGS += -Wextra
-CFLAGS += `sdl2-config --cflags`
-CFLAGS += `pkg-config --cflags openal`
 
-LIBS += `sdl2-config --libs`
-LIBS += `pkg-config --libs openal`
+# Some platform conditions
+ifeq ($(PLATFORM), LINUX)
+	CFLAGS += `sdl2-config --cflags`
+	CFLAGS += `pkg-config --cflags openal`
+	
+	LIBS += `sdl2-config --libs`
+	LIBS += `pkg-config --libs openal`
+else ifeq ($(PLATFORM), WINDOWS)
+	# CFLAGS += `sdl2-config --cflags`
+	# CFLAGS += `pkg-config --cflags openal`
+	
+	# LIBS += `sdl2-config --libs`
+	# LIBS += `pkg-config --libs openal`
+else ifeq ($(PLATFORM), MACOS)
+	CFLAGS += -I/usr/local/include/SDL2
+	CFLAGS += -D_THREAD_SAFE
+	
+	LIBS += -framework OpenAL
+	LIBS += -L/usr/local/lib
+	LIBS += -lSDL2
+endif
+
 
 PROGRAM_NAME = project-game
 
@@ -41,6 +62,7 @@ $(PROGRAM_NAME): init $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o bin/$(PROGRAM_NAME) $(LIBS)
 
 init:
+	@echo Building for platform $(PLATFORM) ...
 	mkdir -p bin/obj
 
 bin/obj/%.o: src/%.c
