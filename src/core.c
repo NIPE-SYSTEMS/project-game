@@ -174,6 +174,8 @@ int core_initialize(void)
 	
 	sound_initialize();
 	
+	rendering_initialize();
+	
 	core_last_tick = timing_timestamp_get();
 	
 	return 0;
