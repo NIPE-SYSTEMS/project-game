@@ -301,6 +301,10 @@ void core_main(void)
 			interval_last = timing_timestamp_get();
 		}
 		
+		// clear surface with white
+		SDL_SetRenderDrawColor(core_renderer, 255, 255, 255, 255);
+		SDL_RenderClear(core_renderer);
+		
 		// render the current frame
 		rendering_main(core_renderer, current_tick - core_last_tick);
 		
