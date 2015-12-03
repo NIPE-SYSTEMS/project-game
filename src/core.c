@@ -13,6 +13,8 @@ static SDL_Renderer *core_renderer = NULL;
 static char core_running = 0;
 static double core_last_tick = 0;
 static int core_refresh_rate = 0;
+static int core_width = 1280;
+static int core_height = 720;
 // static int core_fullscreen = 0;
 
 /**
@@ -133,7 +135,7 @@ int core_initialize(void)
 	
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Creating window...");
 	
-	core_window = SDL_CreateWindow("project-game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, 0); // no window flags
+	core_window = SDL_CreateWindow("project-game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, core_width, core_height, 0); // no window flags
 	if(core_window == NULL)
 	{
 		SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Failed to create window: %s\n", SDL_GetError());
@@ -327,4 +329,24 @@ void core_main(void)
 		
 		core_last_tick = current_tick;
 	}
+}
+
+/**
+ * This function returns the current surface width.
+ * 
+ * @return The current surface width of the window.
+ */
+int core_width_get(void)
+{
+	return core_width;
+}
+
+/**
+ * This function returns the current surface height.
+ * 
+ * @return The current surface height of the window.
+ */
+int core_height_get(void)
+{
+	return core_height;
 }
