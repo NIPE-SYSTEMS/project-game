@@ -5,6 +5,8 @@ A game object should have the following object properties:
 * position
     * x
     * y
+    * width
+    * height
     * rotation
     * scale: scale of `1` means no scaling
 * texture
