@@ -15,58 +15,50 @@
 
 CC = gcc
 
-# default platform equals to Linux
-PLATFORM = LINUX
-
 CFLAGS += -Wall
 CFLAGS += -Wextra
 
-# Some platform conditions
-ifeq ($(PLATFORM), LINUX)
-	CFLAGS += `sdl2-config --cflags`
-	CFLAGS += `pkg-config --cflags openal`
-	
-	LIBS += `sdl2-config --libs`
-	LIBS += `pkg-config --libs openal`
-else ifeq ($(PLATFORM), WINDOWS)
-	# CFLAGS += `sdl2-config --cflags`
-	# CFLAGS += `pkg-config --cflags openal`
-	
-	# LIBS += `sdl2-config --libs`
-	# LIBS += `pkg-config --libs openal`
-else ifeq ($(PLATFORM), MACOS)
-	CFLAGS += -I/usr/local/include/SDL2
-	CFLAGS += -D_THREAD_SAFE
-	
-	LIBS += -framework OpenAL
-	LIBS += -L/usr/local/lib
-	LIBS += -lSDL2
-endif
+CFLAGS_GAME += `sdl2-config --cflags`
+CFLAGS_GAME += `pkg-config --cflags openal`
 
+LIBS_GAME += `sdl2-config --libs`
+LIBS_GAME += `pkg-config --libs openal`
+LIBS_GAME += -ldl
 
 PROGRAM_NAME = project-game
 
-SRC += main.c
-SRC += core.c
-SRC += sound.c
-SRC += timing.c
-SRC += rendering.c
+# game sources
+SRC_GAME = $(notdir $(wildcard src/*.c))
+OBJS_GAME = $(addprefix bin/obj/, $(SRC_GAME:%.c=%.o))
 
-OBJS = $(addprefix bin/obj/, $(SRC:%.c=%.o))
+# module sources
+SRC_MODULES = $(notdir $(wildcard src/modules/*.c))
+OBJS_MODULES = $(addprefix bin/modules/, $(SRC_MODULES:%.c=%.so))
 
-.PHONY: all $(PROGRAM_NAME) init clean
+.PHONY: all clean
 
-all: init $(PROGRAM_NAME)
+all: bin/project-game bin/modules $(OBJS_MODULES)
 
-$(PROGRAM_NAME): init $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o bin/$(PROGRAM_NAME) $(LIBS)
-
-init:
-	@echo Building for platform $(PLATFORM) ...
+# create object directory for game objects
+bin/obj:
 	mkdir -p bin/obj
 
-bin/obj/%.o: src/%.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(LIBS)
+# create object directory for shared modules objects
+bin/modules:
+	mkdir -p bin/modules
 
+# compile all objects into the binary
+bin/project-game: bin/obj $(OBJS_GAME)
+	$(CC) $(CFLAGS) $(CFLAGS_GAME) $(OBJS_GAME) -o bin/project-game $(LIBS_GAME)
+
+# compile a game object
+bin/obj/%.o: src/%.c
+	$(CC) $(CFLAGS) $(CFLAGS_GAME) -c $< -o $@ $(LIBS_GAME)
+
+# compile a module object 
+bin/modules/%.so: src/modules/%.c
+	$(CC) $(CFLAGS) $(CFLAGS_GAME) $< -shared -o $@
+
+# clean complete objects directory
 clean:
 	rm -Rf bin
