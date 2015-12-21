@@ -17,7 +17,7 @@
 * flowers -> crafting?
 * physics
     * gravity
-    * ligth -> photons -> overflow is harmful
+    * light -> photons -> overflow is harmful
     * shadows
     * power -> harmful
     * water, gas -> harmful
