@@ -19,6 +19,7 @@ CFLAGS += -Wall
 CFLAGS += -Wextra
 
 CFLAGS += `pkg-config --cflags ncurses`
+CFLAGS += -DDEBUG
 
 LIBS += `pkg-config --libs ncurses`
 
