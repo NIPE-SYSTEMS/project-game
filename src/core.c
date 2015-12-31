@@ -6,6 +6,12 @@
 
 #include "core.h"
 
+#ifdef DEBUG
+static void core_init_files(void);
+static void core_cleanup_files(void);
+static void core_log(FILE *file, char *fmt, va_list args);
+#endif /* DEBUG*/
+
 static char core_running = 0;
 static FILE *core_file_debug = NULL;
 static FILE *core_file_error = NULL;

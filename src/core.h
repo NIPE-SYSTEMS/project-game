@@ -11,9 +11,6 @@ void core_main(void);
 void core_cleanup(void);
 
 #ifdef DEBUG
-void core_init_files(void);
-void core_cleanup_files(void);
-void core_log(FILE *file, char *fmt, va_list args);
 void core_debug(char *fmt, ...);
 void core_error(char *fmt, ...);
 #else
