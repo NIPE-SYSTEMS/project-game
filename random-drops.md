@@ -11,19 +11,23 @@ The algorithm consumes a list (a.k.a. *array*) of drops. Each drop has two prope
 
 The structure is defined in `src/random-drop.h`:
 
-    typedef struct random_drop_t
-    {
-        unsigned int id;
-        float probability; // [0, 1]
-    } random_drop_t;
+```c_cpp
+typedef struct random_drop_t
+{
+    unsigned int id;
+    float probability; // [0, 1]
+} random_drop_t;
+```
 
 A list may be declared as following:
 
-    random_drop_t drop_list[] =
-    {
-        { 1, 0.5 },
-        { 2, 0.5 }
-    };
+```c_cpp
+random_drop_t drop_list[] =
+{
+    { 1, 0.5 },
+    { 2, 0.5 }
+};
+```
 
 ## Choosing algoritm
 
@@ -35,23 +39,25 @@ The algorithm will add the probabilities to a value. When this value is then gre
 
 ## Example code
 
-    random_drop_t drop_list[] =
-    {
-        { 1, 0.5 }, // 50% probability
-        { 2, 0.25 } // 25% probability
-    };
-    size_t drop_list_amount = sizeof(drop_list) / sizeof(drop_list[0]);
-    random_drop_t *picked_drop = NULL;
-    
-    picked_drop = random_drop_choose(drop_list, drop_list_amount);
-    if(picked_drop != NULL)
-    {
-        printf("Choosed id: %i\n", picked_drop->id);
-    }
-    else
-    {
-        printf("No drop choosed.\n");
-    }
+```c_cpp
+random_drop_t drop_list[] =
+{
+    { 1, 0.5 }, // 50% probability
+    { 2, 0.25 } // 25% probability
+};
+size_t drop_list_amount = sizeof(drop_list) / sizeof(drop_list[0]);
+random_drop_t *picked_drop = NULL;
+
+picked_drop = random_drop_choose(drop_list, drop_list_amount);
+if(picked_drop != NULL)
+{
+    printf("Choosed id: %i\n", picked_drop->id);
+}
+else
+{
+    printf("No drop choosed.\n");
+}
+```
 
 ## Random value generation accuracy
 
