@@ -5,6 +5,7 @@
 #include <time.h>
 
 #include "core.h"
+#include "random-drop.h"
 
 #ifdef DEBUG
 static void core_init_files(void);
@@ -32,6 +33,8 @@ void core_init(void)
 	noecho();
 	keypad(stdscr, TRUE);
 	nodelay(stdscr, TRUE);
+	
+	random_drop_init();
 }
 
 /**
@@ -53,6 +56,7 @@ void core_main(void)
 			switch(character)
 			{
 				case 'q': case 27: // <Q> or <Esc>
+					core_debug("Invoked quit event.");
 					core_running = 0;
 					break;
 				default:
