@@ -9,6 +9,8 @@ The algorithm consumes a list (a.k.a. *array*) of drops. Each drop has two prope
 * A unique ID for identifying the drop.
 * The probability of the drop. `0%` will be `0` and `100%` will be `1.0`. The values are in the range `[0, 1]`.
 
+The structure is defined in `src/random-drop.h`:
+
     typedef struct random_drop_t
     {
         unsigned int id;
@@ -53,4 +55,4 @@ The algorithm will add the probabilities to a value. When this value is then gre
 
 ## Random value generation accuracy
 
-The accuracy of the generated floating point random value may be changed. The default value is `10000` which results in a accuracy of `1 * 10^-5`.
+The accuracy of the generated floating point random value may be changed. The default value is `10000` which results in a accuracy of `1 * 10^-5`. This value can be changed in `src/random-drop.h`.
