@@ -11,7 +11,7 @@ The algorithm consumes a list (a.k.a. *array*) of drops. Each drop has two prope
 
 The structure is defined in `src/random-drop.h`:
 
-```c_cpp
+```c
 typedef struct random_drop_t
 {
     unsigned int id;
@@ -21,7 +21,7 @@ typedef struct random_drop_t
 
 A list may be declared as following:
 
-```c_cpp
+```c
 random_drop_t drop_list[] =
 {
     { 1, 0.5 },
@@ -39,7 +39,7 @@ The algorithm will add the probabilities to a value. When this value is then gre
 
 ## Example code
 
-```c_cpp
+```c
 random_drop_t drop_list[] =
 {
     { 1, 0.5 }, // 50% probability
