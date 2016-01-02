@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Sprite Generator</title>
+		<script>
+			var amount = -1;
+			var width = 0;
+			var height = 0;
+			function generateEmptySprites()
+			{
+				amount = parseInt(document.form.sprite_amount.value);
+				width = parseInt(document.form.sprite_width.value);
+				height = parseInt(document.form.sprite_height.value);
+				
+				// clear editing stage
+				while(document.getElementById("sprite_editing").firstChild)
+				{
+					document.getElementById("sprite_editing").removeChild(document.getElementById("sprite_editing").firstChild);
+				}
+				
+				// render sprites to editing stage
+				for(var i = 0; i < amount; i++)
+				{
+					var headline = document.createElement("h3");
+					headline.innerHTML = "sprite[" + i + "]";
+					var table = document.createElement("table");
+					for(var row = 0; row < height; row++)
+					{
+						var tr = document.createElement("tr");
+						for(var col = 0; col < width; col++)
+						{
+							var td = document.createElement("td");
+							var input = document.createElement("input");
+							input.name = "sprite_character_" + i + "_" + col + "_" + row;
+							input.type = "text";
+							input.maxLength = 1;
+							input.size = 1;
+							input.value = ".";
+							td.appendChild(input);
+							tr.appendChild(td);
+						}
+						table.appendChild(tr);
+					}
+					document.getElementById("sprite_editing").appendChild(headline);
+					document.getElementById("sprite_editing").appendChild(table);
+				}
+			}
+			function generateSpriteMap()
+			{
+				if(amount < 1)
+				{
+					return;
+				}
+				
+				// clear map stage
+				while(document.getElementById("sprite_map").firstChild)
+				{
+					document.getElementById("sprite_map").removeChild(document.getElementById("sprite_map").firstChild);
+				}
+				
+				// render sprites to map stage
+				for(var i = 0; i < amount; i++)
+				{
+					var headline = document.createElement("h3");
+					headline.innerHTML = "sprite[" + i + "]";
+					var pre_text = "";
+					for(var row = 0; row < height; row++)
+					{
+						for(var col = 0; col < width; col++)
+						{
+							pre_text += document.form["sprite_character_" + i + "_" + col + "_" + row].value;
+						}
+						pre_text += "\n";
+					}
+					var pre = document.createElement("pre");
+					pre.innerHTML = pre_text;
+					document.getElementById("sprite_map").appendChild(headline);
+					document.getElementById("sprite_map").appendChild(pre);
+				}
+			}
+			function exportSprites()
+			{
+				if(amount < 1)
+				{
+					return;
+				}
+				
+				var data_iterator = 6;
+				var data_length = 2; // amount of sprites
+				data_length += 2; // width of sprites
+				data_length += 2; // height of sprites
+				data_length += amount * width * height; // sprite data
+				var data = new Uint8Array(data_length);
+				
+				// amount of sprites
+				data[0] = amount % 256;
+				data[1] = parseInt(amount / 256);
+				
+				// width of sprites
+				data[2] = width % 256;
+				data[3] = parseInt(width / 256);
+				
+				// height of sprites
+				data[4] = height % 256;
+				data[5] = parseInt(height / 256);
+				
+				// sprite data
+				for(var i = 0; i < amount; i++)
+				{
+					for(var row = 0; row < height; row++)
+					{
+						for(var col = 0; col < width; col++)
+						{
+							data[data_iterator++] = document.form["sprite_character_" + i + "_" + col + "_" + row].value.charCodeAt(0);
+						}
+					}
+				}
+				
+				var output = "";
+				for(var i = 0; i < data_length; i++)
+				{
+					output += String.fromCharCode(data[i]);
+				}
+				
+				window.location.href = "data:application/octet-stream;charset=utf-8;base64," + btoa(output);
+			}
+			function importSprites()
+			{
+				var file = document.form.file.files[0];
+				var reader = new FileReader();
+				
+				reader.onload = function()
+				{
+					var data = new Uint8Array(reader.result);
+					
+					// read metadata
+					amount = (data[1] << 8) | data[0];
+					width = (data[3] << 8) | data[2];
+					height = (data[5] << 8) | data[4];
+					
+					// update form input elements
+					document.form.sprite_amount.value = amount;
+					document.form.sprite_width.value = width;
+					document.form.sprite_height.value = height;
+					
+					// clear editing stage
+					while(document.getElementById("sprite_editing").firstChild)
+					{
+						document.getElementById("sprite_editing").removeChild(document.getElementById("sprite_editing").firstChild);
+					}
+					
+					// render sprites to editing stage
+					for(var i = 0; i < amount; i++)
+					{
+						var data_offset = i * width * height + 6;
+						var headline = document.createElement("h3");
+						headline.innerHTML = "sprite[" + i + "]";
+						var table = document.createElement("table");
+						for(var row = 0; row < height; row++)
+						{
+							var tr = document.createElement("tr");
+							for(var col = 0; col < width; col++)
+							{
+								var td = document.createElement("td");
+								var input = document.createElement("input");
+								input.name = "sprite_character_" + i + "_" + col + "_" + row;
+								input.type = "text";
+								input.maxLength = 1;
+								input.size = 1;
+								input.value = String.fromCharCode(data[data_offset + (row * width + col)]);
+								td.appendChild(input);
+								tr.appendChild(td);
+							}
+							table.appendChild(tr);
+						}
+						document.getElementById("sprite_editing").appendChild(headline);
+						document.getElementById("sprite_editing").appendChild(table);
+					}
+				};
+				
+				reader.readAsArrayBuffer(file);
+			}
+		</script>
+	</head>
+	<body>
+		<form name="form" onSubmit="return false;">
+			<h1>Sprite Generator</h1>
+			<h2>Generate</h2>
+			<p>Generate empty sprites.</p>
+			<table>
+				<tr><td>Amount of sprites:</td><td><input type="number" name="sprite_amount" value="1" /></td></tr>
+				<tr><td>Width of sprites:</td><td><input type="number" name="sprite_width" value="5" /></td></tr>
+				<tr><td>Height of sprites:</td><td><input type="number" name="sprite_height" value="3" /></td></tr>
+				<tr><td colspan="2"><button onClick="generateEmptySprites();">Generate</button></td></tr>
+			</table>
+			<h2>Import</h2>
+			<p>Import an existing sprite file.</p>
+			<p><input type="file" name="file" /></p>
+			<p><button onClick="importSprites();">Import</button></p>
+			<h2>Export</h2>
+			<p>Export to a new sprite file.</p>
+			<p><button onClick="exportSprites();">Export and Download</button></p>
+			<h2>Sprite editing</h2>
+			<div id="sprite_editing">Generate or import some sprites first.</div>
+			<h2>Sprite map</h2>
+			<button onClick="generateSpriteMap();">Generate</button>
+			<div id="sprite_map"></div>
+		</form>
+	</body>
+</html>
