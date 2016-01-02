@@ -1,12 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "sprites.h"
+#include "sprite.h"
 
-sprites_t *sprites_load(char *path)
+sprite_t *sprite_load(char *path)
 {
 	FILE *sprite_file = NULL;
-	sprites_t *sprite = NULL;
+	sprite_t *sprite = NULL;
 	
 	sprite_file = fopen(path, "r");
 	if(sprite_file == NULL)
@@ -14,7 +14,7 @@ sprites_t *sprites_load(char *path)
 		return NULL;
 	}
 	
-	sprite = calloc(1, sizeof(sprites_t));
+	sprite = calloc(1, sizeof(sprite_t));
 	if(sprite == NULL)
 	{
 		fclose(sprite_file);
@@ -42,7 +42,7 @@ sprites_t *sprites_load(char *path)
 	return sprite;
 }
 
-void sprites_free(sprites_t *sprite)
+void sprite_free(sprite_t *sprite)
 {
 	free(sprite->data);
 	free(sprite);
