@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <unistd.h>
-//#include <ncurses.h>
+#include <ncurses.h>
 
 #include "gameplay.h"
 
@@ -150,7 +150,7 @@ void gameplay_test_move_up()
 	{
 		return;
 	}
-	else if(gameplay_keys.key_w == 1 && gameplay_field[gameplay_player.position_height + 1][gameplay_player.position_width].type == FLOOR && gameplay_field[gameplay_player.position_height + 1][gameplay_player.position_width].bomb = 0)
+	else if(gameplay_keys.key_w == 1 && gameplay_field[gameplay_player.position_height + 1][gameplay_player.position_width].type == FLOOR && gameplay_field[gameplay_player.position_height + 1][gameplay_player.position_width].bomb == 0)
 	{
 		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 0;
 		gameplay_player.position_height--;
@@ -170,7 +170,7 @@ void gameplay_test_move_left()
 	{
 		return;
 	}
-	else if(gameplay_keys.key_a == 1 && gameplay_field[gameplay_player.position_height][gameplay_player.position_width - 1].type == FLOOR && gameplay_field[gameplay_player.position_height][gameplay_player.position_width - 1].bomb = 0)
+	else if(gameplay_keys.key_a == 1 && gameplay_field[gameplay_player.position_height][gameplay_player.position_width - 1].type == FLOOR && gameplay_field[gameplay_player.position_height][gameplay_player.position_width - 1].bomb == 0)
 	{
 		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 0;
 		gameplay_player.position_width--;
@@ -190,7 +190,7 @@ void gameplay_test_move_down()
 	{
 		return;
 	}
-	else if(gameplay_keys.key_w == s && gameplay_field[gameplay_player.position_height - 1][gameplay_player.position_width].type == FLOOR && gameplay_field[gameplay_player.position_height - 1][gameplay_player.position_width].bomb = 0)
+	else if(gameplay_keys.key_s == 1 && gameplay_field[gameplay_player.position_height - 1][gameplay_player.position_width].type == FLOOR && gameplay_field[gameplay_player.position_height - 1][gameplay_player.position_width].bomb == 0)
 	{
 		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 0;
 		gameplay_player.position_height++;
@@ -210,10 +210,10 @@ void gameplay_test_move_right()
 	{
 		return;
 	}
-	else if(gameplay_keys.key_d == 1 && gameplay_field[gameplay_player.position_height][gameplay_player.position_width + 1].type == FLOOR && gameplay_field[gameplay_player.position_height][gameplay_player.position_width + 1].bomb = 0)
+	else if(gameplay_keys.key_d == 1 && gameplay_field[gameplay_player.position_height][gameplay_player.position_width + 1].type == FLOOR && gameplay_field[gameplay_player.position_height][gameplay_player.position_width + 1].bomb == 0)
 	{
 		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 0;
-		gameplay_player.width++;
+		gameplay_player.position_width++;
 		gameplay_player.movement_cooldown = GAMEPLAY_MOVE_COOLDOWN;
 		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 1;
 	}
@@ -222,7 +222,7 @@ void gameplay_test_move_right()
 
 void gameplay_test_place_bomb()
 {
-	if (gameplay_keys.key_space == 0 || gameplay_player.placeable_bombs != gameplay_player.placed_bombs)
+	if (gameplay_keys.key_space == 0 || (gameplay_player.placeable_bombs - gameplay_player.placed_bombs == 0))
 	{
 		return;
 	}
@@ -323,7 +323,7 @@ void gameplay_test_item_pick_up()
 	}
 	else if(gameplay_keys.key_f == 1 && gameplay_field[gameplay_player.position_height][gameplay_player.position_width].item != EMPTY)
 	{
-		gameplay_player.item = gameplay_field.item[gameplay_player.position_height][gameplay_player.position_width].item;
+		gameplay_player.item = gameplay_field[gameplay_player.position_height][gameplay_player.position_width].item;
 		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].item = EMPTY;
 		gameplay_use_item();
 	}
