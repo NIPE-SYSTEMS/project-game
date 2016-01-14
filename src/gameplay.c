@@ -3,6 +3,8 @@
 #include <ncurses.h>
 
 #include "gameplay.h"
+#include "core.h"
+
 
 /**
  * This function fills the field array before the game starts with all 
@@ -12,12 +14,81 @@ void gameplay_field_init()
 {
 	int h = 0;
 	int w = 0;
+	/*
 	while(h < GAMEPLAY_FIELD_HEIGHT)
 	{
 		w = 0;
 		while(w < GAMEPLAY_FIELD_WIDTH)
 		{
-			if (h == 0 || w == 0)
+			if (h == 0 || w == 0 || h == GAMEPLAY_FIELD_HEIGHT - 1 || w == GAMEPLAY_FIELD_WIDTH - 1)
+			{
+				gameplay_field[h][w].type = 0;//WALL;
+				gameplay_field[h][w].player = 0;
+				gameplay_field[h][w].explosion = 0;
+				gameplay_field[h][w].bomb = 0;
+				gameplay_field[h][w].item = 0;
+				gameplay_field[h][w].timing = 0;
+			}
+			else if((h == 1 && w == 2) || (h == 2 && w == 1) || (h == 1 && w == GAMEPLAY_FIELD_WIDTH - 3) || (h == 1 && w == GAMEPLAY_FIELD_WIDTH - 2) || (h == 2 && w == GAMEPLAY_FIELD_WIDTH - 2) || (h == GAMEPLAY_FIELD_HEIGHT - 2 && w == GAMEPLAY_FIELD_WIDTH - 3) || (h == GAMEPLAY_FIELD_HEIGHT - 3 && w == GAMEPLAY_FIELD_WIDTH - 2) || (h == GAMEPLAY_FIELD_HEIGHT - 2 && w == GAMEPLAY_FIELD_WIDTH - 2) || (h == GAMEPLAY_FIELD_HEIGHT - 3 && w == 1) || (h == GAMEPLAY_FIELD_HEIGHT - 2 && w == 1) || (h == GAMEPLAY_FIELD_HEIGHT - 2 && w == 2))
+			{
+				gameplay_field[h][w].type = 2; //FLOOR;
+				gameplay_field[h][w].player = 0;
+				gameplay_field[h][w].explosion = 0;
+				gameplay_field[h][w].bomb = 0;
+				gameplay_field[h][w].item = 0;
+				gameplay_field[h][w].timing = 0;
+			}
+			else if((h == 1 && w == 1))
+			{
+				gameplay_field[h][w].type = 2; //FLOOR;
+				gameplay_field[h][w].player = 1;
+				gameplay_field[h][w].explosion = 0;
+				gameplay_field[h][w].bomb = 0;
+				gameplay_field[h][w].item = 0;
+				gameplay_field[h][w].timing = 0;
+			}
+			else if(h%2 == 0)
+			{
+				gameplay_field[h][w].type = 1; //DESTRUCTIVE;
+				gameplay_field[h][w].player = 0;
+				gameplay_field[h][w].explosion = 0;
+				gameplay_field[h][w].bomb = 0;
+				gameplay_field[h][w].item = 0;
+				gameplay_field[h][w].timing = 0;
+			}
+			else if(h%2 == 1)
+			{
+				if(w%2 == 0)
+				{
+					gameplay_field[h][w].type = 0; //DESTRUCTIVE;
+					gameplay_field[h][w].player = 0;
+					gameplay_field[h][w].explosion = 0;
+					gameplay_field[h][w].bomb = 0;
+					gameplay_field[h][w].item = 0;
+					gameplay_field[h][w].timing = 0;
+				}
+				else if (w % 2 != 0)
+				{
+					gameplay_field[h][w].type = 1; //WALL;
+					gameplay_field[h][w].player = 0;
+					gameplay_field[h][w].explosion = 0;
+					gameplay_field[h][w].bomb = 0;
+					gameplay_field[h][w].item = 0;
+					gameplay_field[h][w].timing = 0;
+				}
+			}
+
+			w++;
+		}
+		h++;
+	}
+	*/
+	while(h < GAMEPLAY_FIELD_HEIGHT)
+	{
+		w = 0;
+		while(w < GAMEPLAY_FIELD_WIDTH)
+		{
+			if (h == 0 || w == 0 || h == GAMEPLAY_FIELD_HEIGHT - 1 || w == GAMEPLAY_FIELD_WIDTH - 1)
 			{
 				gameplay_field[h][w].type = WALL;
 				gameplay_field[h][w].player = 0;
@@ -44,18 +115,27 @@ void gameplay_field_init()
 				gameplay_field[h][w].item = 0;
 				gameplay_field[h][w].timing = 0;
 			}
-			else if(h%2 == 0)
+			else if(h%2 == 0 && w%2 == 0)
 			{
-				gameplay_field[h][w].type = DESTRUCTIVE;
+				gameplay_field[h][w].type = WALL;
 				gameplay_field[h][w].player = 0;
 				gameplay_field[h][w].explosion = 0;
 				gameplay_field[h][w].bomb = 0;
 				gameplay_field[h][w].item = 0;
 				gameplay_field[h][w].timing = 0;
 			}
-			else if(h%2 == 1)
+			else
 			{
-				if(w%2 == 0)
+				
+				
+				gameplay_field[h][w].type = DESTRUCTIVE;
+				gameplay_field[h][w].player = 0;
+				gameplay_field[h][w].explosion = 0;
+				gameplay_field[h][w].bomb = 0;
+				gameplay_field[h][w].item = 0;
+				gameplay_field[h][w].timing = 0;
+				
+				/*else if (w % 2 == 1)
 				{
 					gameplay_field[h][w].type = DESTRUCTIVE;
 					gameplay_field[h][w].player = 0;
@@ -63,30 +143,20 @@ void gameplay_field_init()
 					gameplay_field[h][w].bomb = 0;
 					gameplay_field[h][w].item = 0;
 					gameplay_field[h][w].timing = 0;
-				}
-				else if (w % 2 == 1)
-				{
-					gameplay_field[h][w].type = WALL;
-					gameplay_field[h][w].player = 0;
-					gameplay_field[h][w].explosion = 0;
-					gameplay_field[h][w].bomb = 0;
-					gameplay_field[h][w].item = 0;
-					gameplay_field[h][w].timing = 0;
-				}
+				}*/
 			}
-
 			w++;
 		}
 		h++;
 	}
 	
-	gameplay_player.health_points = 1;
+	gameplay_player.health_points = 3;
 	gameplay_player.movement_cooldown = 10;
 	gameplay_player.position_height = 1;
 	gameplay_player.position_width = 1;
-	gameplay_player.placeable_bombs = 1;
+	gameplay_player.placeable_bombs = 50; // normal is 1
 	gameplay_player.placed_bombs = 0;
-	gameplay_player.item = 0;
+	gameplay_player.item = EMPTY;
 	gameplay_player.item_usage_time = 0;
 	gameplay_player.damage_cooldown = 0;
 	return;
@@ -113,6 +183,7 @@ void gameplay_key_reset()
  */
 void gameplay_key(char gameplay_pressed_key)
 {
+	
 	if(gameplay_pressed_key == 'w')
 	{
 		gameplay_keys.key_w = 1;
@@ -150,7 +221,7 @@ void gameplay_test_move_up()
 	{
 		return;
 	}
-	else if(gameplay_keys.key_w == 1 && gameplay_field[gameplay_player.position_height + 1][gameplay_player.position_width].type == FLOOR && gameplay_field[gameplay_player.position_height + 1][gameplay_player.position_width].bomb == 0)
+	else if(gameplay_keys.key_w == 1 && gameplay_field[gameplay_player.position_height - 1][gameplay_player.position_width].type == FLOOR && gameplay_field[gameplay_player.position_height - 1][gameplay_player.position_width].bomb == 0)
 	{
 		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 0;
 		gameplay_player.position_height--;
@@ -190,8 +261,9 @@ void gameplay_test_move_down()
 	{
 		return;
 	}
-	else if(gameplay_keys.key_s == 1 && gameplay_field[gameplay_player.position_height - 1][gameplay_player.position_width].type == FLOOR && gameplay_field[gameplay_player.position_height - 1][gameplay_player.position_width].bomb == 0)
+	else if(gameplay_keys.key_s == 1 && gameplay_field[gameplay_player.position_height + 1][gameplay_player.position_width].type == FLOOR && gameplay_field[gameplay_player.position_height + 1][gameplay_player.position_width].bomb == 0)
 	{
+		
 		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 0;
 		gameplay_player.position_height++;
 		gameplay_player.movement_cooldown = GAMEPLAY_MOVE_COOLDOWN;
@@ -222,13 +294,14 @@ void gameplay_test_move_right()
 
 void gameplay_test_place_bomb()
 {
-	if (gameplay_keys.key_space == 0 || (gameplay_player.placeable_bombs - gameplay_player.placed_bombs == 0))
+	if (gameplay_keys.key_space == 0 || (gameplay_player.placeable_bombs - gameplay_player.placed_bombs) == 0)
 	{
 		return;
 	}
 	else if(gameplay_keys.key_space == 1 && gameplay_field[gameplay_player.position_height][gameplay_player.position_width].bomb == 0)
 	{
 		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].bomb = 1;
+		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].timing = 50;
 		gameplay_player.placed_bombs++;
 	}
 }
@@ -310,7 +383,9 @@ void gameplay_buffer()
 					//game_over();
 				}
 			}
+			w++;
 		}
+		h++;
 	}
 	return;
 }
@@ -375,6 +450,8 @@ void gameplay_explosion(int height, int width)
 		else if(gameplay_field[running][width].type == DESTRUCTIVE)
 		{
 			gameplay_field[running][width].type = FLOOR;
+			gameplay_field[running][width].explosion = 1;
+			gameplay_field[running][width].timing = GAMEPLAY_FIRE_TIME;
 			
 			//Random Drops!!!
 			
@@ -405,7 +482,9 @@ void gameplay_explosion(int height, int width)
 		else if(gameplay_field[running][width].type == DESTRUCTIVE)
 		{
 			gameplay_field[running][width].type = FLOOR;
-			
+			gameplay_field[running][width].explosion = 1;
+			gameplay_field[running][width].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[running][width].item = 6;
 			//Random Drops!!!
 			
 			break;
@@ -435,7 +514,9 @@ void gameplay_explosion(int height, int width)
 		else if(gameplay_field[height][running].type == DESTRUCTIVE)
 		{
 			gameplay_field[height][running].type = FLOOR;
-			
+			gameplay_field[height][running].explosion = 1;
+			gameplay_field[height][running].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[height][running].item = 11;
 			//Random Drops!!!
 			
 			break;
@@ -465,7 +546,9 @@ void gameplay_explosion(int height, int width)
 		else if(gameplay_field[height][running].type == DESTRUCTIVE)
 		{
 			gameplay_field[height][running].type = FLOOR;
-			
+			gameplay_field[height][running].explosion = 1;
+			gameplay_field[height][running].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[height][running].item = 8;
 			//Random Drops!!!
 			
 			break;

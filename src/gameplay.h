@@ -1,26 +1,27 @@
 #ifndef __GAMEPLAY_H__
 #define __GAMEPLAY_H__
 
-#define GAMEPLAY_FIELD_HEIGHT 5
-#define GAMEPLAY_FIELD_WIDTH 5
+#define GAMEPLAY_FIELD_HEIGHT 9
+#define GAMEPLAY_FIELD_WIDTH 9
 
-#define GAMEPLAY_MOVE_COOLDOWN 10
+#define GAMEPLAY_MOVE_COOLDOWN 5
 #define GAMEPLAY_FIRE_TIME 10
+
 
 typedef enum field_type_t
 {
-	WALL,
-	DESTRUCTIVE,
-	FLOOR
+	WALL = 0,
+	DESTRUCTIVE = 1,
+	FLOOR = 2,
 } field_type_t;
 
 typedef enum item_type_t
 {
-	EMPTY,
-	HEALTH,
-	EXTRA_BOMB,
-	SPEED,
-	SHIELD,
+	EMPTY = 0,
+	HEALTH = 8,
+	EXTRA_BOMB = 6,
+	SPEED = 9,
+	SHIELD = 11,
 } item_type_t;
 
 typedef struct gameplay_field_t

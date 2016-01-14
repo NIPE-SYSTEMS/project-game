@@ -4,8 +4,11 @@
 #include <ncurses.h>
 #include <time.h>
 
+
 #include "core.h"
 #include "random-drop.h"
+#include "graphics.h"
+#include "gameplay.h"
 
 #ifdef DEBUG
 static void core_init_files(void);
@@ -17,7 +20,6 @@ static char core_running = 0;
 static FILE *core_file_debug = NULL;
 static FILE *core_file_error = NULL;
 
-char running_animation[] = { '|', '/', '-', '\\' };
 
 /**
  * This function initializes everything. It initializes ncurses.
@@ -45,12 +47,14 @@ void core_main(void)
 {
 	core_running = 1;
 	int character = 0;
-	int running_animation_iterator = 0;
+	gameplay_field_init();
 	
 	while(core_running == 1)
 	{
 		clear();
 		
+		gameplay_buffer();
+		gameplay_key_reset();
 		while((character = getch()) != ERR)
 		{
 			switch(character)
@@ -59,15 +63,15 @@ void core_main(void)
 					core_debug("Invoked quit event.");
 					core_running = 0;
 					break;
+				case 'w': case 'a': case 's': case 'd': case ' ': case 'f':
+					gameplay_key(character);
+					break;
 				default:
 					core_debug("Pressed unhandled key. Keycode: %i", character);
 			}
 		}
-		
-		mvaddch(1, 1, running_animation[running_animation_iterator++]);
-		running_animation_iterator %= 4;
-		move(0, 0);
-		refresh();
+		gameplay_interpret();
+		graphics_main();
 		
 		if(core_running == 1)
 		{
