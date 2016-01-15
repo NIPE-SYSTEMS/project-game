@@ -8,7 +8,18 @@
 
 static int graphics_spinning_animation_counter = 0;
 
-void graphics_render_sprite(int pos_x, int pos_y, graphics_fields_sprites_t field, char transparency)
+/**
+ * This function renders a sprite at a given position. It also can handle
+ * transparency.
+ * 
+ * @param pos_x The X position.
+ * @param pos_y The Y position.
+ * @param index The index of the sprite.
+ * @param transparency 1 to enable transparency rendering, 0 to disable it. 0
+ *                     means that every new rendering will overwrite the
+ *                     existing characters.
+ */
+void graphics_render_sprite(int pos_x, int pos_y, graphics_fields_sprites_t index, char transparency)
 {
 	int x = 0;
 	int y = 0;
@@ -18,14 +29,18 @@ void graphics_render_sprite(int pos_x, int pos_y, graphics_fields_sprites_t fiel
 		for(x = 0; x < GRAPHICS_SPRITE_WIDTH; x++)
 		{
 			// if transparency == 1 then render only if character of sprite != ' '
-			if(transparency == 0 || (transparency == 1 && graphics_sprites[field][y][x] != ' '))
+			if(transparency == 0 || (transparency == 1 && graphics_sprites[index][y][x] != ' '))
 			{
-				mvaddch(pos_y + y, pos_x + x, graphics_sprites[field][y][x]);
+				mvaddch(pos_y + y, pos_x + x, graphics_sprites[index][y][x]);
 			}
 		}
 	}
 }
 
+/**
+ * This function handles everything of the rendering. It will render the user
+ * interface by interpreting the field of the gameplay module.
+ */
 void graphics_main(void)
 {
 	int x = 0;
