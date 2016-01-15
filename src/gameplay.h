@@ -7,7 +7,6 @@
 #define GAMEPLAY_MOVE_COOLDOWN 5
 #define GAMEPLAY_FIRE_TIME 10
 
-
 typedef enum field_type_t
 {
 	WALL = 0,
