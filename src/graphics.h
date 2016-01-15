@@ -18,7 +18,7 @@ typedef enum graphics_fields_sprites_e
 	EXPLOSION_SPRITE
 } graphics_fields_sprites_t;
 
-int graphics_create_field();
+int graphics_create_field(int pos_x, int pos_y, int field);
 int graphics_main(void);
 
 #endif /* __GRAPHICS_H__ */

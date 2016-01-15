@@ -5,155 +5,155 @@
 #include "gameplay.h"
 #include "core.h"
 
+static gameplay_field_t gameplay_field[GAMEPLAY_FIELD_WIDTH * GAMEPLAY_FIELD_HEIGHT];
+static gameplay_player_t gameplay_player;
+static gameplay_keys_t gameplay_keys;
 
 /**
  * This function fills the field array before the game starts with all 
  * neccesary informations.
  */
-void gameplay_field_init()
+void gameplay_field_init(void)
 {
-	int h = 0;
-	int w = 0;
+	int y = 0;
+	int x = 0;
 	/*
-	while(h < GAMEPLAY_FIELD_HEIGHT)
+	while(y < GAMEPLAY_FIELD_HEIGHT)
 	{
-		w = 0;
-		while(w < GAMEPLAY_FIELD_WIDTH)
+		x = 0;
+		while(x < GAMEPLAY_FIELD_WIDTH)
 		{
-			if (h == 0 || w == 0 || h == GAMEPLAY_FIELD_HEIGHT - 1 || w == GAMEPLAY_FIELD_WIDTH - 1)
+			if (y == 0 || x == 0 || y == GAMEPLAY_FIELD_HEIGHT - 1 || x == GAMEPLAY_FIELD_WIDTH - 1)
 			{
-				gameplay_field[h][w].type = 0;//WALL;
-				gameplay_field[h][w].player = 0;
-				gameplay_field[h][w].explosion = 0;
-				gameplay_field[h][w].bomb = 0;
-				gameplay_field[h][w].item = 0;
-				gameplay_field[h][w].timing = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].type = 0;//WALL;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].player = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing = 0;
 			}
-			else if((h == 1 && w == 2) || (h == 2 && w == 1) || (h == 1 && w == GAMEPLAY_FIELD_WIDTH - 3) || (h == 1 && w == GAMEPLAY_FIELD_WIDTH - 2) || (h == 2 && w == GAMEPLAY_FIELD_WIDTH - 2) || (h == GAMEPLAY_FIELD_HEIGHT - 2 && w == GAMEPLAY_FIELD_WIDTH - 3) || (h == GAMEPLAY_FIELD_HEIGHT - 3 && w == GAMEPLAY_FIELD_WIDTH - 2) || (h == GAMEPLAY_FIELD_HEIGHT - 2 && w == GAMEPLAY_FIELD_WIDTH - 2) || (h == GAMEPLAY_FIELD_HEIGHT - 3 && w == 1) || (h == GAMEPLAY_FIELD_HEIGHT - 2 && w == 1) || (h == GAMEPLAY_FIELD_HEIGHT - 2 && w == 2))
+			else if((y == 1 && x == 2) || (y == 2 && x == 1) || (y == 1 && x == GAMEPLAY_FIELD_WIDTH - 3) || (y == 1 && x == GAMEPLAY_FIELD_WIDTH - 2) || (y == 2 && x == GAMEPLAY_FIELD_WIDTH - 2) || (y == GAMEPLAY_FIELD_HEIGHT - 2 && x == GAMEPLAY_FIELD_WIDTH - 3) || (y == GAMEPLAY_FIELD_HEIGHT - 3 && x == GAMEPLAY_FIELD_WIDTH - 2) || (y == GAMEPLAY_FIELD_HEIGHT - 2 && x == GAMEPLAY_FIELD_WIDTH - 2) || (y == GAMEPLAY_FIELD_HEIGHT - 3 && x == 1) || (y == GAMEPLAY_FIELD_HEIGHT - 2 && x == 1) || (y == GAMEPLAY_FIELD_HEIGHT - 2 && x == 2))
 			{
-				gameplay_field[h][w].type = 2; //FLOOR;
-				gameplay_field[h][w].player = 0;
-				gameplay_field[h][w].explosion = 0;
-				gameplay_field[h][w].bomb = 0;
-				gameplay_field[h][w].item = 0;
-				gameplay_field[h][w].timing = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].type = 2; //FLOOR;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].player = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing = 0;
 			}
-			else if((h == 1 && w == 1))
+			else if((y == 1 && x == 1))
 			{
-				gameplay_field[h][w].type = 2; //FLOOR;
-				gameplay_field[h][w].player = 1;
-				gameplay_field[h][w].explosion = 0;
-				gameplay_field[h][w].bomb = 0;
-				gameplay_field[h][w].item = 0;
-				gameplay_field[h][w].timing = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].type = 2; //FLOOR;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].player = 1;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing = 0;
 			}
-			else if(h%2 == 0)
+			else if(y%2 == 0)
 			{
-				gameplay_field[h][w].type = 1; //DESTRUCTIVE;
-				gameplay_field[h][w].player = 0;
-				gameplay_field[h][w].explosion = 0;
-				gameplay_field[h][w].bomb = 0;
-				gameplay_field[h][w].item = 0;
-				gameplay_field[h][w].timing = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].type = 1; //DESTRUCTIVE;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].player = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing = 0;
 			}
-			else if(h%2 == 1)
+			else if(y%2 == 1)
 			{
-				if(w%2 == 0)
+				if(x%2 == 0)
 				{
-					gameplay_field[h][w].type = 0; //DESTRUCTIVE;
-					gameplay_field[h][w].player = 0;
-					gameplay_field[h][w].explosion = 0;
-					gameplay_field[h][w].bomb = 0;
-					gameplay_field[h][w].item = 0;
-					gameplay_field[h][w].timing = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].type = 0; //DESTRUCTIVE;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].player = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing = 0;
 				}
-				else if (w % 2 != 0)
+				else if (x % 2 != 0)
 				{
-					gameplay_field[h][w].type = 1; //WALL;
-					gameplay_field[h][w].player = 0;
-					gameplay_field[h][w].explosion = 0;
-					gameplay_field[h][w].bomb = 0;
-					gameplay_field[h][w].item = 0;
-					gameplay_field[h][w].timing = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].type = 1; //WALL;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].player = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing = 0;
 				}
 			}
 
-			w++;
+			x++;
 		}
-		h++;
+		y++;
 	}
 	*/
-	while(h < GAMEPLAY_FIELD_HEIGHT)
+	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
 	{
-		w = 0;
-		while(w < GAMEPLAY_FIELD_WIDTH)
+		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
 		{
-			if (h == 0 || w == 0 || h == GAMEPLAY_FIELD_HEIGHT - 1 || w == GAMEPLAY_FIELD_WIDTH - 1)
+			if (y == 0 || x == 0 || y == GAMEPLAY_FIELD_HEIGHT - 1 || x == GAMEPLAY_FIELD_WIDTH - 1)
 			{
-				gameplay_field[h][w].type = WALL;
-				gameplay_field[h][w].player = 0;
-				gameplay_field[h][w].explosion = 0;
-				gameplay_field[h][w].bomb = 0;
-				gameplay_field[h][w].item = 0;
-				gameplay_field[h][w].timing = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].type = WALL;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].player = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing = 0;
 			}
-			else if((h == 1 && w == 2) || (h == 2 && w == 1) || (h == 1 && w == GAMEPLAY_FIELD_WIDTH - 3) || (h == 1 && w == GAMEPLAY_FIELD_WIDTH - 2) || (h == 2 && w == GAMEPLAY_FIELD_WIDTH - 2) || (h == GAMEPLAY_FIELD_HEIGHT - 2 && w == GAMEPLAY_FIELD_WIDTH - 3) || (h == GAMEPLAY_FIELD_HEIGHT - 3 && w == GAMEPLAY_FIELD_WIDTH - 2) || (h == GAMEPLAY_FIELD_HEIGHT - 2 && w == GAMEPLAY_FIELD_WIDTH - 2) || (h == GAMEPLAY_FIELD_HEIGHT - 3 && w == 1) || (h == GAMEPLAY_FIELD_HEIGHT - 2 && w == 1) || (h == GAMEPLAY_FIELD_HEIGHT - 2 && w == 2))
+			else if((y == 1 && x == 2) || (y == 2 && x == 1) || (y == 1 && x == GAMEPLAY_FIELD_WIDTH - 3) || (y == 1 && x == GAMEPLAY_FIELD_WIDTH - 2) || (y == 2 && x == GAMEPLAY_FIELD_WIDTH - 2) || (y == GAMEPLAY_FIELD_HEIGHT - 2 && x == GAMEPLAY_FIELD_WIDTH - 3) || (y == GAMEPLAY_FIELD_HEIGHT - 3 && x == GAMEPLAY_FIELD_WIDTH - 2) || (y == GAMEPLAY_FIELD_HEIGHT - 2 && x == GAMEPLAY_FIELD_WIDTH - 2) || (y == GAMEPLAY_FIELD_HEIGHT - 3 && x == 1) || (y == GAMEPLAY_FIELD_HEIGHT - 2 && x == 1) || (y == GAMEPLAY_FIELD_HEIGHT - 2 && x == 2))
 			{
-				gameplay_field[h][w].type = FLOOR;
-				gameplay_field[h][w].player = 0;
-				gameplay_field[h][w].explosion = 0;
-				gameplay_field[h][w].bomb = 0;
-				gameplay_field[h][w].item = 0;
-				gameplay_field[h][w].timing = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].type = FLOOR;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].player = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing = 0;
 			}
-			else if((h == 1 && w == 1))
+			else if((y == 1 && x == 1))
 			{
-				gameplay_field[h][w].type = FLOOR;
-				gameplay_field[h][w].player = 1;
-				gameplay_field[h][w].explosion = 0;
-				gameplay_field[h][w].bomb = 0;
-				gameplay_field[h][w].item = 0;
-				gameplay_field[h][w].timing = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].type = FLOOR;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].player = 1;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing = 0;
 			}
-			else if(h%2 == 0 && w%2 == 0)
+			else if(y%2 == 0 && x%2 == 0)
 			{
-				gameplay_field[h][w].type = WALL;
-				gameplay_field[h][w].player = 0;
-				gameplay_field[h][w].explosion = 0;
-				gameplay_field[h][w].bomb = 0;
-				gameplay_field[h][w].item = 0;
-				gameplay_field[h][w].timing = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].type = WALL;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].player = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing = 0;
 			}
 			else
 			{
 				
 				
-				gameplay_field[h][w].type = DESTRUCTIVE;
-				gameplay_field[h][w].player = 0;
-				gameplay_field[h][w].explosion = 0;
-				gameplay_field[h][w].bomb = 0;
-				gameplay_field[h][w].item = 0;
-				gameplay_field[h][w].timing = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].type = DESTRUCTIVE;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].player = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item = 0;
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing = 0;
 				
-				/*else if (w % 2 == 1)
+				/*else if (x % 2 == 1)
 				{
-					gameplay_field[h][w].type = DESTRUCTIVE;
-					gameplay_field[h][w].player = 0;
-					gameplay_field[h][w].explosion = 0;
-					gameplay_field[h][w].bomb = 0;
-					gameplay_field[h][w].item = 0;
-					gameplay_field[h][w].timing = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].type = DESTRUCTIVE;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].player = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing = 0;
 				}*/
 			}
-			w++;
 		}
-		h++;
 	}
 	
 	gameplay_player.health_points = 3;
 	gameplay_player.movement_cooldown = 10;
-	gameplay_player.position_height = 1;
-	gameplay_player.position_width = 1;
+	gameplay_player.position_y = 1;
+	gameplay_player.position_x = 1;
 	gameplay_player.placeable_bombs = 50; // normal is 1
 	gameplay_player.placed_bombs = 0;
 	gameplay_player.item = EMPTY;
@@ -166,7 +166,7 @@ void gameplay_field_init()
  * This function resets the gameplay_keys struct after one main loop for 
  * savings in the next round.
  */
-void gameplay_key_reset()
+void gameplay_key_reset(void)
 {
 	gameplay_keys.key_w = 0;
 	gameplay_keys.key_a = 0;
@@ -215,18 +215,18 @@ void gameplay_key(char gameplay_pressed_key)
  * This function checks the possibility to move the player one field up, if 
  * this is possible it does it.
  */
-void gameplay_test_move_up()
+void gameplay_test_move_up(void)
 {
 	if (gameplay_keys.key_w == 0 || gameplay_player.movement_cooldown != 0)
 	{
 		return;
 	}
-	else if(gameplay_keys.key_w == 1 && gameplay_field[gameplay_player.position_height - 1][gameplay_player.position_width].type == FLOOR && gameplay_field[gameplay_player.position_height - 1][gameplay_player.position_width].bomb == 0)
+	else if(gameplay_keys.key_w == 1 && gameplay_field[(gameplay_player.position_y - 1) * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].type == FLOOR && gameplay_field[(gameplay_player.position_y - 1) * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].bomb == 0)
 	{
-		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 0;
-		gameplay_player.position_height--;
+		gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].player = 0;
+		gameplay_player.position_y--;
 		gameplay_player.movement_cooldown = GAMEPLAY_MOVE_COOLDOWN;
-		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 1;
+		gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].player = 1;
 	}
 	return;
 }
@@ -235,18 +235,18 @@ void gameplay_test_move_up()
  * This function checks the possibility to move the player one field left, if 
  * this is possible it does it.
  */
-void gameplay_test_move_left()
+void gameplay_test_move_left(void)
 {
 	if (gameplay_keys.key_a == 0 || gameplay_player.movement_cooldown != 0)
 	{
 		return;
 	}
-	else if(gameplay_keys.key_a == 1 && gameplay_field[gameplay_player.position_height][gameplay_player.position_width - 1].type == FLOOR && gameplay_field[gameplay_player.position_height][gameplay_player.position_width - 1].bomb == 0)
+	else if(gameplay_keys.key_a == 1 && gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + (gameplay_player.position_x - 1)].type == FLOOR && gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + (gameplay_player.position_x - 1)].bomb == 0)
 	{
-		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 0;
-		gameplay_player.position_width--;
+		gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].player = 0;
+		gameplay_player.position_x--;
 		gameplay_player.movement_cooldown = GAMEPLAY_MOVE_COOLDOWN;
-		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 1;
+		gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].player = 1;
 	}
 	return;
 }
@@ -255,19 +255,19 @@ void gameplay_test_move_left()
  * This function checks the possibility to move the player one field down, if 
  * this is possible it does it.
  */
-void gameplay_test_move_down()
+void gameplay_test_move_down(void)
 {
 	if (gameplay_keys.key_s == 0 || gameplay_player.movement_cooldown != 0)
 	{
 		return;
 	}
-	else if(gameplay_keys.key_s == 1 && gameplay_field[gameplay_player.position_height + 1][gameplay_player.position_width].type == FLOOR && gameplay_field[gameplay_player.position_height + 1][gameplay_player.position_width].bomb == 0)
+	else if(gameplay_keys.key_s == 1 && gameplay_field[(gameplay_player.position_y + 1) * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].type == FLOOR && gameplay_field[(gameplay_player.position_y + 1) * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].bomb == 0)
 	{
 		
-		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 0;
-		gameplay_player.position_height++;
+		gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].player = 0;
+		gameplay_player.position_y++;
 		gameplay_player.movement_cooldown = GAMEPLAY_MOVE_COOLDOWN;
-		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 1;
+		gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].player = 1;
 	}
 	return;
 }
@@ -276,32 +276,32 @@ void gameplay_test_move_down()
  * This function checks the possibility to move the player one field right, if 
  * this is possible it does it.
  */
-void gameplay_test_move_right()
+void gameplay_test_move_right(void)
 {
 	if (gameplay_keys.key_d == 0 || gameplay_player.movement_cooldown != 0)
 	{
 		return;
 	}
-	else if(gameplay_keys.key_d == 1 && gameplay_field[gameplay_player.position_height][gameplay_player.position_width + 1].type == FLOOR && gameplay_field[gameplay_player.position_height][gameplay_player.position_width + 1].bomb == 0)
+	else if(gameplay_keys.key_d == 1 && gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + (gameplay_player.position_x + 1)].type == FLOOR && gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + (gameplay_player.position_x + 1)].bomb == 0)
 	{
-		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 0;
-		gameplay_player.position_width++;
+		gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].player = 0;
+		gameplay_player.position_x++;
 		gameplay_player.movement_cooldown = GAMEPLAY_MOVE_COOLDOWN;
-		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].player = 1;
+		gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].player = 1;
 	}
 	return;
 }
 
-void gameplay_test_place_bomb()
+void gameplay_test_place_bomb(void)
 {
 	if (gameplay_keys.key_space == 0 || (gameplay_player.placeable_bombs - gameplay_player.placed_bombs) == 0)
 	{
 		return;
 	}
-	else if(gameplay_keys.key_space == 1 && gameplay_field[gameplay_player.position_height][gameplay_player.position_width].bomb == 0)
+	else if(gameplay_keys.key_space == 1 && gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].bomb == 0)
 	{
-		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].bomb = 1;
-		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].timing = 50;
+		gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].bomb = 1;
+		gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].timing = 50;
 		gameplay_player.placed_bombs++;
 	}
 }
@@ -309,7 +309,7 @@ void gameplay_test_place_bomb()
 /**
  * This function interprets the pressed buttons and do the following actions.
  */
-void gameplay_interpret()
+void gameplay_interpret(void)
 {
 	gameplay_test_move_up();
 	gameplay_test_move_left();
@@ -324,7 +324,7 @@ void gameplay_interpret()
 /**
  * This function changes roundly changed values like item timers.
  */
-void gameplay_buffer()
+void gameplay_buffer(void)
 {
 	if (gameplay_player.movement_cooldown != 0)
 	{
@@ -342,39 +342,40 @@ void gameplay_buffer()
 	{
 		gameplay_player.damage_cooldown--;
 	}
-	int h = 0;
-	int w = 0;
-	while(h < GAMEPLAY_FIELD_HEIGHT)
+	
+	int y = 0;
+	int x = 0;
+	while(y < GAMEPLAY_FIELD_HEIGHT)
 	{
-		w = 0;
-		while(w < GAMEPLAY_FIELD_WIDTH)
+		x = 0;
+		while(x < GAMEPLAY_FIELD_WIDTH)
 		{
-			if(gameplay_field[h][w].bomb == 1)
+			if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb == 1)
 			{
-				gameplay_field[h][w].timing--;
-				if(gameplay_field[h][w].timing == 0)
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing--;
+				if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing == 0)
 				{
-					gameplay_field[h][w].bomb = 0;
-					gameplay_explosion(h,w);
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].bomb = 0;
+					gameplay_explosion(y,x);
 				}
 			}
-			else if(gameplay_field[h][w].item == 1)
+			else if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item == 1)
 			{
-				gameplay_field[h][w].timing--;
-				if(gameplay_field[h][w].timing == 0)
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing--;
+				if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing == 0)
 				{
-					gameplay_field[h][w].item = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].item = 0;
 				}
 			}
-			else if(gameplay_field[h][w].explosion == 1)
+			else if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion == 1)
 			{
-				gameplay_field[h][w].timing--;
-				if(gameplay_field[h][w].timing == 0)
+				gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing--;
+				if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].timing == 0)
 				{
-					gameplay_field[h][w].explosion = 0;
+					gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion = 0;
 				}
 			}
-			if(gameplay_field[h][w].explosion == 1 && gameplay_field[h][w].player == 1 && gameplay_player.damage_cooldown == 0)
+			if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].explosion == 1 && gameplay_field[y * GAMEPLAY_FIELD_WIDTH + x].player == 1 && gameplay_player.damage_cooldown == 0)
 			{
 				gameplay_player.health_points--;
 				gameplay_player.damage_cooldown = 20;
@@ -383,191 +384,208 @@ void gameplay_buffer()
 					//game_over();
 				}
 			}
-			w++;
+			x++;
 		}
-		h++;
+		y++;
 	}
 	return;
 }
 
-void gameplay_test_item_pick_up()
+void gameplay_test_item_pick_up(void)
 {
 	if(gameplay_keys.key_f == 0)
 	{
 		return;
 	}
-	else if(gameplay_keys.key_f == 1 && gameplay_field[gameplay_player.position_height][gameplay_player.position_width].item != EMPTY)
+	else if(gameplay_keys.key_f == 1 && gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].item != EMPTY)
 	{
-		gameplay_player.item = gameplay_field[gameplay_player.position_height][gameplay_player.position_width].item;
-		gameplay_field[gameplay_player.position_height][gameplay_player.position_width].item = EMPTY;
+		gameplay_player.item = gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].item;
+		gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].item = EMPTY;
 		gameplay_use_item();
 	}
 	return;
 }
 
-void gameplay_use_item()
+void gameplay_use_item(void)
 {
-	if(gameplay_player.item == EMPTY)
+	switch(gameplay_player.item)
 	{
-		return;
+		case EMPTY:
+		{
+			return;
+			break;
+		}
+		case HEALTH:
+		{
+			gameplay_player.health_points++;
+			gameplay_player.item = EMPTY;
+			break;
+		}
+		case EXTRA_BOMB:
+		{
+			gameplay_player.placeable_bombs++;
+			gameplay_player.item = EMPTY;
+			break;
+		}
+		case SPEED:
+		{
+			gameplay_player.movement_cooldown--;
+			gameplay_player.item = EMPTY;
+			break;
+		}
+		case SHIELD:
+		{
+			gameplay_player.damage_cooldown = 100;
+			gameplay_player.item = EMPTY;
+			break;
+		}
 	}
-	else if(gameplay_player.item == HEALTH)
-	{
-		gameplay_player.health_points++;
-		gameplay_player.item = EMPTY;
-	}
-	else if(gameplay_player.item == EXTRA_BOMB)
-	{
-		gameplay_player.placeable_bombs++;
-		gameplay_player.item = EMPTY;
-	}
-	else if(gameplay_player.item == SPEED)
-	{
-		gameplay_player.movement_cooldown--;
-		gameplay_player.item = EMPTY;
-	}
-	else if(gameplay_player.item == SHIELD)
-	{
-		gameplay_player.damage_cooldown = 100;
-		gameplay_player.item = EMPTY;
-	}
-	return;
 }
 
 /**
  * This function simulates a explosion by a bomb.
  */
-void gameplay_explosion(int height, int width)
+void gameplay_explosion(int y, int x)
 {
 	int running;
-	running = height;
+	running = y;
 	while(running > 0)
 	{
-		if(gameplay_field[running][width].type == WALL)
+		if(gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].type == WALL)
 		{
 			break;
 		}
-		else if(gameplay_field[running][width].type == DESTRUCTIVE)
+		else if(gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].type == DESTRUCTIVE)
 		{
-			gameplay_field[running][width].type = FLOOR;
-			gameplay_field[running][width].explosion = 1;
-			gameplay_field[running][width].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].type = FLOOR;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].explosion = 1;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].timing = GAMEPLAY_FIRE_TIME;
 			
 			//Random Drops!!!
 			
 			break;
 		}
-		else if(gameplay_field[running][width].item != EMPTY)
+		else if(gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].item != EMPTY)
 		{
-			gameplay_field[running][width].item = EMPTY;
-			gameplay_field[running][width].explosion = 1;
-			gameplay_field[running][width].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].item = EMPTY;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].explosion = 1;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].timing = GAMEPLAY_FIRE_TIME;
 			break;
 		}
-		else if(gameplay_field[running][width].type == FLOOR)
+		else if(gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].type == FLOOR)
 		{
-			gameplay_field[running][width].explosion = 1;
-			gameplay_field[running][width].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].explosion = 1;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].timing = GAMEPLAY_FIRE_TIME;
 		}
 		running--;
 	}
 	
-	running = height;
+	running = y;
 	while(running < GAMEPLAY_FIELD_HEIGHT)
 	{
-		if(gameplay_field[running][width].type == WALL)
+		if(gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].type == WALL)
 		{
 			break;
 		}
-		else if(gameplay_field[running][width].type == DESTRUCTIVE)
+		else if(gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].type == DESTRUCTIVE)
 		{
-			gameplay_field[running][width].type = FLOOR;
-			gameplay_field[running][width].explosion = 1;
-			gameplay_field[running][width].timing = GAMEPLAY_FIRE_TIME;
-			gameplay_field[running][width].item = 6;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].type = FLOOR;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].explosion = 1;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].item = 6;
 			//Random Drops!!!
 			
 			break;
 		}
-		else if(gameplay_field[running][width].item != EMPTY)
+		else if(gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].item != EMPTY)
 		{
-			gameplay_field[running][width].item = EMPTY;
-			gameplay_field[running][width].explosion = 1;
-			gameplay_field[running][width].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].item = EMPTY;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].explosion = 1;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].timing = GAMEPLAY_FIRE_TIME;
 			break;
 		}
-		else if(gameplay_field[running][width].type == FLOOR)
+		else if(gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].type == FLOOR)
 		{
-			gameplay_field[running][width].explosion = 1;
-			gameplay_field[running][width].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].explosion = 1;
+			gameplay_field[running * GAMEPLAY_FIELD_WIDTH + x].timing = GAMEPLAY_FIRE_TIME;
 		}
 		running++;
 	}
 	
-	running = width;
+	running = x;
 	while(running > 0)
 	{
-		if(gameplay_field[height][running].type == WALL)
+		if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].type == WALL)
 		{
 			break;
 		}
-		else if(gameplay_field[height][running].type == DESTRUCTIVE)
+		else if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].type == DESTRUCTIVE)
 		{
-			gameplay_field[height][running].type = FLOOR;
-			gameplay_field[height][running].explosion = 1;
-			gameplay_field[height][running].timing = GAMEPLAY_FIRE_TIME;
-			gameplay_field[height][running].item = 11;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].type = FLOOR;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].explosion = 1;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].item = 11;
 			//Random Drops!!!
 			
 			break;
 		}
-		else if(gameplay_field[height][running].item != EMPTY)
+		else if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].item != EMPTY)
 		{
-			gameplay_field[height][running].item = EMPTY;
-			gameplay_field[height][running].explosion = 1;
-			gameplay_field[height][running].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].item = EMPTY;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].explosion = 1;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].timing = GAMEPLAY_FIRE_TIME;
 			break;
 		}
-		else if(gameplay_field[height][running].type == FLOOR)
+		else if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].type == FLOOR)
 		{
-			gameplay_field[height][running].explosion = 1;
-			gameplay_field[height][running].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].explosion = 1;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].timing = GAMEPLAY_FIRE_TIME;
 		}
 		running--;
 	}
 	
-	running = width;
+	running = x;
 	while(running < GAMEPLAY_FIELD_WIDTH)
 	{
-		if(gameplay_field[height][running].type == WALL)
+		if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].type == WALL)
 		{
 			break;
 		}
-		else if(gameplay_field[height][running].type == DESTRUCTIVE)
+		else if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].type == DESTRUCTIVE)
 		{
-			gameplay_field[height][running].type = FLOOR;
-			gameplay_field[height][running].explosion = 1;
-			gameplay_field[height][running].timing = GAMEPLAY_FIRE_TIME;
-			gameplay_field[height][running].item = 8;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].type = FLOOR;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].explosion = 1;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].item = 8;
 			//Random Drops!!!
 			
 			break;
 		}
-		else if(gameplay_field[height][running].item != EMPTY)
+		else if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].item != EMPTY)
 		{
-			gameplay_field[height][running].item = EMPTY;
-			gameplay_field[height][running].explosion = 1;
-			gameplay_field[height][running].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].item = EMPTY;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].explosion = 1;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].timing = GAMEPLAY_FIRE_TIME;
 			break;
 		}
-		else if(gameplay_field[height][running].type == FLOOR)
+		else if(gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].type == FLOOR)
 		{
-			gameplay_field[height][running].explosion = 1;
-			gameplay_field[height][running].timing = GAMEPLAY_FIRE_TIME;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].explosion = 1;
+			gameplay_field[y * GAMEPLAY_FIELD_WIDTH + running].timing = GAMEPLAY_FIRE_TIME;
 		}
 		running++;
 	}
 	return;
+}
+
+gameplay_field_t *gameplay_get_field(void)
+{
+	return gameplay_field;
+}
+
+gameplay_player_t *gameplay_get_player(void)
+{
+	return &gameplay_player;
 }
 
 /*

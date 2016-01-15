@@ -38,8 +38,8 @@ typedef struct gameplay_player_t
 {
 	int health_points;
 	int movement_cooldown;
-	int position_height;
-	int position_width;
+	int position_y;
+	int position_x;
 	int placeable_bombs;
 	int placed_bombs;
 	item_type_t item;
@@ -57,22 +57,20 @@ typedef struct gameplay_keys_t
 	int key_f;
 } gameplay_keys_t;
 
-gameplay_field_t gameplay_field[GAMEPLAY_FIELD_HEIGHT][GAMEPLAY_FIELD_WIDTH];
-gameplay_player_t gameplay_player;
-gameplay_keys_t gameplay_keys;
-
-void gameplay_field_init();
-void gameplay_key_reset();
+void gameplay_field_init(void);
+void gameplay_key_reset(void);
 void gameplay_key(char gameplay_pressed_button);
-void gameplay_interpret();
-void gameplay_test_move_up();
-void gameplay_test_move_down();
-void gameplay_test_move_left();
-void gameplay_test_move_right();
-void gameplay_test_place_bomb();
-void gameplay_buffer();
-void gameplay_test_item_pick_up();
-void gameplay_use_item();
+void gameplay_interpret(void);
+void gameplay_test_move_up(void);
+void gameplay_test_move_down(void);
+void gameplay_test_move_left(void);
+void gameplay_test_move_right(void);
+void gameplay_test_place_bomb(void);
+void gameplay_buffer(void);
+void gameplay_test_item_pick_up(void);
+void gameplay_use_item(void);
 void gameplay_explosion(int height, int width);
+gameplay_field_t *gameplay_get_field(void);
+gameplay_player_t *gameplay_get_player(void);
 
 #endif /* __GAMEPLAY_H__ */
