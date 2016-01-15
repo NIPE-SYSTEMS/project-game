@@ -15,7 +15,9 @@ typedef enum graphics_fields_sprites_e
 	SNEAKER_SPRITE,
 	UP_SPRITE,
 	SHIELD_SPRITE,
-	EXPLOSION_SPRITE
+	EXPLOSION_SPRITE,
+	EXPLOSION_SPRITE_2,
+	PLAYER_STANDING_SPRITE
 } graphics_fields_sprites_t;
 
 int graphics_create_field(int pos_x, int pos_y, int field);

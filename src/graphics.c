@@ -7,7 +7,7 @@
 
 static char loading_symbol[4] = {'/','-','\\','|'};
 
-static char fields[14][3][5]= {
+static char fields[15][3][5]= {
 	
 	//Undestroyable field = 0
 	{
@@ -92,6 +92,12 @@ static char fields[14][3][5]= {
 		{'/','\\',' ','/','\\'},
 		{'|',' ', 'V', ' ', '|'},
 		{'\\','#','#','#', '/'}
+	},
+		//Player_Standing = 14
+	{
+		{' ',' ','O',' ',' '},
+		{' ','/','|','\\',' '},
+		{' ','|',' ','|',' '}
 	}
 };
 ///Note: Explosions are missing!
@@ -126,30 +132,31 @@ int graphics_main(void)
 	gameplay_field_t *gameplay_field = gameplay_get_field();
 	gameplay_player_t *gameplay_player = gameplay_get_player();
 	
-	for(graphics_fieldpos_y = 0; graphics_fieldpos_y < fieldsize_y; graphics_fieldpos_y++)
+	for(graphics_fieldpos_x = 0; graphics_fieldpos_x < fieldsize_x; graphics_fieldpos_x++)
 	{
-		for(graphics_fieldpos_x = 0; graphics_fieldpos_x < fieldsize_x; graphics_fieldpos_x++)
+		for(graphics_fieldpos_y = 0; graphics_fieldpos_y < fieldsize_y; graphics_fieldpos_y++)
 		{
 			//Creates Field
-			graphics_create_field((graphics_fieldpos_x*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_y*graphics_offset_y)+graphics_offset_y-spritesize_x, gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_x].type);
+			graphics_create_field((graphics_fieldpos_y*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_x*graphics_offset_y)+graphics_offset_y-spritesize_x, gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_x].type);
 			
 			
 			//creates Item
 			if(gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_x].item != 0)
 			{
-				graphics_create_field((graphics_fieldpos_x*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_y*graphics_offset_y)+graphics_offset_y-spritesize_x, gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_x].item);
+				graphics_create_field((graphics_fieldpos_y*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_x*graphics_offset_y)+graphics_offset_y-spritesize_x, gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_x].item);
 			}
 			
 			//creates Fire
 			if(gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_x].explosion == 1)
 			{
-				graphics_create_field((graphics_fieldpos_x*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_y*graphics_offset_y)+graphics_offset_y-spritesize_x, EXPLOSION_SPRITE + animation_counter% 2);
+				graphics_create_field((graphics_fieldpos_y*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_x*graphics_offset_y)+graphics_offset_y-spritesize_x, EXPLOSION_SPRITE + animation_counter% 2);
 			}
+			
 			
 			//creates Bomb
 			if(gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_x].bomb == 1)
 			{
-				graphics_create_field((graphics_fieldpos_x*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_y*graphics_offset_y)+graphics_offset_y-spritesize_x, BOMB_SPRITE);
+				graphics_create_field((graphics_fieldpos_y*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_x*graphics_offset_y)+graphics_offset_y-spritesize_x, BOMB_SPRITE);
 			}
 			
 		}
@@ -172,10 +179,17 @@ int graphics_main(void)
 	{
 		for (b = 0; b < spritesize_x; b++)
 		{
-				if(fields[PLAYER_SPRITE][i][b] != ' ') //Shows underground of the tile the player stands on. 
+			if(fields[PLAYER_SPRITE][i][b] != ' ') //Shows underground of the tile the player stands on. 
+			{
+				if(gameplay_player->movement_cooldown > 1)
 				{
 					mvaddch((gameplay_player->position_y * graphics_offset_x)+graphics_offset_x-spritesize_y+i, (gameplay_player->position_x * graphics_offset_y)+graphics_offset_y-spritesize_x+b, fields[PLAYER_SPRITE][i][b]);
 				}
+				else
+				{
+					mvaddch((gameplay_player->position_y * graphics_offset_x)+graphics_offset_x-spritesize_y+i, (gameplay_player->position_x * graphics_offset_y)+graphics_offset_y-spritesize_x+b, fields[PLAYER_STANDING_SPRITE][i][b]);
+				}
+			}
 		}
 	}
 	
@@ -190,8 +204,69 @@ int graphics_main(void)
 	{
 		graphics_create_field(22,82, gameplay_player->item);
 	}
+	
+	
 	move(0, 0);
 	refresh();
 	
 	return 0;
 }
+
+/*
+char logo[12][26] = 
+{
+{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', ' ' },
+{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', 'T' },
+{ ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
+{ ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
+{ ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ' },
+{ 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', ' ', ' ', ' ', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ' },
+{ 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', ' ', ' ', ' ', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ' },
+{ 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ' },
+{ 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ' },
+{ ' ', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ' },
+{ ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
+{ ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }
+};
+
+char Text[20][120] = 
+{
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', I' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', I' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', 'T', 'T', 'T', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', 'T', 'T', 'T', 'T', 'T', 'T', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', 'T', 'T', 'T', 'T', 'T', 'T', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', ' ', ' ', 'T', 'T', 'T', 'T', ' ', ' ', ' ', 'T', 'T', 'T', 'T', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
+};
+
+int i = 0;
+	int b = 0;
+	for(i = 0; i < 20; i++)
+	{
+		for(b = 0; b < 120; b++)
+		{
+			mvaddch(10+i, 10+b, logo[i][b]);
+		}
+	}
+	
+	for(i = 0; i < 12; i++)
+	{
+		for(b = 0; b < 26; b++)
+		{
+			mvaddch(10+i, 50+b, Text[i][b]);
+		}
+	}
+*/
