@@ -126,28 +126,28 @@ int graphics_main(void)
 	gameplay_field_t *gameplay_field = gameplay_get_field();
 	gameplay_player_t *gameplay_player = gameplay_get_player();
 	
-	for(graphics_fieldpos_x = 0; graphics_fieldpos_x < fieldsize_x; graphics_fieldpos_x++)
+	for(graphics_fieldpos_y = 0; graphics_fieldpos_y < fieldsize_y; graphics_fieldpos_y++)
 	{
-		for(graphics_fieldpos_y = 0; graphics_fieldpos_y < fieldsize_y; graphics_fieldpos_y++)
+		for(graphics_fieldpos_x = 0; graphics_fieldpos_x < fieldsize_x; graphics_fieldpos_x++)
 		{
 			//Creates Field
-			graphics_create_field((graphics_fieldpos_x*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_y*graphics_offset_y)+graphics_offset_y-spritesize_x, gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_y].type);
+			graphics_create_field((graphics_fieldpos_x*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_y*graphics_offset_y)+graphics_offset_y-spritesize_x, gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_x].type);
 			
 			
 			//creates Item
-			if(gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_y].item != 0)
+			if(gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_x].item != 0)
 			{
-				graphics_create_field((graphics_fieldpos_x*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_y*graphics_offset_y)+graphics_offset_y-spritesize_x, gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_y].item);
+				graphics_create_field((graphics_fieldpos_x*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_y*graphics_offset_y)+graphics_offset_y-spritesize_x, gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_x].item);
 			}
 			
 			//creates Fire
-			if(gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_y].explosion == 1)
+			if(gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_x].explosion == 1)
 			{
 				graphics_create_field((graphics_fieldpos_x*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_y*graphics_offset_y)+graphics_offset_y-spritesize_x, EXPLOSION_SPRITE + animation_counter% 2);
 			}
 			
 			//creates Bomb
-			if(gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_y].bomb == 1)
+			if(gameplay_field[graphics_fieldpos_y * GAMEPLAY_FIELD_WIDTH + graphics_fieldpos_x].bomb == 1)
 			{
 				graphics_create_field((graphics_fieldpos_x*graphics_offset_x)+graphics_offset_x-spritesize_y, (graphics_fieldpos_y*graphics_offset_y)+graphics_offset_y-spritesize_x, BOMB_SPRITE);
 			}
