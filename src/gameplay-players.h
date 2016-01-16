@@ -14,8 +14,9 @@ typedef enum gameplay_players_direction_e
 	GAMEPLAY_PLAYERS_DIRECTION_LEFT
 } gameplay_players_direction_t;
 
-void gameplay_players_player_add(int position_x, int position_y, gameplay_players_type_t type);
+void gameplay_players_add(int position_x, int position_y, gameplay_players_type_t type);
 void gameplay_players_cleanup(void);
+void gameplay_players_remove(int position_x, int position_y);
 void gameplay_players_update(void);
 gameplay_players_player_t *gameplay_players_get_user(void);
 void gameplay_players_move(gameplay_players_direction_t direction);

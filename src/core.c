@@ -20,7 +20,6 @@ static char core_running = 0;
 static FILE *core_file_debug = NULL;
 static FILE *core_file_error = NULL;
 
-
 /**
  * This function initializes everything. It initializes ncurses.
  */
@@ -85,6 +84,8 @@ void core_main(void)
  */
 void core_cleanup(void)
 {
+	gameplay_cleanup();
+	
 	endwin();
 	
 #ifdef DEBUG

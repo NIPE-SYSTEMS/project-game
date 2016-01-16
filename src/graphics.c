@@ -6,6 +6,7 @@
 #include "graphics-sprites.h"
 #include "gameplay.h"
 #include "gameplay-players.h"
+#include "gameplay-bombs.h"
 #include "core.h"
 
 static int graphics_spinning_animation_counter = 0;
@@ -55,6 +56,8 @@ void graphics_main(void)
 	int player_amount = 0;
 	gameplay_players_player_t *player = NULL;
 	gameplay_field_t *gameplay_field = NULL;
+	int bomb_amount = 0;
+	gameplay_bombs_bomb_t *bomb = NULL;
 	
 	gameplay_field = gameplay_get_field();
 	
@@ -66,11 +69,11 @@ void graphics_main(void)
 			render_x = (x * GRAPHICS_OFFSET_X) + GRAPHICS_OFFSET_X - GRAPHICS_SPRITE_WIDTH;
 			render_y = (y * GRAPHICS_OFFSET_Y) + GRAPHICS_OFFSET_Y - GRAPHICS_SPRITE_HEIGHT;
 			
-			if(gameplay_field[field_index].bomb == 1) // bomb
+			if(gameplay_bombs_get_bomb_placed(x, y) == 1) // bomb
 			{
 				graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_BOMB, 0);
 			}
-			else if(gameplay_field[field_index].explosion == 1) // fire
+			else if(gameplay_bombs_get_explosion(x, y) == 1) // fire
 			{
 				graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_EXPLOSION + graphics_spinning_animation_counter % 2, 0);
 			}
@@ -106,9 +109,20 @@ void graphics_main(void)
 	mvprintw(GRAPHICS_HEALTH_Y + 9, GRAPHICS_HEALTH_X + 4, "Item usage time: %i", player->item_usage_time);
 	mvprintw(GRAPHICS_HEALTH_Y + 10, GRAPHICS_HEALTH_X + 4, "Damage cooldown: %i", player->damage_cooldown);
 	
+	bomb_amount = gameplay_bombs_amount();
+	for(i = 0; i < bomb_amount; i++)
+	{
+		bomb = gameplay_bombs_get(i);
+		if(bomb == NULL)
+		{
+			continue;
+		}
+		
+		mvprintw(GRAPHICS_HEALTH_Y + 12 + i, GRAPHICS_HEALTH_X, "Bomb %i: %p at (%i, %i), %i, %i", i, bomb, bomb->position_x, bomb->position_y, bomb->explosion_timeout, bomb->fire_timeout);
+	}
+	
 	// players
 	player_amount = gameplay_players_amount();
-	
 	for(i = 0; i < player_amount; i++)
 	{
 		player = gameplay_players_get(i);

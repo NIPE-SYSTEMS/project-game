@@ -5,6 +5,7 @@
 
 #include "gameplay.h"
 #include "gameplay-players.h"
+#include "gameplay-bombs.h"
 #include "core.h"
 
 static gameplay_field_t gameplay_field[GAMEPLAY_FIELD_WIDTH * GAMEPLAY_FIELD_HEIGHT];
@@ -48,9 +49,6 @@ void gameplay_field_init(void)
 		GAMEPLAY_FIELD(gameplay_field, (GAMEPLAY_FIELD_WIDTH - 1), y).type = WALL;
 	}
 	
-	// move player
-	// GAMEPLAY_FIELD(gameplay_field, 1, 1).player = 1;
-	
 	// set walls in the inner field
 	for(y = 2; y < GAMEPLAY_FIELD_HEIGHT - 1; y += 2)
 	{
@@ -85,10 +83,16 @@ void gameplay_field_init(void)
 
 void gameplay_players_initialize(void)
 {
-	gameplay_players_player_add(1, 1, GAMEPLAY_PLAYERS_TYPE_USER);
-	gameplay_players_player_add(GAMEPLAY_FIELD_WIDTH - 2, 1, GAMEPLAY_PLAYERS_TYPE_AI);
-	gameplay_players_player_add(1, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
-	gameplay_players_player_add(GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
+	gameplay_players_add(1, 1, GAMEPLAY_PLAYERS_TYPE_USER);
+	gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, 1, GAMEPLAY_PLAYERS_TYPE_AI);
+	gameplay_players_add(1, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
+	gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
+}
+
+void gameplay_cleanup(void)
+{
+	gameplay_players_cleanup();
+	gameplay_bombs_cleanup();
 }
 
 int gameplay_get_walkable(int position_x, int position_y)
@@ -116,6 +120,15 @@ item_type_t gameplay_get_item(int position_x, int position_y)
 	GAMEPLAY_FIELD(gameplay_field, position_x, position_y).item = EMPTY;
 	
 	return item;
+}
+
+void gameplay_destroy(int position_x, int position_y)
+{
+	if(GAMEPLAY_FIELD(gameplay_field, position_x, position_y).type == DESTRUCTIVE)
+	{
+		GAMEPLAY_FIELD(gameplay_field, position_x, position_y).type = FLOOR;
+		GAMEPLAY_FIELD(gameplay_field, position_x, position_y).item = HEALTH;
+	}
 }
 
 /**
@@ -168,6 +181,7 @@ void gameplay_buffer(void)
 	int y = 0;
 	
 	gameplay_players_update();
+	gameplay_bombs_update();
 	
 	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
 	{

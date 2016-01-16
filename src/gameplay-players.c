@@ -1,12 +1,13 @@
 #include <stdlib.h>
 
 #include "gameplay-players.h"
+#include "gameplay-bombs.h"
 #include "gameplay.h"
 #include "core.h"
 
 gameplay_players_player_t *gameplay_players_players = NULL;
 
-void gameplay_players_player_add(int position_x, int position_y, gameplay_players_type_t type)
+void gameplay_players_add(int position_x, int position_y, gameplay_players_type_t type)
 {
 	gameplay_players_player_t *player = NULL;
 	
@@ -22,7 +23,7 @@ void gameplay_players_player_add(int position_x, int position_y, gameplay_player
 	player->movement_cooldown_initial = GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN;
 	player->position_x = position_x;
 	player->position_y = position_y;
-	player->placeable_bombs = 1;
+	player->placeable_bombs = 3;
 	player->placed_bombs = 0;
 	player->item = EMPTY;
 	player->item_usage_time = 0;
@@ -46,6 +47,47 @@ void gameplay_players_cleanup(void)
 	{
 		next_backup = current->next;
 		free(current);
+	}
+}
+
+void gameplay_players_remove(int position_x, int position_y)
+{
+	gameplay_players_player_t *current = NULL;
+	gameplay_players_player_t *next_backup = NULL;
+	
+	for(current = gameplay_players_players; current != NULL; current = current->next)
+	{
+		if(current->position_x == position_x && current->position_y == position_y)
+		{
+			break;
+		}
+	}
+	
+	// cancel if nothing found
+	if(current == NULL)
+	{
+		return;
+	}
+	
+	// list start
+	if(current == gameplay_players_players)
+	{
+		next_backup = current->next;
+		free(current);
+		gameplay_players_players = next_backup;
+		return;
+	}
+	
+	// rest of the list
+	for(current = gameplay_players_players; current->next != NULL; current = current->next)
+	{
+		if(current->next->position_x == position_x && current->next->position_y == position_y)
+		{
+			next_backup = current->next->next;
+			free(current->next);
+			current->next = next_backup;
+			break;
+		}
 	}
 }
 
@@ -100,8 +142,6 @@ gameplay_players_player_t *gameplay_players_get_user(void)
 void gameplay_players_move(gameplay_players_direction_t direction)
 {
 	gameplay_players_player_t *player = NULL;
-	// int position_source_x = 0;
-	// int position_source_y = 0;
 	int position_target_x = 0;
 	int position_target_y = 0;
 	
@@ -113,8 +153,6 @@ void gameplay_players_move(gameplay_players_direction_t direction)
 	}
 	
 	// calculate positions for testing
-	// position_source_x = player->position_x;
-	// position_source_y = player->position_y;
 	position_target_x = player->position_x;
 	position_target_y = player->position_y;
 	
@@ -143,7 +181,7 @@ void gameplay_players_move(gameplay_players_direction_t direction)
 	}
 	
 	// test if a bomb is placed on target tile
-	if(gameplay_get_bomb_placed(position_target_x, position_target_y))
+	if(gameplay_bombs_get_bomb_placed(position_target_x, position_target_y))
 	{
 		return;
 	}
@@ -216,8 +254,14 @@ void gameplay_players_place_bomb(void)
 		return;
 	}
 	
+	// only place one bomb on a tile
+	if(gameplay_bombs_get_bomb_placed(player->position_x, player->position_y) == 1)
+	{
+		return;
+	}
+	
 	core_debug("Placing bomb at (%i, %i)", player->position_x, player->position_y);
-	gameplay_place_bomb(player->position_x, player->position_y);
+	gameplay_bombs_add(player, player->position_x, player->position_y);
 	player->placed_bombs++;
 }
 

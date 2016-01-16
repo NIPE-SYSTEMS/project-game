@@ -66,12 +66,12 @@ typedef struct gameplay_field_s
 
 void gameplay_field_init(void);
 void gameplay_players_initialize(void);
-// void gameplay_add_player(gameplay_players_player_t *player, int position_x, int position_y);
-// void gameplay_remove_player(gameplay_players_player_t *player, int position_x, int position_y);
+void gameplay_cleanup(void);
 int gameplay_get_walkable(int position_x, int position_y);
 int gameplay_get_bomb_placed(int position_x, int position_y);
 void gameplay_place_bomb(int position_x, int position_y);
 item_type_t gameplay_get_item(int position_x, int position_y);
+void gameplay_destroy(int position_x, int position_y);
 void gameplay_key(char gameplay_pressed_key);
 void gameplay_buffer(void);
 void gameplay_explosion(int x, int y);
