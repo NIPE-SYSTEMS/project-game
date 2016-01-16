@@ -4,8 +4,17 @@
 #define GAMEPLAY_FIELD_HEIGHT 9
 #define GAMEPLAY_FIELD_WIDTH 9
 
+#define GAMEPLAY_FIELD(x, y) (gameplay_field[(y) * GAMEPLAY_FIELD_WIDTH + (x)])
+
 #define GAMEPLAY_MOVE_COOLDOWN 5
 #define GAMEPLAY_FIRE_TIME 10
+
+#define GAMEPLAY_W_PRESSED (gameplay_keys.key_w == 1)
+#define GAMEPLAY_A_PRESSED (gameplay_keys.key_a == 1)
+#define GAMEPLAY_S_PRESSED (gameplay_keys.key_s == 1)
+#define GAMEPLAY_D_PRESSED (gameplay_keys.key_d == 1)
+#define GAMEPLAY_SPACE_PRESSED (gameplay_keys.key_space == 1)
+#define GAMEPLAY_F_PRESSED (gameplay_keys.key_f == 1)
 
 typedef enum field_type_t
 {
@@ -68,7 +77,7 @@ void gameplay_test_place_bomb(void);
 void gameplay_buffer(void);
 void gameplay_test_item_pick_up(void);
 void gameplay_use_item(void);
-void gameplay_explosion(int height, int width);
+void gameplay_explosion(int x, int y);
 gameplay_field_t *gameplay_get_field(void);
 gameplay_player_t *gameplay_get_player(void);
 
