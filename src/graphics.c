@@ -5,6 +5,7 @@
 #include "graphics.h"
 #include "graphics-sprites.h"
 #include "gameplay.h"
+#include "gameplay-players.h"
 #include "core.h"
 
 static int graphics_spinning_animation_counter = 0;
@@ -46,15 +47,16 @@ void graphics_main(void)
 {
 	int x = 0;
 	int y = 0;
+	int i = 0;
 	int field_index = 0;
 	int render_x = 0;
 	int render_y = 0;
-	int hearts = 0;
+	// int hearts = 0;
+	int player_amount = 0;
+	gameplay_players_player_t *player = NULL;
+	gameplay_field_t *gameplay_field = NULL;
 	
-	// core_debug("%i", GRAPHICS_SPRITES_UNDESTROYABLE);
-	
-	gameplay_field_t *gameplay_field = gameplay_get_field();
-	gameplay_player_t *gameplay_player = gameplay_get_player();
+	gameplay_field = gameplay_get_field();
 	
 	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
 	{
@@ -84,23 +86,48 @@ void graphics_main(void)
 	}
 	
 	// hearts
-	mvprintw(GRAPHICS_HEALTH_Y, GRAPHICS_HEALTH_X, "Health:");
-	for(hearts = 0; hearts < gameplay_player->health_points; hearts++)
-	{
-		graphics_render_sprite(GRAPHICS_HEALTH_X + (GRAPHICS_HEALTH_OFFSET_X * hearts), GRAPHICS_HEALTH_Y + GRAPHICS_HEALTH_OFFSET_Y, GRAPHICS_SPRITES_HEART, 0);
-	}
+	// mvprintw(GRAPHICS_HEALTH_Y, GRAPHICS_HEALTH_X, "Health:");
+	player = gameplay_players_get_user();
+	// for(hearts = 0; hearts < player->health_points; hearts++)
+	// {
+	// 	graphics_render_sprite(GRAPHICS_HEALTH_X + (GRAPHICS_HEALTH_OFFSET_X * hearts), GRAPHICS_HEALTH_Y + GRAPHICS_HEALTH_OFFSET_Y, GRAPHICS_SPRITES_HEART, 0);
+	// }
 	
-	// player
-	render_x = (gameplay_player->position_x * GRAPHICS_OFFSET_X) + GRAPHICS_OFFSET_X - GRAPHICS_SPRITE_WIDTH;
-	render_y = (gameplay_player->position_y * GRAPHICS_OFFSET_Y) + GRAPHICS_OFFSET_Y - GRAPHICS_SPRITE_HEIGHT;
+	// debug informations
+	mvprintw(GRAPHICS_HEALTH_Y, GRAPHICS_HEALTH_X, "Debug informations:");
+	mvprintw(GRAPHICS_HEALTH_Y + 1, GRAPHICS_HEALTH_X + 4, "Health: %i", player->health_points);
+	mvprintw(GRAPHICS_HEALTH_Y + 2, GRAPHICS_HEALTH_X + 4, "Movement cooldown: %i", player->movement_cooldown);
+	mvprintw(GRAPHICS_HEALTH_Y + 3, GRAPHICS_HEALTH_X + 4, "Movement cooldown initial: %i", player->movement_cooldown_initial);
+	mvprintw(GRAPHICS_HEALTH_Y + 4, GRAPHICS_HEALTH_X + 4, "Position(x): %i", player->position_x);
+	mvprintw(GRAPHICS_HEALTH_Y + 5, GRAPHICS_HEALTH_X + 4, "Position(y): %i", player->position_y);
+	mvprintw(GRAPHICS_HEALTH_Y + 6, GRAPHICS_HEALTH_X + 4, "Placeable Bombs: %i", player->placeable_bombs);
+	mvprintw(GRAPHICS_HEALTH_Y + 7, GRAPHICS_HEALTH_X + 4, "Placed Bombs: %i", player->placed_bombs);
+	mvprintw(GRAPHICS_HEALTH_Y + 8, GRAPHICS_HEALTH_X + 4, "Item: %i", player->item);
+	mvprintw(GRAPHICS_HEALTH_Y + 9, GRAPHICS_HEALTH_X + 4, "Item usage time: %i", player->item_usage_time);
+	mvprintw(GRAPHICS_HEALTH_Y + 10, GRAPHICS_HEALTH_X + 4, "Damage cooldown: %i", player->damage_cooldown);
 	
-	if(gameplay_player->movement_cooldown > 1)
+	// players
+	player_amount = gameplay_players_amount();
+	
+	for(i = 0; i < player_amount; i++)
 	{
-		graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER, 1);
-	}
-	else
-	{
-		graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER_STANDING, 1);
+		player = gameplay_players_get(i);
+		if(player == NULL)
+		{
+			continue;
+		}
+		
+		render_x = (player->position_x * GRAPHICS_OFFSET_X) + GRAPHICS_OFFSET_X - GRAPHICS_SPRITE_WIDTH;
+		render_y = (player->position_y * GRAPHICS_OFFSET_Y) + GRAPHICS_OFFSET_Y - GRAPHICS_SPRITE_HEIGHT;
+		
+		if(player->movement_cooldown > 1)
+		{
+			graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER, 1);
+		}
+		else
+		{
+			graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER_STANDING, 1);
+		}
 	}
 	
 	// spinning animation

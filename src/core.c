@@ -54,7 +54,7 @@ void core_main(void)
 		clear();
 		
 		gameplay_buffer();
-		gameplay_key_reset();
+		
 		while((character = getch()) != ERR)
 		{
 			switch(character)
@@ -70,7 +70,7 @@ void core_main(void)
 					core_debug("Pressed unhandled key. Keycode: %i", character);
 			}
 		}
-		gameplay_interpret();
+		
 		graphics_main();
 		
 		if(core_running == 1)
