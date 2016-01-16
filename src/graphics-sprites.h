@@ -1,8 +1,8 @@
 #ifndef __GRAPHICS_SPRITES_H__
 #define __GRAPHICS_SPRITES_H__
 
-char graphics_spinning_animation[4] = { '/', '-', '\\', '|' };
-char graphics_sprites[15][3][5] =
+static char graphics_spinning_animation[4] = { '/', '-', '\\', '|' };
+static char graphics_sprites[15][3][5] =
 {
 	//Undestroyable field = 0
 	{

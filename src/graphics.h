@@ -12,26 +12,25 @@
 #define GRAPHICS_SPINNING_ANIMATION_X 99
 #define GRAPHICS_SPINNING_ANIMATION_Y 36
 
-typedef enum graphics_fields_sprites_e
+typedef enum graphics_sprites_e
 {
-	UNDESTROYABLE_SPRITE,
-	DESTROYABLE_SPRITE,
-	DESTROYED_SPRITE,
-	PLAYER_SPRITE,
-	ENEMY_SPRITE,
-	BOMB_SPRITE,
-	BOMB_UP_SPRITE,
-	FIRE_SPRITE,
-	HEART_SPRITE,
-	SNEAKER_SPRITE,
-	UP_SPRITE,
-	SHIELD_SPRITE,
-	EXPLOSION_SPRITE,
-	EXPLOSION_SPRITE_2,
-	PLAYER_STANDING_SPRITE
-} graphics_fields_sprites_t;
+	GRAPHICS_SPRITES_UNDESTROYABLE = 0,
+	GRAPHICS_SPRITES_DESTROYABLE = 1,
+	GRAPHICS_SPRITES_DESTROYED = 2,
+	GRAPHICS_SPRITES_PLAYER = 3,
+	GRAPHICS_SPRITES_ENEMY = 4,
+	GRAPHICS_SPRITES_BOMB = 5,
+	GRAPHICS_SPRITES_BOMB_UP = 6,
+	GRAPHICS_SPRITES_FIRE = 7,
+	GRAPHICS_SPRITES_HEART = 8,
+	GRAPHICS_SPRITES_SNEAKER = 9,
+	GRAPHICS_SPRITES_UP = 10,
+	GRAPHICS_SPRITES_SHIELD = 11,
+	GRAPHICS_SPRITES_EXPLOSION = 12,
+	GRAPHICS_SPRITES_PLAYER_STANDING = 14
+} graphics_sprites_t;
 
-void graphics_render_sprite(int pos_x, int pos_y, graphics_fields_sprites_t field, char transparency);
+void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t field, char transparency);
 void graphics_main(void);
 
 #endif /* __GRAPHICS_H__ */

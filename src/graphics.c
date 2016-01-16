@@ -5,6 +5,7 @@
 #include "graphics.h"
 #include "graphics-sprites.h"
 #include "gameplay.h"
+#include "core.h"
 
 static int graphics_spinning_animation_counter = 0;
 
@@ -19,7 +20,7 @@ static int graphics_spinning_animation_counter = 0;
  *                     means that every new rendering will overwrite the
  *                     existing characters.
  */
-void graphics_render_sprite(int pos_x, int pos_y, graphics_fields_sprites_t index, char transparency)
+void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t index, char transparency)
 {
 	int x = 0;
 	int y = 0;
@@ -50,6 +51,8 @@ void graphics_main(void)
 	int render_y = 0;
 	int hearts = 0;
 	
+	// core_debug("%i", GRAPHICS_SPRITES_UNDESTROYABLE);
+	
 	gameplay_field_t *gameplay_field = gameplay_get_field();
 	gameplay_player_t *gameplay_player = gameplay_get_player();
 	
@@ -63,11 +66,11 @@ void graphics_main(void)
 			
 			if(gameplay_field[field_index].bomb == 1) // bomb
 			{
-				graphics_render_sprite(render_x, render_y, BOMB_SPRITE, 0);
+				graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_BOMB, 0);
 			}
 			else if(gameplay_field[field_index].explosion == 1) // fire
 			{
-				graphics_render_sprite(render_x, render_y, EXPLOSION_SPRITE + graphics_spinning_animation_counter % 2, 0);
+				graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_EXPLOSION + graphics_spinning_animation_counter % 2, 0);
 			}
 			else if(gameplay_field[field_index].item != 0) // item
 			{
@@ -84,7 +87,7 @@ void graphics_main(void)
 	mvprintw(GRAPHICS_HEALTH_Y, GRAPHICS_HEALTH_X, "Health:");
 	for(hearts = 0; hearts < gameplay_player->health_points; hearts++)
 	{
-		graphics_render_sprite(GRAPHICS_HEALTH_X + (GRAPHICS_HEALTH_OFFSET_X * hearts), GRAPHICS_HEALTH_Y + GRAPHICS_HEALTH_OFFSET_Y, HEART_SPRITE, 0);
+		graphics_render_sprite(GRAPHICS_HEALTH_X + (GRAPHICS_HEALTH_OFFSET_X * hearts), GRAPHICS_HEALTH_Y + GRAPHICS_HEALTH_OFFSET_Y, GRAPHICS_SPRITES_HEART, 0);
 	}
 	
 	// player
@@ -93,11 +96,11 @@ void graphics_main(void)
 	
 	if(gameplay_player->movement_cooldown > 1)
 	{
-		graphics_render_sprite(render_x, render_y, PLAYER_SPRITE, 1);
+		graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER, 1);
 	}
 	else
 	{
-		graphics_render_sprite(render_x, render_y, PLAYER_STANDING_SPRITE, 1);
+		graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER_STANDING, 1);
 	}
 	
 	// spinning animation
