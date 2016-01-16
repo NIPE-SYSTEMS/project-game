@@ -73,7 +73,7 @@ void graphics_main(void)
 			{
 				graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_BOMB, 0);
 			}
-			else if(gameplay_bombs_get_explosion(x, y) == 1) // fire
+			else if(gameplay_bombs_get_fire(x, y) == 1) // fire
 			{
 				graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_EXPLOSION + graphics_spinning_animation_counter % 2, 0);
 			}

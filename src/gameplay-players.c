@@ -237,6 +237,21 @@ gameplay_players_player_t *gameplay_players_get(int index)
 	return NULL;
 }
 
+int gameplay_player_get_player(int position_x, int position_y)
+{
+	gameplay_players_player_t *current = NULL;
+	
+	for(current = gameplay_players_players; current != NULL; current = current->next)
+	{
+		if(current->position_x == position_x && current->position_y == position_y)
+		{
+			return 1;
+		}
+	}
+	
+	return 0;
+}
+
 void gameplay_players_place_bomb(void)
 {
 	gameplay_players_player_t *player = NULL;
@@ -268,7 +283,7 @@ void gameplay_players_place_bomb(void)
 void gameplay_players_use_item(void)
 {
 	gameplay_players_player_t *player = NULL;
-	item_type_t item = EMPTY;
+	gameplay_items_item_t item = EMPTY;
 	
 	player = gameplay_players_get_user();
 	if(player == NULL)
@@ -304,15 +319,29 @@ void gameplay_players_use_item(void)
 		case SPEED:
 		{
 			player->movement_cooldown = 0;
-			player->movement_cooldown_initial = GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN_SPEED;
+			player->movement_cooldown_initial = GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN_POWERED;
 			player->item = EMPTY;
 			break;
 		}
 		case SHIELD:
 		{
-			player->damage_cooldown = 100;
+			player->damage_cooldown = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_POWERED;
 			player->item = EMPTY;
 			break;
+		}
+	}
+}
+
+void gameplay_players_harm(int position_x, int position_y)
+{
+	gameplay_players_player_t *current = NULL;
+	
+	for(current = gameplay_players_players; current != NULL; current = current->next)
+	{
+		if(current->position_x == position_x && current->position_y == position_y && current->damage_cooldown == 0)
+		{
+			current->health_points--;
+			current->damage_cooldown = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN;
 		}
 	}
 }

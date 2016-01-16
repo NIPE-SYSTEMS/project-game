@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "gameplay-bombs.h"
+#include "gameplay-players.h"
 #include "core.h"
 
 gameplay_bombs_bomb_t *gameplay_bombs_bombs = NULL;
@@ -103,6 +104,8 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 	
 	for(x = position_x; x < GAMEPLAY_FIELD_WIDTH; x++)
 	{
+		gameplay_players_harm(x, position_y);
+		
 		if(!gameplay_get_walkable(x, position_y))
 		{
 			gameplay_destroy(x, position_y);
@@ -110,8 +113,10 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 		}
 	}
 	
-	for(x = position_x; x > 0; x--)
+	for(x = position_x - 1; x > 0; x--)
 	{
+		gameplay_players_harm(x, position_y);
+		
 		if(!gameplay_get_walkable(x, position_y))
 		{
 			gameplay_destroy(x, position_y);
@@ -121,6 +126,8 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 	
 	for(y = position_y; y < GAMEPLAY_FIELD_HEIGHT; y++)
 	{
+		gameplay_players_harm(position_x, y);
+		
 		if(!gameplay_get_walkable(position_x, y))
 		{
 			gameplay_destroy(position_x, y);
@@ -128,8 +135,10 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 		}
 	}
 	
-	for(y = position_y; y > 0; y--)
+	for(y = position_y - 1; y > 0; y--)
 	{
+		gameplay_players_harm(position_x, y);
+		
 		if(!gameplay_get_walkable(position_x, y))
 		{
 			gameplay_destroy(position_x, y);
@@ -236,7 +245,7 @@ static gameplay_bombs_bomb_t *gameplay_bombs_get_bomb(int position_x, int positi
 	return NULL;
 }
 
-int gameplay_bombs_get_explosion(int position_x, int position_y)
+int gameplay_bombs_get_fire(int position_x, int position_y)
 {
 	gameplay_bombs_bomb_t *bomb = NULL;
 	int x = 0;

@@ -52,7 +52,7 @@ void core_main(void)
 	{
 		clear();
 		
-		gameplay_buffer();
+		gameplay_update();
 		
 		while((character = getch()) != ERR)
 		{

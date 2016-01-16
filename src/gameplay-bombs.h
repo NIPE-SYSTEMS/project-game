@@ -3,7 +3,7 @@
 
 #include "gameplay.h"
 
-#define GAMEPLAY_BOMBS_EXPLOSION_TIMEOUT 15
+#define GAMEPLAY_BOMBS_EXPLOSION_TIMEOUT 20
 #define GAMEPLAY_BOMBS_FIRE_TIMEOUT 10
 
 typedef struct gameplay_bombs_bomb_s
@@ -23,6 +23,6 @@ void gameplay_bombs_update(void);
 int gameplay_bombs_amount(void);
 gameplay_bombs_bomb_t *gameplay_bombs_get(int index);
 int gameplay_bombs_get_bomb_placed(int position_x, int position_y);
-int gameplay_bombs_get_explosion(int position_x, int position_y);
+int gameplay_bombs_get_fire(int position_x, int position_y);
 
 #endif /* __GAMEPLAY_BOMBS_H__ */

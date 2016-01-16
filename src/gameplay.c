@@ -27,11 +27,7 @@ void gameplay_field_init(void)
 		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
 		{
 			GAMEPLAY_FIELD(gameplay_field, x, y).type = DESTRUCTIVE;
-			GAMEPLAY_FIELD(gameplay_field, x, y).player = 0;
-			GAMEPLAY_FIELD(gameplay_field, x, y).explosion = 0;
-			GAMEPLAY_FIELD(gameplay_field, x, y).bomb = 0;
 			GAMEPLAY_FIELD(gameplay_field, x, y).item = 0;
-			GAMEPLAY_FIELD(gameplay_field, x, y).timing = 0;
 		}
 	}
 	
@@ -100,21 +96,10 @@ int gameplay_get_walkable(int position_x, int position_y)
 	return (GAMEPLAY_FIELD(gameplay_field, position_x, position_y).type == FLOOR);
 }
 
-int gameplay_get_bomb_placed(int position_x, int position_y)
-{
-	return (GAMEPLAY_FIELD(gameplay_field, position_x, position_y).bomb == 1);
-}
-
-void gameplay_place_bomb(int position_x, int position_y)
-{
-	GAMEPLAY_FIELD(gameplay_field, position_x, position_y).bomb = 1;
-	GAMEPLAY_FIELD(gameplay_field, position_x, position_y).timing = 50;
-}
-
 // also removes the item from the tile
-item_type_t gameplay_get_item(int position_x, int position_y)
+gameplay_items_item_t gameplay_get_item(int position_x, int position_y)
 {
-	item_type_t item = EMPTY;
+	gameplay_items_item_t item = EMPTY;
 	
 	item = GAMEPLAY_FIELD(gameplay_field, position_x, position_y).item;
 	GAMEPLAY_FIELD(gameplay_field, position_x, position_y).item = EMPTY;
@@ -175,183 +160,10 @@ void gameplay_key(char gameplay_pressed_key)
 /**
  * This function changes roundly changed values like item timers.
  */
-void gameplay_buffer(void)
+void gameplay_update(void)
 {
-	int x = 0;
-	int y = 0;
-	
 	gameplay_players_update();
 	gameplay_bombs_update();
-	
-	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
-	{
-		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
-		{
-			if(GAMEPLAY_FIELD(gameplay_field, x, y).bomb == 1)
-			{
-				GAMEPLAY_FIELD(gameplay_field, x, y).timing--;
-				if(GAMEPLAY_FIELD(gameplay_field, x, y).timing == 0)
-				{
-					GAMEPLAY_FIELD(gameplay_field, x, y).bomb = 0;
-					gameplay_explosion(x, y);
-				}
-			}
-			else if(GAMEPLAY_FIELD(gameplay_field, x, y).item == 1)
-			{
-				GAMEPLAY_FIELD(gameplay_field, x, y).timing--;
-				if(GAMEPLAY_FIELD(gameplay_field, x, y).timing == 0)
-				{
-					GAMEPLAY_FIELD(gameplay_field, x, y).item = 0;
-				}
-			}
-			else if(GAMEPLAY_FIELD(gameplay_field, x, y).explosion == 1)
-			{
-				GAMEPLAY_FIELD(gameplay_field, x, y).timing--;
-				if(GAMEPLAY_FIELD(gameplay_field, x, y).timing == 0)
-				{
-					GAMEPLAY_FIELD(gameplay_field, x, y).explosion = 0;
-				}
-			}
-			// if(GAMEPLAY_FIELD(gameplay_field, x, y).explosion == 1 && GAMEPLAY_FIELD(gameplay_field, x, y).player == 1 && gameplay_player.damage_cooldown == 0)
-			// {
-			// 	gameplay_player.health_points--;
-			// 	gameplay_player.damage_cooldown = 20;
-			// 	if(gameplay_player.health_points == 0)
-			// 	{
-			// 		//game_over();
-			// 	}
-			// }
-		}
-	}
-}
-
-/**
- * This function simulates a explosion by a bomb.
- */
-void gameplay_explosion(int pos_x, int pos_y)
-{
-	int x = 0;
-	int y = 0;
-	
-	for(y = pos_y; y > 0; y--)
-	{
-		if(GAMEPLAY_FIELD(gameplay_field, pos_x, y).type == WALL)
-		{
-			break;
-		}
-		else if(GAMEPLAY_FIELD(gameplay_field, pos_x, y).type == DESTRUCTIVE)
-		{
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).type = FLOOR;
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).explosion = 1;
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).timing = GAMEPLAY_FIRE_TIME;
-			
-			//Random Drops!!!
-			
-			break;
-		}
-		else if(GAMEPLAY_FIELD(gameplay_field, pos_x, y).item != EMPTY)
-		{
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).item = EMPTY;
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).explosion = 1;
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).timing = GAMEPLAY_FIRE_TIME;
-			break;
-		}
-		else if(GAMEPLAY_FIELD(gameplay_field, pos_x, y).type == FLOOR)
-		{
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).explosion = 1;
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).timing = GAMEPLAY_FIRE_TIME;
-		}
-	}
-	
-	for(y = pos_y; y < GAMEPLAY_FIELD_HEIGHT; y++)
-	{
-		if(GAMEPLAY_FIELD(gameplay_field, pos_x, y).type == WALL)
-		{
-			break;
-		}
-		else if(GAMEPLAY_FIELD(gameplay_field, pos_x, y).type == DESTRUCTIVE)
-		{
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).type = FLOOR;
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).explosion = 1;
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).timing = GAMEPLAY_FIRE_TIME;
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).item = 6;
-			//Random Drops!!!
-			
-			break;
-		}
-		else if(GAMEPLAY_FIELD(gameplay_field, pos_x, y).item != EMPTY)
-		{
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).item = EMPTY;
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).explosion = 1;
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).timing = GAMEPLAY_FIRE_TIME;
-			break;
-		}
-		else if(GAMEPLAY_FIELD(gameplay_field, pos_x, y).type == FLOOR)
-		{
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).explosion = 1;
-			GAMEPLAY_FIELD(gameplay_field, pos_x, y).timing = GAMEPLAY_FIRE_TIME;
-		}
-	}
-	
-	for(x = pos_x; x > 0; x--)
-	{
-		if(GAMEPLAY_FIELD(gameplay_field, x, pos_y).type == WALL)
-		{
-			break;
-		}
-		else if(GAMEPLAY_FIELD(gameplay_field, x, pos_y).type == DESTRUCTIVE)
-		{
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).type = FLOOR;
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).explosion = 1;
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).timing = GAMEPLAY_FIRE_TIME;
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).item = 11;
-			//Random Drops!!!
-			
-			break;
-		}
-		else if(GAMEPLAY_FIELD(gameplay_field, x, pos_y).item != EMPTY)
-		{
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).item = EMPTY;
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).explosion = 1;
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).timing = GAMEPLAY_FIRE_TIME;
-			break;
-		}
-		else if(GAMEPLAY_FIELD(gameplay_field, x, pos_y).type == FLOOR)
-		{
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).explosion = 1;
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).timing = GAMEPLAY_FIRE_TIME;
-		}
-	}
-	
-	for(x = pos_x; x < GAMEPLAY_FIELD_WIDTH; x++)
-	{
-		if(GAMEPLAY_FIELD(gameplay_field, x, pos_y).type == WALL)
-		{
-			break;
-		}
-		else if(GAMEPLAY_FIELD(gameplay_field, x, pos_y).type == DESTRUCTIVE)
-		{
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).type = FLOOR;
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).explosion = 1;
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).timing = GAMEPLAY_FIRE_TIME;
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).item = 8;
-			//Random Drops!!!
-			
-			break;
-		}
-		else if(GAMEPLAY_FIELD(gameplay_field, x, pos_y).item != EMPTY)
-		{
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).item = EMPTY;
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).explosion = 1;
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).timing = GAMEPLAY_FIRE_TIME;
-			break;
-		}
-		else if(GAMEPLAY_FIELD(gameplay_field, x, pos_y).type == FLOOR)
-		{
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).explosion = 1;
-			GAMEPLAY_FIELD(gameplay_field, x, pos_y).timing = GAMEPLAY_FIRE_TIME;
-		}
-	}
 }
 
 gameplay_field_t *gameplay_get_field(void)
