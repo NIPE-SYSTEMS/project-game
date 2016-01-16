@@ -108,6 +108,7 @@ void graphics_main(void)
 	mvprintw(GRAPHICS_HEALTH_Y + 8, GRAPHICS_HEALTH_X + 4, "Item: %i", player->item);
 	mvprintw(GRAPHICS_HEALTH_Y + 9, GRAPHICS_HEALTH_X + 4, "Item usage time: %i", player->item_usage_time);
 	mvprintw(GRAPHICS_HEALTH_Y + 10, GRAPHICS_HEALTH_X + 4, "Damage cooldown: %i", player->damage_cooldown);
+	mvprintw(GRAPHICS_HEALTH_Y + 11, GRAPHICS_HEALTH_X + 4, "Damage cooldown initial: %i", player->damage_cooldown_initial);
 	
 	bomb_amount = gameplay_bombs_amount();
 	for(i = 0; i < bomb_amount; i++)
@@ -118,7 +119,7 @@ void graphics_main(void)
 			continue;
 		}
 		
-		mvprintw(GRAPHICS_HEALTH_Y + 12 + i, GRAPHICS_HEALTH_X, "Bomb %i: %p at (%i, %i), %i, %i", i, bomb, bomb->position_x, bomb->position_y, bomb->explosion_timeout, bomb->fire_timeout);
+		mvprintw(GRAPHICS_HEALTH_Y + 13 + i, GRAPHICS_HEALTH_X, "Bomb %i: %p at (%i, %i), %i, %i", i, bomb, bomb->position_x, bomb->position_y, bomb->explosion_timeout, bomb->fire_timeout);
 	}
 	
 	// players

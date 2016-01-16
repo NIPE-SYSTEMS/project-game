@@ -2,8 +2,8 @@
 #define __GAMEPLAY_PLAYERS_H__
 
 #define GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN 5
-#define GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN_POWERED 5
-#define GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN 5
+#define GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN_POWERED 3
+#define GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN 10
 #define GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_POWERED 50
 
 #include "gameplay-items.h"
@@ -26,6 +26,7 @@ typedef struct gameplay_players_player_s
 	gameplay_items_item_t item;
 	int item_usage_time;
 	int damage_cooldown;
+	int damage_cooldown_initial;
 	gameplay_players_type_t type;
 	struct gameplay_players_player_s *next;
 } gameplay_players_player_t;

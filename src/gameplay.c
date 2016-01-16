@@ -7,6 +7,7 @@
 #include "gameplay-players.h"
 #include "gameplay-bombs.h"
 #include "core.h"
+#include "random-drop.h"
 
 static gameplay_field_t gameplay_field[GAMEPLAY_FIELD_WIDTH * GAMEPLAY_FIELD_HEIGHT];
 
@@ -109,10 +110,29 @@ gameplay_items_item_t gameplay_get_item(int position_x, int position_y)
 
 void gameplay_destroy(int position_x, int position_y)
 {
+	random_drop_t drop_list[] =
+	{
+		{ EMPTY, 0.5 },
+		{ HEALTH, 0.1 },
+		{ EXTRA_BOMB, 0.2 },
+		{ SPEED, 0.1 },
+		{ SHIELD, 0.1 }
+	};
+	size_t drop_list_amount = sizeof(drop_list) / sizeof(drop_list[0]);
+	random_drop_t *picked_drop = NULL;
+	
 	if(GAMEPLAY_FIELD(gameplay_field, position_x, position_y).type == DESTRUCTIVE)
 	{
 		GAMEPLAY_FIELD(gameplay_field, position_x, position_y).type = FLOOR;
-		GAMEPLAY_FIELD(gameplay_field, position_x, position_y).item = HEALTH;
+		picked_drop = random_drop_choose(drop_list, drop_list_amount);
+		if(picked_drop != NULL)
+		{
+			GAMEPLAY_FIELD(gameplay_field, position_x, position_y).item = picked_drop->id;
+		}
+		else
+		{
+			GAMEPLAY_FIELD(gameplay_field, position_x, position_y).item = EMPTY;
+		}
 	}
 }
 

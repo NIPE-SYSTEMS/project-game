@@ -28,6 +28,7 @@ void gameplay_players_add(int position_x, int position_y, gameplay_players_type_
 	player->item = EMPTY;
 	player->item_usage_time = 0;
 	player->damage_cooldown = 0;
+	player->damage_cooldown_initial = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN;
 	player->type = type;
 	player->next = NULL;
 	
@@ -306,18 +307,21 @@ void gameplay_players_use_item(void)
 		}
 		case HEALTH:
 		{
+			core_debug("Using health power up.");
 			player->health_points++;
 			player->item = EMPTY;
 			break;
 		}
 		case EXTRA_BOMB:
 		{
+			core_debug("Using extra bomb power up.");
 			player->placeable_bombs++;
 			player->item = EMPTY;
 			break;
 		}
 		case SPEED:
 		{
+			core_debug("Using speed power up.");
 			player->movement_cooldown = 0;
 			player->movement_cooldown_initial = GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN_POWERED;
 			player->item = EMPTY;
@@ -325,7 +329,8 @@ void gameplay_players_use_item(void)
 		}
 		case SHIELD:
 		{
-			player->damage_cooldown = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_POWERED;
+			core_debug("Using resistance power up.");
+			player->damage_cooldown_initial = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_POWERED;
 			player->item = EMPTY;
 			break;
 		}
@@ -341,7 +346,7 @@ void gameplay_players_harm(int position_x, int position_y)
 		if(current->position_x == position_x && current->position_y == position_y && current->damage_cooldown == 0)
 		{
 			current->health_points--;
-			current->damage_cooldown = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN;
+			current->damage_cooldown = current->damage_cooldown_initial;
 		}
 	}
 }
