@@ -15,8 +15,8 @@ static gameplay_keys_t gameplay_keys;
  */
 void gameplay_field_init(void)
 {
-	int y = 0;
 	int x = 0;
+	int y = 0;
 	/*
 	while(y < GAMEPLAY_FIELD_HEIGHT)
 	{
@@ -179,36 +179,43 @@ void gameplay_key_reset(void)
 
 /**
  * This function saves the pressed buttons into the gameplay_keys struct for 
- * one main loop.SWITCH!!
+ * one main loop.
  */
 void gameplay_key(char gameplay_pressed_key)
 {
-	
-	if(gameplay_pressed_key == 'w')
+	switch(gameplay_pressed_key)
 	{
-		gameplay_keys.key_w = 1;
+		case 'w':
+		{
+			gameplay_keys.key_w = 1;
+			break;
+		}
+		case 'a':
+		{
+			gameplay_keys.key_a = 1;
+			break;
+		}
+		case 's':
+		{
+			gameplay_keys.key_s = 1;
+			break;
+		}
+		case 'd':
+		{
+			gameplay_keys.key_d = 1;
+			break;
+		}
+		case ' ':
+		{
+			gameplay_keys.key_space = 1;
+			break;
+		}
+		case 'f':
+		{
+			gameplay_keys.key_f = 1;
+			break;
+		}
 	}
-	else if(gameplay_pressed_key == 'a')
-	{
-		gameplay_keys.key_a = 1;
-	}
-	else if(gameplay_pressed_key == 's')
-	{
-		gameplay_keys.key_s = 1;
-	}
-	else if(gameplay_pressed_key == 'd')
-	{
-		gameplay_keys.key_d = 1;
-	}
-	else if(gameplay_pressed_key == ' ')
-	{
-		gameplay_keys.key_space = 1;
-	}
-	else if(gameplay_pressed_key == 'f')
-	{
-		gameplay_keys.key_f = 1;
-	}
-	return;
 }
 
 /**
@@ -300,6 +307,7 @@ void gameplay_test_place_bomb(void)
 	}
 	else if(gameplay_keys.key_space == 1 && gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].bomb == 0)
 	{
+		core_debug("Place bomb");
 		gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].bomb = 1;
 		gameplay_field[gameplay_player.position_y * GAMEPLAY_FIELD_WIDTH + gameplay_player.position_x].timing = 50;
 		gameplay_player.placed_bombs++;
