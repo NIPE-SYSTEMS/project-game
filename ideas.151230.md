@@ -19,6 +19,7 @@
 * Variables Spielfeld mit #defines
 * Configuration file (**Later**)
 * outsource Assets (**Later**)
+* Cheat: Turbo `"` `~`
 
 # Player sprite
 
