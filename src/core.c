@@ -117,6 +117,8 @@ static void core_init_files(void)
 		return;
 	}
 	
+	core_debug("");
+	core_debug("");
 	core_debug("Log system initialized.");
 }
 

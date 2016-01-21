@@ -4,6 +4,7 @@
 #include "gameplay-bombs.h"
 #include "gameplay.h"
 #include "core.h"
+#include "ai-core.h"
 
 gameplay_players_player_t *gameplay_players_players = NULL;
 
@@ -30,6 +31,7 @@ void gameplay_players_add(int position_x, int position_y, gameplay_players_type_
 	player->damage_cooldown = 0;
 	player->damage_cooldown_initial = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN;
 	player->type = type;
+	player->jobs = NULL;
 	player->next = NULL;
 	
 	// append to player list
@@ -47,6 +49,7 @@ void gameplay_players_cleanup(void)
 	for(current = gameplay_players_players; current != NULL; current = next_backup)
 	{
 		next_backup = current->next;
+		ai_core_cleanup(current);
 		free(current);
 	}
 }
@@ -348,5 +351,15 @@ void gameplay_players_harm(int position_x, int position_y)
 			current->health_points--;
 			current->damage_cooldown = current->damage_cooldown_initial;
 		}
+	}
+}
+
+void gameplay_players_ai_update(void)
+{
+	gameplay_players_player_t *current = NULL;
+	
+	for(current = gameplay_players_players; current != NULL; current = current->next)
+	{
+		ai_core_update(current);
 	}
 }

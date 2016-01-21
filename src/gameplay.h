@@ -4,7 +4,7 @@
 #define GAMEPLAY_FIELD_HEIGHT 9
 #define GAMEPLAY_FIELD_WIDTH 9
 
-#define GAMEPLAY_FIELD(field, x, y) (field[(y) * GAMEPLAY_FIELD_WIDTH + (x)])
+#define GAMEPLAY_FIELD(field, x, y) ((field)[(y) * GAMEPLAY_FIELD_WIDTH + (x)])
 
 #include "gameplay-items.h"
 #include "gameplay-players.h"
@@ -20,6 +20,10 @@ typedef struct gameplay_field_s
 {
 	gameplay_field_type_t type;
 	gameplay_items_item_t item;
+	int ai_position_x;
+	int ai_position_y;
+	int ai_pathfinding_number;
+	struct gameplay_field_s *ai_pathfinding_next;
 } gameplay_field_t;
 
 void gameplay_field_init(void);

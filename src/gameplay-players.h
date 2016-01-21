@@ -7,6 +7,7 @@
 #define GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_POWERED 50
 
 #include "gameplay-items.h"
+#include "ai-jobs.h"
 
 typedef enum gameplay_players_type_e
 {
@@ -28,6 +29,7 @@ typedef struct gameplay_players_player_s
 	int damage_cooldown;
 	int damage_cooldown_initial;
 	gameplay_players_type_t type;
+	ai_jobs_t *jobs;
 	struct gameplay_players_player_s *next;
 } gameplay_players_player_t;
 
@@ -51,5 +53,6 @@ int gameplay_player_get_player(int position_x, int position_y);
 void gameplay_players_place_bomb(void);
 void gameplay_players_use_item(void);
 void gameplay_players_harm(int position_x, int position_y);
+void gameplay_players_ai_update(void);
 
 #endif /* __GAMEPLAY_PLAYERS_H__ */

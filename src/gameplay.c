@@ -10,6 +10,7 @@
 #include "random-drop.h"
 
 static gameplay_field_t gameplay_field[GAMEPLAY_FIELD_WIDTH * GAMEPLAY_FIELD_HEIGHT];
+static char temp = 0;
 
 /**
  * This function fills the field array before the game starts with all 
@@ -28,7 +29,10 @@ void gameplay_field_init(void)
 		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
 		{
 			GAMEPLAY_FIELD(gameplay_field, x, y).type = DESTRUCTIVE;
-			GAMEPLAY_FIELD(gameplay_field, x, y).item = 0;
+			GAMEPLAY_FIELD(gameplay_field, x, y).ai_position_x = x;
+			GAMEPLAY_FIELD(gameplay_field, x, y).ai_position_y = y;
+			GAMEPLAY_FIELD(gameplay_field, x, y).ai_pathfinding_number = -1;
+			GAMEPLAY_FIELD(gameplay_field, x, y).ai_pathfinding_next = NULL;
 		}
 	}
 	
@@ -82,8 +86,8 @@ void gameplay_players_initialize(void)
 {
 	gameplay_players_add(1, 1, GAMEPLAY_PLAYERS_TYPE_USER);
 	gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, 1, GAMEPLAY_PLAYERS_TYPE_AI);
-	gameplay_players_add(1, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
-	gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
+	// gameplay_players_add(1, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
+	// gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
 }
 
 void gameplay_cleanup(void)
@@ -184,6 +188,12 @@ void gameplay_update(void)
 {
 	gameplay_players_update();
 	gameplay_bombs_update();
+	
+	if(temp == 0)
+	{
+		gameplay_players_ai_update();
+		temp = 1;
+	}
 }
 
 gameplay_field_t *gameplay_get_field(void)
