@@ -47,6 +47,7 @@ void core_main(void)
 	core_running = 1;
 	int character = 0;
 	gameplay_field_init();
+	//graphics_read_arrays();
 	
 	while(core_running == 1)
 	{
