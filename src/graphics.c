@@ -374,13 +374,9 @@ void graphics_main(void)
 				}
 				else if(gameplay_items_item_placed(x, y) != 0) // item
 				{
-<<<<<<< HEAD
 					
-					graphics_render_sprite(render_x, render_y, gameplay_field[field_index].item+2, 0);
-					
-=======
+					//graphics_render_sprite(render_x, render_y, gameplay_field[field_index].item+2, 0);
 					graphics_render_sprite(render_x, render_y, gameplay_items_get_item_type(x, y), 0);
->>>>>>> ee3842664f53a919d6bbed22a1a738343d4bf075
 				}
 				else // field
 				{
@@ -438,15 +434,31 @@ void graphics_main(void)
 			
 			render_x = (player->position_x * GRAPHICS_OFFSET_X) + GRAPHICS_OFFSET_X - GRAPHICS_SPRITE_WIDTH;
 			render_y = (player->position_y * GRAPHICS_OFFSET_Y) + GRAPHICS_OFFSET_Y - GRAPHICS_SPRITE_HEIGHT;
-			
-			if(player->movement_cooldown > 1)
+			if(animation_turbo_activated == 1)
 			{
-				graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER, 1);
+				attron(COLOR_PAIR(rand()%5));
+				if(player->movement_cooldown > 1)
+				{
+					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER, 1);
+				}
+				else
+				{
+					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER_STANDING, 1);
+				}
 			}
 			else
 			{
-				graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER_STANDING, 1);
+				if(player->movement_cooldown > 1)
+				{
+					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER, 1);
+				}
+				else
+				{
+					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER_STANDING, 1);
+				}
 			}
+			
+			attron(COLOR_PAIR(1));
 		}
 		
 		// spinning animation

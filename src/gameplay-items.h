@@ -5,12 +5,12 @@
 
 typedef enum gameplay_items_item_type_e
 {
-	EMPTY = 0,
-	HEALTH = 8,
-	EXTRA_BOMB = 6,
-	FIRE = 7,
-	SPEED = 9,
-	SHIELD = 11,
+	EMPTY = 2,
+	HEALTH = 10,
+	EXTRA_BOMB = 8,
+	FIRE = 9,
+	SPEED = 11,
+	SHIELD = 13,
 } gameplay_items_item_type_t;
 
 typedef struct gameplay_items_item_s
