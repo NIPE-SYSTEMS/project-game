@@ -60,6 +60,19 @@ void ai_core_update(gameplay_players_player_t *player)
 		}
 	}
 	
+	// remove tiles which have no save place for hiding
+	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
+	{
+		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
+		{
+			if(ai_simulation_validate_tile(player->position_x, player->position_y, x, y) == 0)
+			{
+				// core_debug("Remove (%i, %i), cause: unsafe", x, y);
+				ai_jobs_remove(&(player->jobs), x, y, BOMB_DROP);
+			}
+		}
+	}
+	
 	// remove current tile
 	ai_jobs_remove(&(player->jobs), player->position_x, player->position_y, BOMB_DROP);
 	

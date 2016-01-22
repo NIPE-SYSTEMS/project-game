@@ -29,13 +29,13 @@ void gameplay_field_init(void)
 	{
 		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
 		{
-			// GAMEPLAY_FIELD(gameplay_field, x, y).type = DESTRUCTIVE;
-			GAMEPLAY_FIELD(gameplay_field, x, y).type = FLOOR;
+			GAMEPLAY_FIELD(gameplay_field, x, y).type = DESTRUCTIVE;
 			GAMEPLAY_FIELD(gameplay_field, x, y).ai_position_x = x;
 			GAMEPLAY_FIELD(gameplay_field, x, y).ai_position_y = y;
 			GAMEPLAY_FIELD(gameplay_field, x, y).ai_pathfinding_number = -1;
 			GAMEPLAY_FIELD(gameplay_field, x, y).ai_pathfinding_next = NULL;
 			GAMEPLAY_FIELD(gameplay_field, x, y).ai_simulation_walkable = 1;
+			GAMEPLAY_FIELD(gameplay_field, x, y).ai_simulation_walkable_simulated = 1;
 		}
 	}
 	
@@ -54,33 +54,33 @@ void gameplay_field_init(void)
 	}
 	
 	// set walls in the inner field
-	// for(y = 2; y < GAMEPLAY_FIELD_HEIGHT - 1; y += 2)
-	// {
-	// 	for(x = 2; x < GAMEPLAY_FIELD_WIDTH - 1; x += 2)
-	// 	{
-	// 		GAMEPLAY_FIELD(gameplay_field, x, y).type = WALL;
-	// 	}
-	// }
+	for(y = 2; y < GAMEPLAY_FIELD_HEIGHT - 1; y += 2)
+	{
+		for(x = 2; x < GAMEPLAY_FIELD_WIDTH - 1; x += 2)
+		{
+			GAMEPLAY_FIELD(gameplay_field, x, y).type = WALL;
+		}
+	}
 	
 	// remove upper left corner
-	// GAMEPLAY_FIELD(gameplay_field, 1, 1).type = FLOOR; // remove wall at (1, 1)
-	// GAMEPLAY_FIELD(gameplay_field, 2, 1).type = FLOOR; // remove wall at (2, 1)
-	// GAMEPLAY_FIELD(gameplay_field, 1, 2).type = FLOOR; // remove wall at (1, 2)
+	GAMEPLAY_FIELD(gameplay_field, 1, 1).type = FLOOR; // remove wall at (1, 1)
+	GAMEPLAY_FIELD(gameplay_field, 2, 1).type = FLOOR; // remove wall at (2, 1)
+	GAMEPLAY_FIELD(gameplay_field, 1, 2).type = FLOOR; // remove wall at (1, 2)
 	
 	// remove upper right corner
-	// GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 2, 1).type = FLOOR; // remove wall at (width - 2, 1)
-	// GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 3, 1).type = FLOOR; // remove wall at (width - 3, 1)
-	// GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 2, 2).type = FLOOR; // remove wall at (width - 2, 2)
+	GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 2, 1).type = FLOOR; // remove wall at (width - 2, 1)
+	GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 3, 1).type = FLOOR; // remove wall at (width - 3, 1)
+	GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 2, 2).type = FLOOR; // remove wall at (width - 2, 2)
 	
 	// remove lower left corner
-	// GAMEPLAY_FIELD(gameplay_field, 1, GAMEPLAY_FIELD_HEIGHT - 2).type = FLOOR; // remove wall at (1, height - 2)
-	// GAMEPLAY_FIELD(gameplay_field, 2, GAMEPLAY_FIELD_HEIGHT - 2).type = FLOOR; // remove wall at (2, height - 2)
-	// GAMEPLAY_FIELD(gameplay_field, 1, GAMEPLAY_FIELD_HEIGHT - 3).type = FLOOR; // remove wall at (1, height - 3)
+	GAMEPLAY_FIELD(gameplay_field, 1, GAMEPLAY_FIELD_HEIGHT - 2).type = FLOOR; // remove wall at (1, height - 2)
+	GAMEPLAY_FIELD(gameplay_field, 2, GAMEPLAY_FIELD_HEIGHT - 2).type = FLOOR; // remove wall at (2, height - 2)
+	GAMEPLAY_FIELD(gameplay_field, 1, GAMEPLAY_FIELD_HEIGHT - 3).type = FLOOR; // remove wall at (1, height - 3)
 	
 	// remove lower right corner
-	// GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 2).type = FLOOR; // remove wall at (width - 2, height - 2)
-	// GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 3, GAMEPLAY_FIELD_HEIGHT - 2).type = FLOOR; // remove wall at (width - 3, height - 2)
-	// GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 3).type = FLOOR; // remove wall at (width - 2, height - 3)
+	GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 2).type = FLOOR; // remove wall at (width - 2, height - 2)
+	GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 3, GAMEPLAY_FIELD_HEIGHT - 2).type = FLOOR; // remove wall at (width - 3, height - 2)
+	GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 3).type = FLOOR; // remove wall at (width - 2, height - 3)
 	
 	gameplay_players_initialize();
 }
@@ -191,12 +191,7 @@ void gameplay_update(void)
 {
 	gameplay_players_update();
 	gameplay_bombs_update();
-	
-	if(temp == 0)
-	{
-		gameplay_players_ai_update();
-		temp = 1;
-	}
+	gameplay_players_ai_update();
 }
 
 gameplay_field_t *gameplay_get_field(void)

@@ -25,6 +25,7 @@ typedef struct gameplay_field_s
 	int ai_pathfinding_number;
 	struct gameplay_field_s *ai_pathfinding_next;
 	char ai_simulation_walkable;
+	char ai_simulation_walkable_simulated;
 } gameplay_field_t;
 
 void gameplay_field_init(void);

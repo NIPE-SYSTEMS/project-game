@@ -126,12 +126,12 @@ void ai_jobs_remove(ai_jobs_t **root, int position_x, int position_y, ai_jobs_ty
 	ai_jobs_t *job_iterator = NULL;
 	ai_jobs_t *next_backup = NULL;
 	
-	if(root == NULL && *root == NULL)
+	if(root == NULL || *root == NULL)
 	{
 		return;
 	}
 	
-	if((*root)->next != NULL && (*root)->position_x == position_x && (*root)->position_y == position_y && (*root)->type == type)
+	if((*root)->position_x == position_x && (*root)->position_y == position_y && (*root)->type == type)
 	{
 		next_backup = (*root)->next;
 		free(*root);

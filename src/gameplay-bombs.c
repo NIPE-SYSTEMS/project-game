@@ -171,7 +171,7 @@ static void gameplay_bombs_bomb_update(gameplay_bombs_bomb_t *bomb)
 		bomb->fire_timeout--;
 	}
 	
-	ai_simulation_explosion(bomb->position_x, bomb->position_y);
+	ai_simulation_explosion(bomb->position_x, bomb->position_y, 0);
 }
 
 void gameplay_bombs_update(void)
@@ -188,8 +188,6 @@ void gameplay_bombs_update(void)
 		next_backup = current->next;
 		gameplay_bombs_bomb_update(current);
 	}
-	
-	// ai_simulation_print();
 }
 
 int gameplay_bombs_amount(void)
