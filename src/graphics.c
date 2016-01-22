@@ -112,7 +112,11 @@ void graphics_main(void)
 				render_x = (x * GRAPHICS_OFFSET_X) + GRAPHICS_OFFSET_X - GRAPHICS_SPRITE_WIDTH;
 				render_y = (y * GRAPHICS_OFFSET_Y) + GRAPHICS_OFFSET_Y - GRAPHICS_SPRITE_HEIGHT;
 				
-				if(gameplay_bombs_get_bomb_placed(x, y) == 1) // bomb
+				if(gameplay_field[field_index].ai_simulation_walkable == 0)
+				{
+					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_EXPLOSION, 0);
+				}
+				else if(gameplay_bombs_get_bomb_placed(x, y) == 1) // bomb
 				{
 					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_BOMB, 0);
 				}

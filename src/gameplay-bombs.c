@@ -3,6 +3,7 @@
 #include "gameplay-bombs.h"
 #include "gameplay-players.h"
 #include "core.h"
+#include "ai-simulation.h"
 
 gameplay_bombs_bomb_t *gameplay_bombs_bombs = NULL;
 
@@ -152,6 +153,7 @@ static void gameplay_bombs_bomb_update(gameplay_bombs_bomb_t *bomb)
 	if(bomb->explosion_timeout == 0 && bomb->fire_timeout == 0)
 	{
 		gameplay_bombs_remove(bomb->position_x, bomb->position_y);
+		return;
 	}
 	
 	if(bomb->explosion_timeout > 0)
@@ -168,12 +170,16 @@ static void gameplay_bombs_bomb_update(gameplay_bombs_bomb_t *bomb)
 	{
 		bomb->fire_timeout--;
 	}
+	
+	ai_simulation_explosion(bomb->position_x, bomb->position_y);
 }
 
 void gameplay_bombs_update(void)
 {
 	gameplay_bombs_bomb_t *current = NULL;
 	gameplay_bombs_bomb_t *next_backup = NULL;
+	
+	ai_simulation_reset();
 	
 	for(current = gameplay_bombs_bombs; current != NULL; current = next_backup)
 	{
@@ -182,6 +188,8 @@ void gameplay_bombs_update(void)
 		next_backup = current->next;
 		gameplay_bombs_bomb_update(current);
 	}
+	
+	// ai_simulation_print();
 }
 
 int gameplay_bombs_amount(void)

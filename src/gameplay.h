@@ -24,6 +24,7 @@ typedef struct gameplay_field_s
 	int ai_position_y;
 	int ai_pathfinding_number;
 	struct gameplay_field_s *ai_pathfinding_next;
+	char ai_simulation_walkable;
 } gameplay_field_t;
 
 void gameplay_field_init(void);
