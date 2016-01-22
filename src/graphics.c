@@ -9,6 +9,7 @@
 #include "gameplay-players.h"
 #include "gameplay-bombs.h"
 #include "core.h"
+#include "gameplay-items.h"
 
 static int graphics_animation_counter = 0;
 static int graphics_startscreen_counter = 0;
@@ -365,17 +366,21 @@ void graphics_main(void)
 				{
 					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_BOMB, 0);
 				}
-				else if(gameplay_bombs_get_fire(x, y) == 1) // fire
+				else if(gameplay_get_fire(x, y) == 1) // fire
 				{
 					 attron(COLOR_PAIR(2));
 					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_EXPLOSION_1 + graphics_animation_counter % 2, 0);
 					 attron(COLOR_PAIR(1));
 				}
-				else if(gameplay_field[field_index].item != 0) // item
+				else if(gameplay_items_item_placed(x, y) != 0) // item
 				{
+<<<<<<< HEAD
 					
 					graphics_render_sprite(render_x, render_y, gameplay_field[field_index].item+2, 0);
 					
+=======
+					graphics_render_sprite(render_x, render_y, gameplay_items_get_item_type(x, y), 0);
+>>>>>>> ee3842664f53a919d6bbed22a1a738343d4bf075
 				}
 				else // field
 				{
@@ -418,7 +423,7 @@ void graphics_main(void)
 				continue;
 			}
 			
-			mvprintw(GRAPHICS_HEALTH_Y + 13 + i, GRAPHICS_HEALTH_X, "Bomb %i: %p at (%i, %i), %i, %i", i, bomb, bomb->position_x, bomb->position_y, bomb->explosion_timeout, bomb->fire_timeout);
+			mvprintw(GRAPHICS_HEALTH_Y + 13 + i, GRAPHICS_HEALTH_X, "Bomb %i: %p at (%i, %i), %i, %i", i, bomb, bomb->position_x, bomb->position_y, bomb->explosion_timeout); //, bomb->fire_timeout);
 		}
 		
 		// players
