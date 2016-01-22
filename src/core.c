@@ -118,6 +118,9 @@ static void core_init_files(void)
 	}
 	
 	core_debug("");
+	core_debug(" +----------------------+");
+	core_debug(" | TURBO BOMBER STARTED |");
+	core_debug(" +----------------------+");
 	core_debug("");
 	core_debug("Log system initialized.");
 }
@@ -127,6 +130,12 @@ static void core_init_files(void)
  */
 static void core_cleanup_files(void)
 {
+	core_debug("");
+	core_debug(" +----------------------+");
+	core_debug(" | TURBO BOMBER STOPPED |");
+	core_debug(" +----------------------+");
+	core_debug("");
+	
 	if(core_file_debug != NULL)
 	{
 		fclose(core_file_debug);

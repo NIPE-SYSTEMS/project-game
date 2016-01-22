@@ -11,7 +11,6 @@
 #include "ai-simulation.h"
 
 static gameplay_field_t gameplay_field[GAMEPLAY_FIELD_WIDTH * GAMEPLAY_FIELD_HEIGHT];
-static char temp = 0;
 
 /**
  * This function fills the field array before the game starts with all 

@@ -2,6 +2,7 @@
 
 #include "ai-core.h"
 #include "ai-pathfinding.h"
+#include "ai-simulation.h"
 #include "gameplay-players.h"
 #include "gameplay.h"
 #include "core.h"
@@ -78,6 +79,17 @@ void ai_core_update(gameplay_players_player_t *player)
 	
 	// debug output
 	ai_jobs_print(player->jobs);
+	
+	if(player->jobs != NULL && player->movement_cooldown == 0)
+	{
+		if(ai_pathfinding_move_to_next(player->position_x, player->position_y, player->jobs->position_x, player->jobs->position_y, &x, &y) != -1)
+		{
+			core_debug("Go to (%i, %i)", x, y);
+			player->position_x = x;
+			player->position_y = y;
+			player->movement_cooldown = player->movement_cooldown_initial;
+		}
+	}
 	
 	// core_debug("Pathfinding: Length: %i", ai_pathfinding_move_to_length(1, 1, 1, 5));
 }

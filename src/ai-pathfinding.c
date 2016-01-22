@@ -139,9 +139,9 @@ int ai_pathfinding_link_tile(int x, int y, int number)
 	
 	// core_debug("Pathfinding: Number %i", number);
 	
-	if(number == 0)
+	if(number == -1)
 	{
-		return 1;
+		return 0;
 	}
 	
 	// try north
@@ -207,11 +207,7 @@ int ai_pathfinding_move_to(int start_x, int start_y, int end_x, int end_y)
 
 int ai_pathfinding_move_to_length(int start_x, int start_y, int end_x, int end_y)
 {
-	int length = ai_pathfinding_move_to(start_x, start_y, end_x, end_y);
-	
-	// core_debug("Pathfinding length: %i (%i, %i) -> (%i, %i)", length, start_x, start_y, end_x, end_y);
-	
-	return length;
+	return ai_pathfinding_move_to(start_x, start_y, end_x, end_y);
 }
 
 int ai_pathfinding_move_to_next(int start_x, int start_y, int end_x, int end_y, int *next_x, int *next_y)
