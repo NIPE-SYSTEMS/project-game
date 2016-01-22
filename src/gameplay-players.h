@@ -2,16 +2,17 @@
 #define __GAMEPLAY_PLAYERS_H__
 
 #define GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN 5
-#define GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN_POWERED 3
+//#define GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN_POWERED 3
 #define GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN 10
 #define GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_POWERED 50
+#define GAMEPLAY_PLAYER_EXPLOSION_SIZE 2
 
 #include "gameplay-items.h"
 
 typedef enum gameplay_players_type_e
 {
 	GAMEPLAY_PLAYERS_TYPE_USER,
-	GAMEPLAY_PLAYERS_TYPE_AI
+	GAMEPLAY_PLAYERS_TYPE_AI,
 } gameplay_players_type_t;
 
 typedef struct gameplay_players_player_s
@@ -23,7 +24,8 @@ typedef struct gameplay_players_player_s
 	int position_x;
 	int placeable_bombs;
 	int placed_bombs;
-	gameplay_items_item_t item;
+	int explosion_size;
+	gameplay_items_item_type_t item;
 	int item_usage_time;
 	int damage_cooldown;
 	int damage_cooldown_initial;
