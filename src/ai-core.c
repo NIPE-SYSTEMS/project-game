@@ -101,7 +101,7 @@ void ai_core_update(gameplay_players_player_t *player)
 	
 	job = ai_jobs_get_optimal(player->jobs, player_user->position_x, player_user->position_y, player->position_x, player->position_y);
 	
-	// ai_jobs_print(player->jobs);
+	ai_jobs_print(player->jobs);
 	
 	if(job != NULL && player->movement_cooldown == 0)
 	{

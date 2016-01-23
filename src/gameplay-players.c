@@ -257,10 +257,9 @@ int gameplay_player_get_player(int position_x, int position_y)
 	return 0;
 }
 
+// NULL targets user player
 void gameplay_players_place_bomb(gameplay_players_player_t *player)
 {
-	// gameplay_players_player_t *player = NULL;
-	
 	if(player == NULL)
 	{
 		player = gameplay_players_get_user();

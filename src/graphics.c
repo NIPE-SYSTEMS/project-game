@@ -36,6 +36,46 @@ static struct graphics_sprite_s graphics_list_of_sprites[] =
 	{GRAPHICS_SPRITES_EXPLOSION_2, "assets/explosion_2.sprite", 5, 3, NULL}
 };
 
+void graphics_show_debug(void)
+{
+	int i = 0;
+	int offset_line = 0;
+	int player_amount = 0;
+	gameplay_players_player_t *player = NULL;
+	int bomb_amount = 0;
+	gameplay_bombs_bomb_t *bomb = NULL;
+	
+	mvprintw(GRAPHICS_DEBUG_Y + offset_line++, GRAPHICS_DEBUG_X, "Players [");
+	player_amount = gameplay_players_amount();
+	for(i = 0; i < player_amount; i++)
+	{
+		player = gameplay_players_get(i);
+		if(player == NULL)
+		{
+			continue;
+		}
+		
+		mvprintw(GRAPHICS_DEBUG_Y + offset_line++, GRAPHICS_DEBUG_X + 2, "%s { h: %i, m: %i (%i), p: (%i, %i), b: %i (%i), e: %i, d: %i (%i) }", ((player->type == GAMEPLAY_PLAYERS_TYPE_AI)?("AI  "):("USER")), player->health_points, player->movement_cooldown, player->movement_cooldown_initial, player->position_x, player->position_y, player->placed_bombs, player->placeable_bombs, player->explosion_radius, player->damage_cooldown, player->damage_cooldown_initial);
+	}
+	mvprintw(GRAPHICS_DEBUG_Y + offset_line++, GRAPHICS_DEBUG_X, "]");
+	
+	offset_line++;
+	
+	mvprintw(GRAPHICS_DEBUG_Y + offset_line++, GRAPHICS_DEBUG_X, "Bombs [");
+	bomb_amount = gameplay_bombs_amount();
+	for(i = 0; i < bomb_amount; i++)
+	{
+		bomb = gameplay_bombs_get(i);
+		if(bomb == NULL)
+		{
+			continue;
+		}
+		
+		mvprintw(GRAPHICS_DEBUG_Y + offset_line++, GRAPHICS_DEBUG_X + 2, "{ o: %s, p: (%i, %i), e: %i }", ((bomb->owner->type == GAMEPLAY_PLAYERS_TYPE_AI)?("AI"):("USER")), bomb->position_x, bomb->position_y, bomb->explosion_timeout);
+	}
+	mvprintw(GRAPHICS_DEBUG_Y + offset_line++, GRAPHICS_DEBUG_X, "]");
+}
+
 /**
  * This function renders a sprite at a given position. It also can handle
  * transparency.
@@ -315,6 +355,9 @@ void graphics_game_over_function(void)
  */
 void graphics_main(void)
 {
+	
+	int player_amount = 0;
+	gameplay_players_player_t *player = NULL;
 	//graphics_get_arrays ();
 	//graphics_get_arrays(); //Test by Jonas
 	
@@ -338,11 +381,7 @@ void graphics_main(void)
 		int render_x = 0;
 		int render_y = 0;
 		// int hearts = 0;
-		int player_amount = 0;
-		gameplay_players_player_t *player = NULL;
 		gameplay_field_t *gameplay_field = NULL;
-		int bomb_amount = 0;
-		gameplay_bombs_bomb_t *bomb = NULL;
 		
 		gameplay_field = gameplay_get_field();
 		
@@ -387,32 +426,7 @@ void graphics_main(void)
 		
 		// debug informations
 		attron(COLOR_PAIR(2));
-		mvprintw(GRAPHICS_HEALTH_Y, GRAPHICS_HEALTH_X, "Debug informations:");
-		mvprintw(GRAPHICS_HEALTH_Y + 1, GRAPHICS_HEALTH_X + 4, "Health: %i", player->health_points);
-		mvprintw(GRAPHICS_HEALTH_Y + 2, GRAPHICS_HEALTH_X + 4, "Movement cooldown: %i", player->movement_cooldown);
-		mvprintw(GRAPHICS_HEALTH_Y + 3, GRAPHICS_HEALTH_X + 4, "Movement cooldown initial: %i", player->movement_cooldown_initial);
-		mvprintw(GRAPHICS_HEALTH_Y + 4, GRAPHICS_HEALTH_X + 4, "Position(x): %i", player->position_x);
-		mvprintw(GRAPHICS_HEALTH_Y + 5, GRAPHICS_HEALTH_X + 4, "Position(y): %i", player->position_y);
-		mvprintw(GRAPHICS_HEALTH_Y + 6, GRAPHICS_HEALTH_X + 4, "Placeable Bombs: %i", player->placeable_bombs);
-		mvprintw(GRAPHICS_HEALTH_Y + 7, GRAPHICS_HEALTH_X + 4, "Placed Bombs: %i", player->placed_bombs);
-		mvprintw(GRAPHICS_HEALTH_Y + 8, GRAPHICS_HEALTH_X + 4, "Item: %i", player->item);
-		mvprintw(GRAPHICS_HEALTH_Y + 9, GRAPHICS_HEALTH_X + 4, "Item usage time: %i", player->item_usage_time);
-		mvprintw(GRAPHICS_HEALTH_Y + 10, GRAPHICS_HEALTH_X + 4, "Damage cooldown: %i", player->damage_cooldown);
-		mvprintw(GRAPHICS_HEALTH_Y + 11, GRAPHICS_HEALTH_X + 4, "Damage cooldown initial: %i", player->damage_cooldown_initial);
-		mvprintw(GRAPHICS_HEALTH_Y + 12, GRAPHICS_HEALTH_X + 4, "Animation counter: %i", graphics_animation_counter);
-		attron(COLOR_PAIR(1));
-		
-		bomb_amount = gameplay_bombs_amount();
-		for(i = 0; i < bomb_amount; i++)
-		{
-			bomb = gameplay_bombs_get(i);
-			if(bomb == NULL)
-			{
-				continue;
-			}
-			
-			mvprintw(GRAPHICS_HEALTH_Y + 13 + i, GRAPHICS_HEALTH_X, "Bomb %i: %p at (%i, %i), %i", i, bomb, bomb->position_x, bomb->position_y, bomb->explosion_timeout); //, bomb->fire_timeout);
-		}
+		graphics_show_debug();
 		
 		// players
 		player_amount = gameplay_players_amount();

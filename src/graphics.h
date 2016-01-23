@@ -11,6 +11,8 @@
 #define GRAPHICS_HEALTH_OFFSET_Y 2
 #define GRAPHICS_SPINNING_ANIMATION_X 99
 #define GRAPHICS_SPINNING_ANIMATION_Y 36
+#define GRAPHICS_DEBUG_X 75
+#define GRAPHICS_DEBUG_Y 1
 
 typedef enum graphics_sprites_e
 {
@@ -41,6 +43,7 @@ typedef struct graphics_sprite_s
 	char *data;
 } graphics_sprite_t;
 
+void graphics_show_debug(void);
 void graphics_read_arrays(void);
 
 void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t field, char transparency);
