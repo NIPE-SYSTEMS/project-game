@@ -411,7 +411,7 @@ void graphics_main(void)
 				continue;
 			}
 			
-			mvprintw(GRAPHICS_HEALTH_Y + 13 + i, GRAPHICS_HEALTH_X, "Bomb %i: %p at (%i, %i), %i, %i", i, bomb, bomb->position_x, bomb->position_y, bomb->explosion_timeout); //, bomb->fire_timeout);
+			mvprintw(GRAPHICS_HEALTH_Y + 13 + i, GRAPHICS_HEALTH_X, "Bomb %i: %p at (%i, %i), %i", i, bomb, bomb->position_x, bomb->position_y, bomb->explosion_timeout); //, bomb->fire_timeout);
 		}
 		
 		// players
