@@ -257,14 +257,18 @@ int gameplay_player_get_player(int position_x, int position_y)
 	return 0;
 }
 
-void gameplay_players_place_bomb(void)
+void gameplay_players_place_bomb(gameplay_players_player_t *player)
 {
-	gameplay_players_player_t *player = NULL;
+	// gameplay_players_player_t *player = NULL;
 	
-	player = gameplay_players_get_user();
 	if(player == NULL)
 	{
-		core_error("Failed to find user controlled player.");
+		player = gameplay_players_get_user();
+	}
+	
+	if(player == NULL)
+	{
+		core_error("Invalid player.");
 		return;
 	}
 	

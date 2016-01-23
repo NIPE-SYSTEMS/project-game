@@ -181,7 +181,7 @@ void gameplay_key(char gameplay_pressed_key)
 		}
 		case ' ':
 		{
-			gameplay_players_place_bomb();
+			gameplay_players_place_bomb(NULL);
 			break;
 		}
 		case 'f':

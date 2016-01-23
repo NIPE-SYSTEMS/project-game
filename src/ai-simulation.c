@@ -78,10 +78,10 @@ void ai_simulation_explosion(int position_x, int position_y, int explosion_radiu
 	int x = 0;
 	int y = 0;
 	
-	if(simulated == 0)
-	{
-		core_debug("Simulate at (%i, %i)", position_x, position_y);
-	}
+	// if(simulated == 0)
+	// {
+	// 	core_debug("Simulate at (%i, %i)", position_x, position_y);
+	// }
 	
 	for(x = position_x; x < GAMEPLAY_FIELD_WIDTH && x < position_x + explosion_radius && gameplay_get_walkable(x, position_y); x++)
 	{
