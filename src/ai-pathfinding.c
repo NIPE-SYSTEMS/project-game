@@ -195,6 +195,12 @@ int ai_pathfinding_move_to(int start_x, int start_y, int end_x, int end_y, int i
 		return -1;
 	}
 	
+	if(start_x == end_x && start_y == end_y)
+	{
+		GAMEPLAY_FIELD(field, start_x, start_y).ai_pathfinding_next = &GAMEPLAY_FIELD(field, start_x, start_y);
+		return 0;
+	}
+	
 	ai_pathfinding_reset();
 	
 	if(ai_pathfinding_fill_numbers(start_x, start_y, end_x, end_y, ignore_simulated) < 0)

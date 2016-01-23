@@ -105,7 +105,7 @@ void ai_jobs_print(ai_jobs_t *root)
 		core_debug("    (%s, %i, %i, %7.2f)", serialized_type[job_iterator->type], job_iterator->position_x, job_iterator->position_y, job_iterator->score);
 	}
 	
-	core_debug("End of Jobs");
+	// core_debug("End of Jobs");
 }
 
 void ai_jobs_free(ai_jobs_t **root)

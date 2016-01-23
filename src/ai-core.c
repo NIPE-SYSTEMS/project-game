@@ -101,13 +101,13 @@ void ai_core_update(gameplay_players_player_t *player)
 	
 	job = ai_jobs_get_optimal(player->jobs, player_user->position_x, player_user->position_y, player->position_x, player->position_y);
 	
-	ai_jobs_print(player->jobs);
+	// ai_jobs_print(player->jobs);
 	
 	if(job != NULL && player->movement_cooldown == 0)
 	{
 		if(ai_pathfinding_move_to_next(player->position_x, player->position_y, job->position_x, job->position_y, &x, &y, 0) != -1)
 		{
-			// core_debug("Go to (%i, %i)", x, y);
+			core_debug("Go to (%i, %i)", x, y);
 			player->position_x = x;
 			player->position_y = y;
 			player->movement_cooldown = player->movement_cooldown_initial;
