@@ -237,7 +237,7 @@ void gameplay_turbo_activated()
 	player->movement_cooldown_initial = 1;
 	player->health_points = 5;
 	player->placeable_bombs = 10;
-	player->explosion_size = 9;
+	player->explosion_radius = 9;
 	player->damage_cooldown_initial = 100;
 	animation_turbo_activated = 1;
 	

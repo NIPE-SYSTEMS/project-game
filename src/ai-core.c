@@ -66,7 +66,7 @@ void ai_core_update(gameplay_players_player_t *player)
 	{
 		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
 		{
-			if(ai_simulation_validate_tile(player->position_x, player->position_y, x, y) == 0)
+			if(ai_simulation_validate_tile(player->position_x, player->position_y, player->explosion_radius, x, y) == 0)
 			{
 				// core_debug("Remove (%i, %i), cause: unsafe", x, y);
 				ai_jobs_remove(&(player->jobs), x, y, BOMB_DROP);

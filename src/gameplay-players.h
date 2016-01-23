@@ -5,7 +5,7 @@
 //#define GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN_POWERED 3
 #define GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN 10
 #define GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_POWERED 50
-#define GAMEPLAY_PLAYER_EXPLOSION_SIZE 2
+#define GAMEPLAY_PLAYER_EXPLOSION_RADIUS 2
 
 #include "gameplay-items.h"
 #include "ai-jobs.h"
@@ -25,7 +25,7 @@ typedef struct gameplay_players_player_s
 	int position_x;
 	int placeable_bombs;
 	int placed_bombs;
-	int explosion_size;
+	int explosion_radius;
 	gameplay_items_item_type_t item;
 	int item_usage_time;
 	int damage_cooldown;

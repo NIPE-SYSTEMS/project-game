@@ -75,6 +75,8 @@ void gameplay_bombs_remove(int position_x, int position_y)
 		return;
 	}
 	
+	core_debug("Remove bomb at (%i, %i)", position_x, position_y);
+	
 	// give the player the ability to place another bomb
 	current->owner->placed_bombs--;
 	
@@ -107,18 +109,16 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 	
 	gameplay_bombs_bomb_t *bomb = NULL;
 	
-	for(bomb = gameplay_bombs_bombs; bomb != NULL; bomb = bomb->next)
+	bomb = gameplay_bombs_get_bomb(position_x, position_y);
+	if(bomb == NULL)
 	{
-		if(bomb->position_x == position_x && bomb->position_y == position_y)
-		{
-			break;
-		}
+		return;
 	}
 	
-	for(x = position_x; x < GAMEPLAY_FIELD_WIDTH && x < position_x + bomb->owner->explosion_size; x++)
+	for(x = position_x; x < GAMEPLAY_FIELD_WIDTH && x < position_x + bomb->owner->explosion_radius; x++)
 	{
 		gameplay_players_harm(x, position_y);
-		gameplay_bombs_test_bomb_explosion(x, position_y);
+		gameplay_bombs_trigger_explosion(x, position_y);
 		if(!gameplay_get_walkable(x, position_y))
 		{
 			gameplay_destroy(x, position_y);
@@ -133,10 +133,10 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 		gameplay_set_fire(x, position_y);
 	}
 	
-	for(x = position_x - 1; x > 0 && x > position_x - bomb->owner->explosion_size; x--)
+	for(x = position_x - 1; x > 0 && x > position_x - bomb->owner->explosion_radius; x--)
 	{
 		gameplay_players_harm(x, position_y);
-		gameplay_bombs_test_bomb_explosion(x, position_y);
+		gameplay_bombs_trigger_explosion(x, position_y);
 		if(!gameplay_get_walkable(x, position_y))
 		{
 			gameplay_destroy(x, position_y);
@@ -151,10 +151,10 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 		gameplay_set_fire(x, position_y);
 	}
 	
-	for(y = position_y; y < GAMEPLAY_FIELD_HEIGHT && y < position_y + bomb->owner->explosion_size; y++)
+	for(y = position_y; y < GAMEPLAY_FIELD_HEIGHT && y < position_y + bomb->owner->explosion_radius; y++)
 	{
 		gameplay_players_harm(position_x, y);
-		gameplay_bombs_test_bomb_explosion(position_x, y);
+		gameplay_bombs_trigger_explosion(position_x, y);
 		if(!gameplay_get_walkable(position_x, y))
 		{
 			gameplay_destroy(position_x, y);
@@ -169,10 +169,10 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 		gameplay_set_fire(position_x, y);
 	}
 	
-	for(y = position_y - 1; y > 0 && y > position_y - bomb->owner->explosion_size; y--)
+	for(y = position_y - 1; y > 0 && y > position_y - bomb->owner->explosion_radius; y--)
 	{
 		gameplay_players_harm(position_x, y);
-		gameplay_bombs_test_bomb_explosion(position_x, y);
+		gameplay_bombs_trigger_explosion(position_x, y);
 		if(!gameplay_get_walkable(position_x, y))
 		{
 			gameplay_destroy(position_x, y);
@@ -211,9 +211,9 @@ static void gameplay_bombs_bomb_update(gameplay_bombs_bomb_t *bomb)
 	{
 		bomb->fire_timeout--;
 	}
+	*/
 	
-	ai_simulation_explosion(bomb->position_x, bomb->position_y, 0);
-	}*/
+	ai_simulation_explosion(bomb->position_x, bomb->position_y, bomb->owner->explosion_radius, 0);
 }
 
 void gameplay_bombs_update(void)
@@ -230,6 +230,8 @@ void gameplay_bombs_update(void)
 		next_backup = current->next;
 		gameplay_bombs_bomb_update(current);
 	}
+	
+	ai_simulation_copy_fire();
 }
 
 int gameplay_bombs_amount(void)
@@ -378,7 +380,7 @@ int gameplay_bombs_get_fire(int position_x, int position_y)
 	return 0;
 }*/
 
-void gameplay_bombs_test_bomb_explosion(int position_x, int position_y)
+void gameplay_bombs_trigger_explosion(int position_x, int position_y)
 {
 	if(gameplay_bombs_get_bomb_placed(position_x, position_y) ==1)
 	{

@@ -318,7 +318,7 @@ void graphics_main(void)
 	//graphics_get_arrays(); //Test by Jonas
 	
 	//I believe, that the Ai can already make decisions before the player gets to see the field. That is why the start screen should delay the entire game and not just the rendering.
-	if (graphics_startscreen_counter >= graphics_frames_for_startscreen && graphics_animation_counter < 100)
+	if (graphics_startscreen_counter >= graphics_frames_for_startscreen && graphics_animation_counter < 2000)
 	{
 		//graphics_read_array(5,3); //Test
 		

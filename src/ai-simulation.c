@@ -73,35 +73,65 @@ void ai_simulation_explosion_set_unwalkable(int position_x, int position_y, char
 
 // simulates an explosion. after that function it is possible to test where the
 // explosion will be. this can be superpositioned (called multiple times).
-void ai_simulation_explosion(int position_x, int position_y, char simulated)
+void ai_simulation_explosion(int position_x, int position_y, int explosion_radius, char simulated)
 {
 	int x = 0;
 	int y = 0;
 	
-	for(x = position_x; x < GAMEPLAY_FIELD_WIDTH && gameplay_get_walkable(x, position_y); x++)
+	if(simulated == 0)
+	{
+		core_debug("Simulate at (%i, %i)", position_x, position_y);
+	}
+	
+	for(x = position_x; x < GAMEPLAY_FIELD_WIDTH && x < position_x + explosion_radius && gameplay_get_walkable(x, position_y); x++)
 	{
 		ai_simulation_explosion_set_unwalkable(x, position_y, simulated);
 	}
 	
-	for(x = position_x - 1; x > 0 && gameplay_get_walkable(x, position_y); x--)
+	for(x = position_x - 1; x > 0 && x > position_x - explosion_radius && gameplay_get_walkable(x, position_y); x--)
 	{
 		ai_simulation_explosion_set_unwalkable(x, position_y, simulated);
 	}
 	
-	for(y = position_y; y < GAMEPLAY_FIELD_HEIGHT && gameplay_get_walkable(position_x, y); y++)
+	for(y = position_y; y < GAMEPLAY_FIELD_HEIGHT && y < position_y + explosion_radius && gameplay_get_walkable(position_x, y); y++)
 	{
 		ai_simulation_explosion_set_unwalkable(position_x, y, simulated);
 	}
 	
-	for(y = position_y - 1; y > 0 && gameplay_get_walkable(position_x, y); y--)
+	for(y = position_y - 1; y > 0 && y > position_y - explosion_radius && gameplay_get_walkable(position_x, y); y--)
 	{
 		ai_simulation_explosion_set_unwalkable(position_x, y, simulated);
 	}
 }
 
+void ai_simulation_copy_fire(void)
+{
+	int x = 0;
+	int y = 0;
+	gameplay_field_t *field = NULL;
+	
+	field = gameplay_get_field();
+	
+	if(field == NULL)
+	{
+		return;
+	}
+	
+	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
+	{
+		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
+		{
+			if(GAMEPLAY_FIELD(field, x, y).fire == 1)
+			{
+				ai_simulation_explosion_set_unwalkable(x, y, 0);
+			}
+		}
+	}
+}
+
 // validates if a tile is valid. on a valid tile may be placed a bomb. the
 // validation tests if there are spots to hide from the explosion
-int ai_simulation_validate_tile(int position_x_player, int position_y_player, int position_x, int position_y)
+int ai_simulation_validate_tile(int position_x_player, int position_y_player, int explosion_radius, int position_x, int position_y)
 {
 	int x = 0;
 	int y = 0;
@@ -116,7 +146,7 @@ int ai_simulation_validate_tile(int position_x_player, int position_y_player, in
 	}
 	
 	ai_simulation_reset_simulated();
-	ai_simulation_explosion(position_x, position_y, 1);
+	ai_simulation_explosion(position_x, position_y, explosion_radius, 1);
 	
 	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
 	{

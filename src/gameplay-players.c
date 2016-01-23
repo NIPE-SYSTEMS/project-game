@@ -26,7 +26,7 @@ void gameplay_players_add(int position_x, int position_y, gameplay_players_type_
 	player->position_y = position_y;
 	player->placeable_bombs = 3;
 	player->placed_bombs = 0;
-	player->explosion_size = GAMEPLAY_PLAYER_EXPLOSION_SIZE;
+	player->explosion_radius = GAMEPLAY_PLAYER_EXPLOSION_RADIUS;
 	player->item = EMPTY;
 	player->item_usage_time = 0;
 	player->damage_cooldown = 0;
@@ -348,7 +348,7 @@ void gameplay_players_use_item(void)
 		case FIRE:
 		{
 			core_debug("Using fire power up.");
-			player->explosion_size++;
+			player->explosion_radius++;
 			player->item = EMPTY;
 			break;
 		}
