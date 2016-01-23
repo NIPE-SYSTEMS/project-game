@@ -47,6 +47,7 @@ void core_main(void)
 	core_running = 1;
 	int character = 0;
 	gameplay_field_init();
+	//graphics_read_arrays();
 	
 	while(core_running == 1)
 	{
@@ -62,7 +63,7 @@ void core_main(void)
 					core_debug("Invoked quit event.");
 					core_running = 0;
 					break;
-				case 'w': case 'a': case 's': case 'd': case ' ': case 'f':
+				case 'w': case 'a': case 's': case 'd': case ' ': case 'f': case 't': case 'u': case 'r': case 'b': case 'o':
 					gameplay_key(character);
 					break;
 				default:
@@ -85,7 +86,6 @@ void core_main(void)
 void core_cleanup(void)
 {
 	gameplay_cleanup();
-	
 	endwin();
 	
 #ifdef DEBUG

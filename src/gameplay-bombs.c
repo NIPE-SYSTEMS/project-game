@@ -4,6 +4,8 @@
 #include "gameplay-players.h"
 #include "core.h"
 #include "ai-simulation.h"
+#include "gameplay-items.h"
+#include "gameplay.h"
 
 gameplay_bombs_bomb_t *gameplay_bombs_bombs = NULL;
 
@@ -22,7 +24,7 @@ void gameplay_bombs_add(gameplay_players_player_t *player, int position_x, int p
 	bomb->position_x = position_x;
 	bomb->position_y = position_y;
 	bomb->explosion_timeout = GAMEPLAY_BOMBS_EXPLOSION_TIMEOUT;
-	bomb->fire_timeout = GAMEPLAY_BOMBS_FIRE_TIMEOUT;
+	//bomb->fire_timeout = GAMEPLAY_BOMBS_FIRE_TIMEOUT;
 	bomb->owner = player;
 	bomb->next = NULL;
 	
@@ -103,55 +105,94 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 	int x = 0;
 	int y = 0;
 	
-	for(x = position_x; x < GAMEPLAY_FIELD_WIDTH; x++)
+	gameplay_bombs_bomb_t *bomb = NULL;
+	
+	for(bomb = gameplay_bombs_bombs; bomb != NULL; bomb = bomb->next)
+	{
+		if(bomb->position_x == position_x && bomb->position_y == position_y)
+		{
+			break;
+		}
+	}
+	
+	for(x = position_x; x < GAMEPLAY_FIELD_WIDTH && x < position_x + bomb->owner->explosion_size; x++)
 	{
 		gameplay_players_harm(x, position_y);
-		
+		gameplay_bombs_test_bomb_explosion(x, position_y);
 		if(!gameplay_get_walkable(x, position_y))
 		{
 			gameplay_destroy(x, position_y);
+			gameplay_set_fire(x, position_y);
 			break;
 		}
+		else if(gameplay_items_test_remove(x, position_y) == 1)
+		{
+			gameplay_set_fire(x, position_y);
+			break;
+		}
+		gameplay_set_fire(x, position_y);
 	}
 	
-	for(x = position_x - 1; x > 0; x--)
+	for(x = position_x - 1; x > 0 && x > position_x - bomb->owner->explosion_size; x--)
 	{
 		gameplay_players_harm(x, position_y);
-		
+		gameplay_bombs_test_bomb_explosion(x, position_y);
 		if(!gameplay_get_walkable(x, position_y))
 		{
 			gameplay_destroy(x, position_y);
+			gameplay_set_fire(x, position_y);
 			break;
 		}
+		else if(gameplay_items_test_remove(x, position_y) == 1)
+		{
+			gameplay_set_fire(x, position_y);
+			break;
+		}
+		gameplay_set_fire(x, position_y);
 	}
 	
-	for(y = position_y; y < GAMEPLAY_FIELD_HEIGHT; y++)
+	for(y = position_y; y < GAMEPLAY_FIELD_HEIGHT && y < position_y + bomb->owner->explosion_size; y++)
 	{
 		gameplay_players_harm(position_x, y);
-		
+		gameplay_bombs_test_bomb_explosion(position_x, y);
 		if(!gameplay_get_walkable(position_x, y))
 		{
 			gameplay_destroy(position_x, y);
+			gameplay_set_fire(position_x, y);
 			break;
 		}
+		else if(gameplay_items_test_remove(position_x, y) == 1)
+		{
+			gameplay_set_fire(position_x, y);
+			break;
+		}
+		gameplay_set_fire(position_x, y);
 	}
 	
-	for(y = position_y - 1; y > 0; y--)
+	for(y = position_y - 1; y > 0 && y > position_y - bomb->owner->explosion_size; y--)
 	{
 		gameplay_players_harm(position_x, y);
-		
+		gameplay_bombs_test_bomb_explosion(position_x, y);
 		if(!gameplay_get_walkable(position_x, y))
 		{
 			gameplay_destroy(position_x, y);
+			gameplay_set_fire(position_x, y);
 			break;
 		}
+		else if(gameplay_items_test_remove(position_x, y) == 1)
+		{
+			gameplay_set_fire(position_x, y);
+			break;
+		}
+		gameplay_set_fire(position_x, y);
 	}
 }
 
 static void gameplay_bombs_bomb_update(gameplay_bombs_bomb_t *bomb)
 {
-	if(bomb->explosion_timeout == 0 && bomb->fire_timeout == 0)
+	if(bomb->explosion_timeout == 0 )	//&& bomb->fire_timeout == 0)
 	{
+		gameplay_bombs_explosion(bomb->position_x, bomb->position_y);
 		gameplay_bombs_remove(bomb->position_x, bomb->position_y);
 		return;
 	}
@@ -160,7 +201,7 @@ static void gameplay_bombs_bomb_update(gameplay_bombs_bomb_t *bomb)
 	{
 		bomb->explosion_timeout--;
 	}
-	
+	/*
 	if(bomb->explosion_timeout == 0 && bomb->fire_timeout == GAMEPLAY_BOMBS_FIRE_TIMEOUT)
 	{
 		gameplay_bombs_explosion(bomb->position_x, bomb->position_y);
@@ -172,6 +213,7 @@ static void gameplay_bombs_bomb_update(gameplay_bombs_bomb_t *bomb)
 	}
 	
 	ai_simulation_explosion(bomb->position_x, bomb->position_y, 0);
+	}*/
 }
 
 void gameplay_bombs_update(void)
@@ -227,7 +269,7 @@ int gameplay_bombs_get_bomb_placed(int position_x, int position_y)
 	
 	for(current = gameplay_bombs_bombs; current != NULL; current = current->next)
 	{
-		if(current->position_x == position_x && current->position_y == position_y && current->explosion_timeout > 0 && current->fire_timeout > 0)
+		if(current->position_x == position_x && current->position_y == position_y && current->explosion_timeout > 0)//current->fire_timeout > 0)
 		{
 			return 1;
 		}
@@ -236,7 +278,7 @@ int gameplay_bombs_get_bomb_placed(int position_x, int position_y)
 	return 0;
 }
 
-static gameplay_bombs_bomb_t *gameplay_bombs_get_bomb(int position_x, int position_y)
+gameplay_bombs_bomb_t *gameplay_bombs_get_bomb(int position_x, int position_y)
 {
 	gameplay_bombs_bomb_t *current = NULL;
 	
@@ -250,7 +292,7 @@ static gameplay_bombs_bomb_t *gameplay_bombs_get_bomb(int position_x, int positi
 	
 	return NULL;
 }
-
+/*
 int gameplay_bombs_get_fire(int position_x, int position_y)
 {
 	gameplay_bombs_bomb_t *bomb = NULL;
@@ -334,4 +376,13 @@ int gameplay_bombs_get_fire(int position_x, int position_y)
 	}
 	
 	return 0;
+}*/
+
+void gameplay_bombs_test_bomb_explosion(int position_x, int position_y)
+{
+	if(gameplay_bombs_get_bomb_placed(position_x, position_y) ==1)
+	{
+		gameplay_bombs_bomb_t *bomb = gameplay_bombs_get_bomb(position_x, position_y);
+		bomb->explosion_timeout = 0;
+	}
 }

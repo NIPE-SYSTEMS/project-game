@@ -9,8 +9,10 @@
 #include "core.h"
 #include "random-drop.h"
 #include "ai-simulation.h"
+#include "gameplay-items.h"
 
 static gameplay_field_t gameplay_field[GAMEPLAY_FIELD_WIDTH * GAMEPLAY_FIELD_HEIGHT];
+static gameplay_turbo_t gameplay_turbo;
 
 /**
  * This function fills the field array before the game starts with all 
@@ -35,6 +37,8 @@ void gameplay_field_init(void)
 			GAMEPLAY_FIELD(gameplay_field, x, y).ai_pathfinding_next = NULL;
 			GAMEPLAY_FIELD(gameplay_field, x, y).ai_simulation_walkable = 1;
 			GAMEPLAY_FIELD(gameplay_field, x, y).ai_simulation_walkable_simulated = 1;
+			GAMEPLAY_FIELD(gameplay_field, x, y).fire = 0;
+			GAMEPLAY_FIELD(gameplay_field, x, y).fire_despawn_timer = 0;
 		}
 	}
 	
@@ -82,6 +86,12 @@ void gameplay_field_init(void)
 	GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 3).type = FLOOR; // remove wall at (width - 2, height - 3)
 	
 	gameplay_players_initialize();
+	
+	gameplay_turbo.t = 0;
+	gameplay_turbo.u = 0;
+	gameplay_turbo.r = 0;
+	gameplay_turbo.b = 0;
+	gameplay_turbo.o = 0;
 }
 
 void gameplay_players_initialize(void)
@@ -96,6 +106,7 @@ void gameplay_cleanup(void)
 {
 	gameplay_players_cleanup();
 	gameplay_bombs_cleanup();
+	gameplay_items_cleanup();
 }
 
 int gameplay_get_walkable(int position_x, int position_y)
@@ -103,25 +114,26 @@ int gameplay_get_walkable(int position_x, int position_y)
 	return (GAMEPLAY_FIELD(gameplay_field, position_x, position_y).type == FLOOR);
 }
 
-// also removes the item from the tile
+/* also removes the item from the tile
 gameplay_items_item_t gameplay_get_item(int position_x, int position_y)
-{
-	gameplay_items_item_t item = EMPTY;
+	{
+		gameplay_items_item_t item = EMPTY;
 	
 	item = GAMEPLAY_FIELD(gameplay_field, position_x, position_y).item;
 	GAMEPLAY_FIELD(gameplay_field, position_x, position_y).item = EMPTY;
 	
 	return item;
-}
+}*/
 
 void gameplay_destroy(int position_x, int position_y)
 {
 	random_drop_t drop_list[] =
 	{
-		{ EMPTY, 0.5 },
+		{ EMPTY, 0.4 },
 		{ HEALTH, 0.1 },
 		{ EXTRA_BOMB, 0.2 },
-		{ SPEED, 0.1 },
+		{FIRE, 0.2},
+		{ SPEED, 0.2 },
 		{ SHIELD, 0.1 }
 	};
 	size_t drop_list_amount = sizeof(drop_list) / sizeof(drop_list[0]);
@@ -131,13 +143,9 @@ void gameplay_destroy(int position_x, int position_y)
 	{
 		GAMEPLAY_FIELD(gameplay_field, position_x, position_y).type = FLOOR;
 		picked_drop = random_drop_choose(drop_list, drop_list_amount);
-		if(picked_drop != NULL)
+		if(picked_drop != NULL && picked_drop->id != EMPTY)
 		{
-			GAMEPLAY_FIELD(gameplay_field, position_x, position_y).item = picked_drop->id;
-		}
-		else
-		{
-			GAMEPLAY_FIELD(gameplay_field, position_x, position_y).item = EMPTY;
+			gameplay_items_add_item(picked_drop->id, position_x, position_y);
 		}
 	}
 }
@@ -180,17 +188,93 @@ void gameplay_key(char gameplay_pressed_key)
 			gameplay_players_use_item();
 			break;
 		}
+		case 't':
+		{
+			gameplay_turbo.t =1;
+			break;
+		}
+		case 'u':
+		{
+			if(gameplay_turbo.t == 1)
+			{
+				gameplay_turbo.u = 1;
+			}
+			break;
+		}
+		case 'r':
+		{
+			if(gameplay_turbo.u == 1)
+			{
+				gameplay_turbo.r = 1;
+			}
+			break;
+		}
+		case 'b':
+		{
+			if(gameplay_turbo.r == 1)
+			{
+				gameplay_turbo.b = 1;
+			}
+			break;
+		}
+		case 'o':
+		{
+			if(gameplay_turbo.b == 1)
+			{
+				gameplay_turbo.o = 1;
+				gameplay_turbo_activated();
+			}
+			break;
+		}
 	}
 }
 
+
+void gameplay_turbo_activated()
+{
+	gameplay_players_player_t *player = NULL;
+	player = gameplay_players_get_user();
+	player->movement_cooldown_initial = 1;
+	player->health_points = 5;
+	player->placeable_bombs = 10;
+	player->explosion_size = 9;
+	player->damage_cooldown_initial = 100;
+	animation_turbo_activated = 1;
+	
+	gameplay_turbo.t = 0;
+	gameplay_turbo.u = 0;
+	gameplay_turbo.r = 0;
+	gameplay_turbo.b = 0;
+	gameplay_turbo.o = 0;
+}
 /**
  * This function changes roundly changed values like item timers.
  */
 void gameplay_update(void)
 {
+	int y;
+	int x;
+	
 	gameplay_players_update();
 	gameplay_bombs_update();
 	gameplay_players_ai_update();
+	gameplay_items_item_update();
+	
+	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
+	{
+		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
+		{
+			if(GAMEPLAY_FIELD(gameplay_field,x,y).fire == 1)
+			{
+				GAMEPLAY_FIELD(gameplay_field, x, y).fire_despawn_timer--;
+				gameplay_players_harm(x,y);
+				if(GAMEPLAY_FIELD(gameplay_field, x, y).fire_despawn_timer == 0)
+				{
+					GAMEPLAY_FIELD(gameplay_field, x, y).fire = 0;
+				}
+			}
+		}
+	}
 }
 
 gameplay_field_t *gameplay_get_field(void)
@@ -198,26 +282,24 @@ gameplay_field_t *gameplay_get_field(void)
 	return gameplay_field;
 }
 
-/*
+void gameplay_set_fire(int position_x, int position_y)
+{
+	if(GAMEPLAY_FIELD(gameplay_field, position_x, position_y).type != FLOOR)
+	{
+		return;
+	}
+	GAMEPLAY_FIELD(gameplay_field, position_x, position_y).fire = 1;
+	GAMEPLAY_FIELD(gameplay_field, position_x, position_y).fire_despawn_timer = GAMEPLAY_FIRE_DESPAWN;
+}
 
-								-filling field
-								-test_move
-								-properties of a map tile (Array von diesem structtyp erstellen für jedes Feld also :
-									struct field_properties field[FIELD_HEIGHT][FIELD_WIDTH])
-									dadurch wird ein Array an Strukturen erstellt in dem alle Felder existieren
-									erhalte dann ein Array an Feldern und kann in diesem direkt die Daten von jedem Feld abspeichern
-									map tile type as number or letter for example X for undestroyable walls or something else
-								-properties of a player
-								-item Array/Struct; (Colors[] ähnlich aus der BMP Aufgabe, also jedem Item eine zahl in dem Array zuordnen und diese dann in dem propertie struct abspeichern)
-								-wir brauchen noch Design für den Fall dass Spieler und Bombe gleichzeitSig auf einem Feld befinden
-								-items destroyable by bombs
-								-field type "item"
-								-roundly function to check up and change roundly changed values like item times etc.
-								-function "item pick up" for case that a field got an item
-								-player damage cooldown
--random drops
--movementcooldown bei speed?!
--damagecooldown bei shield?!
-
-
-*/
+int gameplay_get_fire(int position_x, int position_y)
+{
+	if(GAMEPLAY_FIELD(gameplay_field, position_x, position_y).fire == 1)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}

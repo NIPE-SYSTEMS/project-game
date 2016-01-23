@@ -26,6 +26,7 @@ void gameplay_players_add(int position_x, int position_y, gameplay_players_type_
 	player->position_y = position_y;
 	player->placeable_bombs = 3;
 	player->placed_bombs = 0;
+	player->explosion_size = GAMEPLAY_PLAYER_EXPLOSION_SIZE;
 	player->item = EMPTY;
 	player->item_usage_time = 0;
 	player->damage_cooldown = 0;
@@ -279,6 +280,8 @@ void gameplay_players_place_bomb(void)
 		return;
 	}
 	
+	gameplay_items_test_remove(player->position_x, player->position_y);
+	
 	core_debug("Placing bomb at (%i, %i)", player->position_x, player->position_y);
 	gameplay_bombs_add(player, player->position_x, player->position_y);
 	player->placed_bombs++;
@@ -287,7 +290,7 @@ void gameplay_players_place_bomb(void)
 void gameplay_players_use_item(void)
 {
 	gameplay_players_player_t *player = NULL;
-	gameplay_items_item_t item = EMPTY;
+	gameplay_items_item_type_t item = EMPTY;
 	
 	player = gameplay_players_get_user();
 	if(player == NULL)
@@ -296,7 +299,8 @@ void gameplay_players_use_item(void)
 		return;
 	}
 	
-	item = gameplay_get_item(player->position_x, player->position_y);
+	item = gameplay_items_get_item_type(player->position_x, player->position_y);
+	gameplay_items_remove(player->position_x, player->position_y);
 	if(item != EMPTY)
 	{
 		player->item = item;
@@ -326,7 +330,11 @@ void gameplay_players_use_item(void)
 		{
 			core_debug("Using speed power up.");
 			player->movement_cooldown = 0;
-			player->movement_cooldown_initial = GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN_POWERED;
+			if(player->movement_cooldown_initial > 3)
+			{
+			player->movement_cooldown_initial--;	
+			}
+			//player->movement_cooldown_initial = GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN_POWERED;
 			player->item = EMPTY;
 			break;
 		}
@@ -334,6 +342,13 @@ void gameplay_players_use_item(void)
 		{
 			core_debug("Using resistance power up.");
 			player->damage_cooldown_initial = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_POWERED;
+			player->item = EMPTY;
+			break;
+		}
+		case FIRE:
+		{
+			core_debug("Using fire power up.");
+			player->explosion_size++;
 			player->item = EMPTY;
 			break;
 		}

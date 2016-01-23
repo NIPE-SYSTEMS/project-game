@@ -18,17 +18,30 @@ typedef enum graphics_sprites_e
 	GRAPHICS_SPRITES_DESTROYABLE = 1,
 	GRAPHICS_SPRITES_DESTROYED = 2,
 	GRAPHICS_SPRITES_PLAYER = 3,
-	GRAPHICS_SPRITES_ENEMY = 4,
-	GRAPHICS_SPRITES_BOMB = 5,
-	GRAPHICS_SPRITES_BOMB_UP = 6,
-	GRAPHICS_SPRITES_FIRE = 7,
-	GRAPHICS_SPRITES_HEART = 8,
-	GRAPHICS_SPRITES_SNEAKER = 9,
-	GRAPHICS_SPRITES_UP = 10,
-	GRAPHICS_SPRITES_SHIELD = 11,
-	GRAPHICS_SPRITES_EXPLOSION = 12,
-	GRAPHICS_SPRITES_PLAYER_STANDING = 14
+	GRAPHICS_SPRITES_PLAYER_STANDING = 4,
+	GRAPHICS_SPRITES_ENEMY = 5,
+	GRAPHICS_SPRITES_ENEMY_STANDING = 6,
+	GRAPHICS_SPRITES_BOMB = 7,
+	GRAPHICS_SPRITES_BOMB_UP = 8,
+	GRAPHICS_SPRITES_FIRE = 9,
+	GRAPHICS_SPRITES_HEART = 10,
+	GRAPHICS_SPRITES_SNEAKER = 11,
+	GRAPHICS_SPRITES_UP = 12,
+	GRAPHICS_SPRITES_SHIELD = 13,
+	GRAPHICS_SPRITES_EXPLOSION_1 = 14,
+	GRAPHICS_SPRITES_EXPLOSION_2 = 15
 } graphics_sprites_t;
+
+typedef struct graphics_sprite_s
+{
+	graphics_sprites_t type;
+	char *path;
+	int width;
+	int height;
+	char *data;
+} graphics_sprite_t;
+
+void graphics_read_arrays(void);
 
 void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t field, char transparency);
 void graphics_main(void);
