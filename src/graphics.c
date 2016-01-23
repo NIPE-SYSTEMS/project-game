@@ -76,9 +76,18 @@ void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t index, char
 			// if transparency == 1 then render only if character of sprite != ' '
 			if(transparency == 0 || (transparency == 1 && graphics_sprites[index][y][x] != ' '))
 			{
-				attron(COLOR_PAIR(index+1));
-				mvaddch(pos_y + y, pos_x + x, graphics_sprites[index][y][x]);
-				attron(COLOR_PAIR(17));
+				if(animation_turbo_activated == 1 && index == 3 || animation_turbo_activated == 1 && index == 4)
+				{
+					attron(COLOR_PAIR((rand()%17)+1));
+					mvaddch(pos_y + y, pos_x + x, graphics_sprites[index][y][x]);
+					attron(COLOR_PAIR(17));
+				}
+				else
+				{
+					attron(COLOR_PAIR(index+1));
+					mvaddch(pos_y + y, pos_x + x, graphics_sprites[index][y][x]);
+					attron(COLOR_PAIR(17));
+				}
 			}
 		}
 	}
@@ -326,7 +335,7 @@ void graphics_main(void)
 	//graphics_get_arrays(); //Test by Jonas
 	
 	//I believe, that the Ai can already make decisions before the player gets to see the field. That is why the start screen should delay the entire game and not just the rendering.
-	if (graphics_startscreen_counter >= graphics_frames_for_startscreen && graphics_animation_counter < 2000)
+	if (graphics_startscreen_counter >= graphics_frames_for_startscreen && graphics_animation_counter < 20)
 	{
 		//graphics_read_array(5,3); //Test
 		
@@ -434,31 +443,14 @@ void graphics_main(void)
 			
 			render_x = (player->position_x * GRAPHICS_OFFSET_X) + GRAPHICS_OFFSET_X - GRAPHICS_SPRITE_WIDTH;
 			render_y = (player->position_y * GRAPHICS_OFFSET_Y) + GRAPHICS_OFFSET_Y - GRAPHICS_SPRITE_HEIGHT;
-			if(animation_turbo_activated == 1)
-			{
-				attron(COLOR_PAIR(rand()%5));
 				if(player->movement_cooldown > 1)
-				{
-					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER, 1);
-				}
-				else
-				{
-					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER_STANDING, 1);
-				}
+			{
+				graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER, 1);
 			}
 			else
 			{
-				if(player->movement_cooldown > 1)
-				{
-					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER, 1);
-				}
-				else
-				{
-					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER_STANDING, 1);
-				}
+				graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER_STANDING, 1);
 			}
-			
-			attron(COLOR_PAIR(1));
 		}
 		
 		// spinning animation
