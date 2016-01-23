@@ -4,8 +4,8 @@
 typedef enum ai_jobs_type_e
 {
 	ESCAPE = 1,
-	BOMB_DROP = 2,
-	POWER_UP = 3
+	BOMB_DROP = 2
+	// POWER_UP = 3
 } ai_jobs_type_t;
 
 typedef struct ai_jobs_s

@@ -3,6 +3,7 @@
 
 #include "ai-jobs.h"
 #include "ai-pathfinding.h"
+#include "ai-simulation.h"
 #include "core.h"
 
 static int ai_jobs_test_occurrence(ai_jobs_t *list, int position_x, int position_y, ai_jobs_type_t type);
@@ -165,19 +166,47 @@ ai_jobs_t *ai_jobs_get_optimal(ai_jobs_t *root, int position_x_user, int positio
 	{
 		job_iterator->score = 0;
 		
-		distance_to_walk = ai_pathfinding_move_to_length(position_x_ai, position_y_ai, job_iterator->position_x, job_iterator->position_y, 0);
-		distance_to_player = ai_pathfinding_move_to_length(job_iterator->position_x, job_iterator->position_y, position_x_user, position_y_user, 0);
-		
-		if(distance_to_player == -1)
+		switch(job_iterator->type)
 		{
-			job_iterator->score += 5;
+			case ESCAPE:
+			{
+				distance_to_walk = ai_pathfinding_move_to_length(position_x_ai, position_y_ai, job_iterator->position_x, job_iterator->position_y, 2);
+				
+				if(distance_to_walk == -1)
+				{
+					job_iterator->score += 25;
+				}
+				else
+				{
+					job_iterator->score += distance_to_walk * 0.1;
+				}
+				
+				if(ai_simulation_get_walkable(job_iterator->position_x, job_iterator->position_y) == 0)
+				{
+					job_iterator->score += 5;
+				}
+				
+				break;
+			}
+			case BOMB_DROP:
+			{
+				distance_to_walk = ai_pathfinding_move_to_length(position_x_ai, position_y_ai, job_iterator->position_x, job_iterator->position_y, 0);
+				distance_to_player = ai_pathfinding_move_to_length(job_iterator->position_x, job_iterator->position_y, position_x_user, position_y_user, 0);
+				
+				if(distance_to_player == -1)
+				{
+					job_iterator->score += 25;
+				}
+				else
+				{
+					job_iterator->score += distance_to_player * 0.2;
+				}
+				
+				job_iterator->score += distance_to_walk * 0.1;
+				
+				break;
+			}
 		}
-		else
-		{
-			job_iterator->score += distance_to_player * 0.2;
-		}
-		
-		job_iterator->score += distance_to_walk * 0.1;
 		
 		if(job_iterator->score > saved_score)
 		{
