@@ -165,8 +165,8 @@ ai_jobs_t *ai_jobs_get_optimal(ai_jobs_t *root, int position_x_user, int positio
 	{
 		job_iterator->score = 0;
 		
-		distance_to_walk = ai_pathfinding_move_to_length(position_x_ai, position_y_ai, job_iterator->position_x, job_iterator->position_y);
-		distance_to_player = ai_pathfinding_move_to_length(job_iterator->position_x, job_iterator->position_y, position_x_user, position_y_user);
+		distance_to_walk = ai_pathfinding_move_to_length(position_x_ai, position_y_ai, job_iterator->position_x, job_iterator->position_y, 0);
+		distance_to_player = ai_pathfinding_move_to_length(job_iterator->position_x, job_iterator->position_y, position_x_user, position_y_user, 0);
 		
 		if(distance_to_player == -1)
 		{

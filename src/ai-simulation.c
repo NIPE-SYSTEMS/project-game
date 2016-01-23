@@ -152,7 +152,7 @@ int ai_simulation_validate_tile(int position_x_player, int position_y_player, in
 	{
 		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
 		{
-			if(gameplay_get_walkable(x, y) == 1 && GAMEPLAY_FIELD(field, x, y).ai_simulation_walkable == 1 && GAMEPLAY_FIELD(field, x, y).ai_simulation_walkable_simulated == 1 && ai_pathfinding_move_to_length(position_x_player, position_y_player, x, y) != -1)
+			if(gameplay_get_walkable(x, y) == 1 && GAMEPLAY_FIELD(field, x, y).ai_simulation_walkable == 1 && GAMEPLAY_FIELD(field, x, y).ai_simulation_walkable_simulated == 1 && ai_pathfinding_move_to_length(position_x, position_y, x, y, 1) != -1)
 			{
 				count_hiding_places++;
 			}

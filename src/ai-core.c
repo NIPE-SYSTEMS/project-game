@@ -66,18 +66,22 @@ void ai_core_update(gameplay_players_player_t *player)
 		}
 	}
 	
+	// ai_jobs_print(player->jobs);
+	
 	// remove tiles which are not accessable
 	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
 	{
 		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
 		{
-			if(ai_pathfinding_move_to_length(player->position_x, player->position_y, x, y) == -1)
+			if(ai_pathfinding_move_to_length(player->position_x, player->position_y, x, y, 0) == -1)
 			{
 				// core_debug("Remove (%i, %i), cause: pathfinding", x, y);
 				ai_jobs_remove(&(player->jobs), x, y, BOMB_DROP);
 			}
 		}
 	}
+	
+	// ai_jobs_print(player->jobs);
 	
 	// remove tiles which have no save place for hiding
 	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
@@ -97,12 +101,11 @@ void ai_core_update(gameplay_players_player_t *player)
 	
 	job = ai_jobs_get_optimal(player->jobs, player_user->position_x, player_user->position_y, player->position_x, player->position_y);
 	
-	// debug output
 	ai_jobs_print(player->jobs);
 	
 	if(job != NULL && player->movement_cooldown == 0)
 	{
-		if(ai_pathfinding_move_to_next(player->position_x, player->position_y, job->position_x, job->position_y, &x, &y) != -1)
+		if(ai_pathfinding_move_to_next(player->position_x, player->position_y, job->position_x, job->position_y, &x, &y, 0) != -1)
 		{
 			core_debug("Go to (%i, %i)", x, y);
 			player->position_x = x;
@@ -110,8 +113,6 @@ void ai_core_update(gameplay_players_player_t *player)
 			player->movement_cooldown = player->movement_cooldown_initial;
 		}
 	}
-	
-	// core_debug("Pathfinding: Length: %i", ai_pathfinding_move_to_length(1, 1, 1, 5));
 }
 
 void ai_core_cleanup(gameplay_players_player_t *player)
