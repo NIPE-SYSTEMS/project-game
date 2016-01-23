@@ -4,6 +4,7 @@
 #include "gameplay-bombs.h"
 #include "gameplay.h"
 #include "core.h"
+#include "ai-core.h"
 
 gameplay_players_player_t *gameplay_players_players = NULL;
 
@@ -23,14 +24,15 @@ void gameplay_players_add(int position_x, int position_y, gameplay_players_type_
 	player->movement_cooldown_initial = GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN;
 	player->position_x = position_x;
 	player->position_y = position_y;
-	player->placeable_bombs = 3;
+	player->placeable_bombs = GAMEPLAY_PLAYERS_AMOUNT_BOMBS;
 	player->placed_bombs = 0;
-	player->explosion_size = GAMEPLAY_PLAYER_EXPLOSION_SIZE;
+	player->explosion_radius = GAMEPLAY_PLAYERS_EXPLOSION_RADIUS;
 	player->item = EMPTY;
 	player->item_usage_time = 0;
 	player->damage_cooldown = 0;
 	player->damage_cooldown_initial = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN;
 	player->type = type;
+	player->jobs = NULL;
 	player->next = NULL;
 	
 	// append to player list
@@ -48,6 +50,7 @@ void gameplay_players_cleanup(void)
 	for(current = gameplay_players_players; current != NULL; current = next_backup)
 	{
 		next_backup = current->next;
+		ai_core_cleanup(current);
 		free(current);
 	}
 }
@@ -254,14 +257,17 @@ int gameplay_player_get_player(int position_x, int position_y)
 	return 0;
 }
 
-void gameplay_players_place_bomb(void)
+// NULL targets user player
+void gameplay_players_place_bomb(gameplay_players_player_t *player)
 {
-	gameplay_players_player_t *player = NULL;
-	
-	player = gameplay_players_get_user();
 	if(player == NULL)
 	{
-		core_error("Failed to find user controlled player.");
+		player = gameplay_players_get_user();
+	}
+	
+	if(player == NULL)
+	{
+		core_error("Invalid player.");
 		return;
 	}
 	
@@ -329,7 +335,7 @@ void gameplay_players_use_item(void)
 			player->movement_cooldown = 0;
 			if(player->movement_cooldown_initial > 3)
 			{
-			player->movement_cooldown_initial--;	
+				player->movement_cooldown_initial--;
 			}
 			//player->movement_cooldown_initial = GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN_POWERED;
 			player->item = EMPTY;
@@ -345,7 +351,7 @@ void gameplay_players_use_item(void)
 		case FIRE:
 		{
 			core_debug("Using fire power up.");
-			player->explosion_size++;
+			player->explosion_radius++;
 			player->item = EMPTY;
 			break;
 		}
@@ -363,5 +369,15 @@ void gameplay_players_harm(int position_x, int position_y)
 			current->health_points--;
 			current->damage_cooldown = current->damage_cooldown_initial;
 		}
+	}
+}
+
+void gameplay_players_ai_update(void)
+{
+	gameplay_players_player_t *current = NULL;
+	
+	for(current = gameplay_players_players; current != NULL; current = current->next)
+	{
+		ai_core_update(current);
 	}
 }

@@ -8,6 +8,7 @@
 #include "gameplay-bombs.h"
 #include "core.h"
 #include "random-drop.h"
+#include "ai-simulation.h"
 #include "gameplay-items.h"
 
 static gameplay_field_t gameplay_field[GAMEPLAY_FIELD_WIDTH * GAMEPLAY_FIELD_HEIGHT];
@@ -30,6 +31,13 @@ void gameplay_field_init(void)
 		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
 		{
 			GAMEPLAY_FIELD(gameplay_field, x, y).type = DESTRUCTIVE;
+			// GAMEPLAY_FIELD(gameplay_field, x, y).type = FLOOR;
+			GAMEPLAY_FIELD(gameplay_field, x, y).ai_position_x = x;
+			GAMEPLAY_FIELD(gameplay_field, x, y).ai_position_y = y;
+			GAMEPLAY_FIELD(gameplay_field, x, y).ai_pathfinding_number = -1;
+			GAMEPLAY_FIELD(gameplay_field, x, y).ai_pathfinding_next = NULL;
+			GAMEPLAY_FIELD(gameplay_field, x, y).ai_simulation_walkable = 1;
+			GAMEPLAY_FIELD(gameplay_field, x, y).ai_simulation_walkable_simulated = 1;
 			GAMEPLAY_FIELD(gameplay_field, x, y).fire = 0;
 			GAMEPLAY_FIELD(gameplay_field, x, y).fire_despawn_timer = 0;
 		}
@@ -173,7 +181,7 @@ void gameplay_key(char gameplay_pressed_key)
 		}
 		case ' ':
 		{
-			gameplay_players_place_bomb();
+			gameplay_players_place_bomb(NULL);
 			break;
 		}
 		case 'f':
@@ -230,7 +238,7 @@ void gameplay_turbo_activated()
 	player->movement_cooldown_initial = 1;
 	player->health_points = 5;
 	player->placeable_bombs = 10;
-	player->explosion_size = 9;
+	player->explosion_radius = 9;
 	player->damage_cooldown_initial = 100;
 	animation_turbo_activated = 1;
 	
@@ -240,16 +248,11 @@ void gameplay_turbo_activated()
 	gameplay_turbo.b = 0;
 	gameplay_turbo.o = 0;
 }
-/**
- * This function changes roundly changed values like item timers.
- */
-void gameplay_update(void)
+
+void gameplay_reset_fire(void)
 {
-	gameplay_players_update();
-	gameplay_bombs_update();
-	gameplay_items_item_update();
-	int y;
-	int x;
+	int x = 0;
+	int y = 0;
 	
 	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
 	{
@@ -268,6 +271,18 @@ void gameplay_update(void)
 	}
 }
 
+/**
+ * This function changes roundly changed values like item timers.
+ */
+void gameplay_update(void)
+{
+	gameplay_reset_fire();
+	gameplay_players_update();
+	gameplay_bombs_update();
+	gameplay_players_ai_update();
+	gameplay_items_item_update();
+}
+
 gameplay_field_t *gameplay_get_field(void)
 {
 	return gameplay_field;
@@ -279,6 +294,7 @@ void gameplay_set_fire(int position_x, int position_y)
 	{
 		return;
 	}
+	
 	GAMEPLAY_FIELD(gameplay_field, position_x, position_y).fire = 1;
 	GAMEPLAY_FIELD(gameplay_field, position_x, position_y).fire_despawn_timer = GAMEPLAY_FIRE_DESPAWN;
 }
@@ -294,27 +310,3 @@ int gameplay_get_fire(int position_x, int position_y)
 		return 0;
 	}
 }
-
-/*
-
-								-filling field
-								-test_move
-								-properties of a map tile (Array von diesem structtyp erstellen für jedes Feld also :
-									struct field_properties field[FIELD_HEIGHT][FIELD_WIDTH])
-									dadurch wird ein Array an Strukturen erstellt in dem alle Felder existieren
-									erhalte dann ein Array an Feldern und kann in diesem direkt die Daten von jedem Feld abspeichern
-									map tile type as number or letter for example X for undestroyable walls or something else
-								-properties of a player
-								-item Array/Struct; (Colors[] ähnlich aus der BMP Aufgabe, also jedem Item eine zahl in dem Array zuordnen und diese dann in dem propertie struct abspeichern)
-								-wir brauchen noch Design für den Fall dass Spieler und Bombe gleichzeitSig auf einem Feld befinden
-								-items destroyable by bombs
-								-field type "item"
-								-roundly function to check up and change roundly changed values like item times etc.
-								-function "item pick up" for case that a field got an item
-								-player damage cooldown
--random drops
--movementcooldown bei speed?!
--damagecooldown bei shield?!
-
-
-*/

@@ -10,6 +10,7 @@
 #include "gameplay-bombs.h"
 #include "core.h"
 #include "gameplay-items.h"
+#include "ai-core.h"
 
 static int graphics_animation_counter = 0;
 static int graphics_startscreen_counter = 0;
@@ -35,6 +36,46 @@ static struct graphics_sprite_s graphics_list_of_sprites[] =
 	{GRAPHICS_SPRITES_EXPLOSION_2, "assets/explosion_2.sprite", 5, 3, NULL}
 };
 
+void graphics_show_debug(void)
+{
+	int i = 0;
+	int offset_line = 0;
+	int player_amount = 0;
+	gameplay_players_player_t *player = NULL;
+	int bomb_amount = 0;
+	gameplay_bombs_bomb_t *bomb = NULL;
+	
+	mvprintw(GRAPHICS_DEBUG_Y + offset_line++, GRAPHICS_DEBUG_X, "Players [");
+	player_amount = gameplay_players_amount();
+	for(i = 0; i < player_amount; i++)
+	{
+		player = gameplay_players_get(i);
+		if(player == NULL)
+		{
+			continue;
+		}
+		
+		mvprintw(GRAPHICS_DEBUG_Y + offset_line++, GRAPHICS_DEBUG_X + 2, "%s { h: %i, m: %i (%i), p: (%i, %i), b: %i (%i), e: %i, d: %i (%i) }", ((player->type == GAMEPLAY_PLAYERS_TYPE_AI)?("AI  "):("USER")), player->health_points, player->movement_cooldown, player->movement_cooldown_initial, player->position_x, player->position_y, player->placed_bombs, player->placeable_bombs, player->explosion_radius, player->damage_cooldown, player->damage_cooldown_initial);
+	}
+	mvprintw(GRAPHICS_DEBUG_Y + offset_line++, GRAPHICS_DEBUG_X, "]");
+	
+	offset_line++;
+	
+	mvprintw(GRAPHICS_DEBUG_Y + offset_line++, GRAPHICS_DEBUG_X, "Bombs [");
+	bomb_amount = gameplay_bombs_amount();
+	for(i = 0; i < bomb_amount; i++)
+	{
+		bomb = gameplay_bombs_get(i);
+		if(bomb == NULL)
+		{
+			continue;
+		}
+		
+		mvprintw(GRAPHICS_DEBUG_Y + offset_line++, GRAPHICS_DEBUG_X + 2, "{ o: %s, p: (%i, %i), e: %i }", ((bomb->owner->type == GAMEPLAY_PLAYERS_TYPE_AI)?("AI"):("USER")), bomb->position_x, bomb->position_y, bomb->explosion_timeout);
+	}
+	mvprintw(GRAPHICS_DEBUG_Y + offset_line++, GRAPHICS_DEBUG_X, "]");
+}
+
 /**
  * This function renders a sprite at a given position. It also can handle
  * transparency.
@@ -51,23 +92,23 @@ void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t index, char
 	int x = 0;
 	int y = 0;
 	
-	init_pair(1, COLOR_WHITE, COLOR_BLACK);//UNDESTROYABLE
-	init_pair(2, COLOR_WHITE, COLOR_BLACK);//DESTROYABLE
-	init_pair(3, COLOR_RED, COLOR_BLACK);//DESTROYED
-	init_pair(4, COLOR_GREEN, COLOR_BLACK);//PLAYER
-	init_pair(5, COLOR_GREEN, COLOR_BLACK);//PLAYER_STANDING
-	init_pair(6, COLOR_RED, COLOR_BLACK);//ENEMY
-	init_pair(7, COLOR_RED, COLOR_BLACK);//ENEMY_STANDING
-	init_pair(8, COLOR_RED, COLOR_BLACK);//BOMB
-	init_pair(9, COLOR_YELLOW, COLOR_BLACK);//BOMB_UP
-	init_pair(10, COLOR_YELLOW, COLOR_BLACK);//FIRE
-	init_pair(11, COLOR_RED, COLOR_BLACK);//HEART
-	init_pair(12, COLOR_YELLOW, COLOR_BLACK);//SNEAKERS
-	init_pair(13, COLOR_GREEN, COLOR_BLACK);//1_UP
-	init_pair(14, COLOR_YELLOW, COLOR_BLACK);//SHIELD
-	init_pair(15, COLOR_YELLOW, COLOR_BLACK);//EXPLOSION
-	init_pair(16, COLOR_RED, COLOR_BLACK);//EXPLOSION
-	init_pair(17, COLOR_BLACK, COLOR_BLACK);//NORMAL
+	init_pair(1, COLOR_WHITE, -1);//UNDESTROYABLE
+	init_pair(2, COLOR_WHITE, -1);//DESTROYABLE
+	init_pair(3, COLOR_RED, -1);//DESTROYED
+	init_pair(4, COLOR_GREEN, -1);//PLAYER
+	init_pair(5, COLOR_GREEN, -1);//PLAYER_STANDING
+	init_pair(6, COLOR_RED, -1);//ENEMY
+	init_pair(7, COLOR_RED, -1);//ENEMY_STANDING
+	init_pair(8, COLOR_RED, -1);//BOMB
+	init_pair(9, COLOR_YELLOW, -1);//BOMB_UP
+	init_pair(10, COLOR_YELLOW, -1);//FIRE
+	init_pair(11, COLOR_RED, -1);//HEART
+	init_pair(12, COLOR_YELLOW, -1);//SNEAKERS
+	init_pair(13, COLOR_GREEN, -1);//1_UP
+	init_pair(14, COLOR_YELLOW, -1);//SHIELD
+	init_pair(15, COLOR_YELLOW, -1);//EXPLOSION
+	init_pair(16, COLOR_RED, -1);//EXPLOSION
+	init_pair(17, COLOR_BLACK, -1);//NORMAL
 	
 	for(y = 0; y < GRAPHICS_SPRITE_HEIGHT; y++)
 	{
@@ -123,7 +164,7 @@ int graphics_text_to_array(int iterator, int width, int height)
 	}
 	*/
 	fclose(current_file);
-	graphics_list_of_sprites[iterator].data = &array;
+	graphics_list_of_sprites[iterator].data = array;
 	return 0;
 }
 
@@ -231,17 +272,14 @@ void graphics_get_arrays (void)
  */
 void graphics_startscreen(void)
 {
-	initscr();//test
-	start_color();//test
-	init_pair(1, COLOR_WHITE, COLOR_BLACK);//test
-	init_pair(2, COLOR_RED, COLOR_BLACK);//test
-	init_pair(3, COLOR_BLUE, COLOR_BLACK);//test
-	init_pair(4, COLOR_GREEN, COLOR_BLACK);//test
-//	init_pair(5, COLOR_PURPLE, COLOR_BLACK);//test
+	init_pair(1, COLOR_WHITE, -1);//test
+	init_pair(2, COLOR_RED, -1);//test
+	init_pair(3, COLOR_BLUE, -1);//test
+	init_pair(4, COLOR_GREEN, -1);//test
+//	init_pair(5, COLOR_PURPLE, -1);//test
 	
 	int i = 0;
 	int b = 0;
-	
 	
 	for(i = 0; i < 26; i++)
 	{
@@ -269,24 +307,19 @@ void graphics_startscreen(void)
 	}
 	move(0, 0);
 	refresh();
-	
 }
 
 void graphics_game_over_function(void)
 {
+	init_pair(1, COLOR_WHITE, -1);//test
+	init_pair(2, COLOR_RED, -1);//test
+	init_pair(3, COLOR_BLUE, -1);//test
+	init_pair(4, COLOR_GREEN, -1);//test
+	init_pair(5, COLOR_BLACK, -1);//tes
+	init_pair(6, COLOR_YELLOW, -1);//tes
+	init_pair(7, COLOR_CYAN, -1);//tes
+	init_pair(8, COLOR_MAGENTA, -1);//tes
 	
-	initscr();//test
-	start_color();//test
-	init_pair(1, COLOR_WHITE, COLOR_BLACK);//test
-	init_pair(2, COLOR_RED, COLOR_BLACK);//test
-	init_pair(3, COLOR_BLUE, COLOR_BLACK);//test
-	init_pair(4, COLOR_GREEN, COLOR_BLACK);//test
-	init_pair(5, COLOR_BLACK, COLOR_BLACK);//tes
-	init_pair(6, COLOR_YELLOW, COLOR_BLACK);//tes
-	init_pair(7, COLOR_CYAN, COLOR_BLACK);//tes
-	init_pair(8, COLOR_MAGENTA, COLOR_BLACK);//tes
-	initscr();//test
-	start_color();//test
 	int i = 0;
 	int b = 0;
 	
@@ -331,22 +364,24 @@ void graphics_game_over_function(void)
  */
 void graphics_main(void)
 {
+	
+	int player_amount = 0;
+	gameplay_players_player_t *player = NULL;
 	//graphics_get_arrays ();
 	//graphics_get_arrays(); //Test by Jonas
 	
 	//I believe, that the Ai can already make decisions before the player gets to see the field. That is why the start screen should delay the entire game and not just the rendering.
 	if (graphics_startscreen_counter >= graphics_frames_for_startscreen && graphics_animation_counter < 20)
 	{
+		ai_core_enable();
+		
 		//graphics_read_array(5,3); //Test
 		
-		initscr();//test
-		start_color();//test
-
-		init_pair(1, COLOR_WHITE, COLOR_BLACK);//test
-		init_pair(2, COLOR_RED, COLOR_BLACK);//test
-		init_pair(3, COLOR_BLUE, COLOR_BLACK);//test
-		init_pair(4, COLOR_GREEN, COLOR_BLACK);//test
-//		init_pair(5, COLOR_PURPLE, COLOR_BLACK);//test
+		init_pair(1, COLOR_WHITE, -1);//test
+		init_pair(2, COLOR_RED, -1);//test
+		init_pair(3, COLOR_BLUE, -1);//test
+		init_pair(4, COLOR_GREEN, -1);//test
+//		init_pair(5, COLOR_PURPLE, -1);//test
 		
 		int x = 0;
 		int y = 0;
@@ -355,11 +390,7 @@ void graphics_main(void)
 		int render_x = 0;
 		int render_y = 0;
 		// int hearts = 0;
-		int player_amount = 0;
-		gameplay_players_player_t *player = NULL;
 		gameplay_field_t *gameplay_field = NULL;
-		int bomb_amount = 0;
-		gameplay_bombs_bomb_t *bomb = NULL;
 		
 		gameplay_field = gameplay_get_field();
 		
@@ -404,32 +435,7 @@ void graphics_main(void)
 		
 		// debug informations
 		attron(COLOR_PAIR(2));
-		mvprintw(GRAPHICS_HEALTH_Y, GRAPHICS_HEALTH_X, "Debug informations:");
-		mvprintw(GRAPHICS_HEALTH_Y + 1, GRAPHICS_HEALTH_X + 4, "Health: %i", player->health_points);
-		mvprintw(GRAPHICS_HEALTH_Y + 2, GRAPHICS_HEALTH_X + 4, "Movement cooldown: %i", player->movement_cooldown);
-		mvprintw(GRAPHICS_HEALTH_Y + 3, GRAPHICS_HEALTH_X + 4, "Movement cooldown initial: %i", player->movement_cooldown_initial);
-		mvprintw(GRAPHICS_HEALTH_Y + 4, GRAPHICS_HEALTH_X + 4, "Position(x): %i", player->position_x);
-		mvprintw(GRAPHICS_HEALTH_Y + 5, GRAPHICS_HEALTH_X + 4, "Position(y): %i", player->position_y);
-		mvprintw(GRAPHICS_HEALTH_Y + 6, GRAPHICS_HEALTH_X + 4, "Placeable Bombs: %i", player->placeable_bombs);
-		mvprintw(GRAPHICS_HEALTH_Y + 7, GRAPHICS_HEALTH_X + 4, "Placed Bombs: %i", player->placed_bombs);
-		mvprintw(GRAPHICS_HEALTH_Y + 8, GRAPHICS_HEALTH_X + 4, "Item: %i", player->item);
-		mvprintw(GRAPHICS_HEALTH_Y + 9, GRAPHICS_HEALTH_X + 4, "Item usage time: %i", player->item_usage_time);
-		mvprintw(GRAPHICS_HEALTH_Y + 10, GRAPHICS_HEALTH_X + 4, "Damage cooldown: %i", player->damage_cooldown);
-		mvprintw(GRAPHICS_HEALTH_Y + 11, GRAPHICS_HEALTH_X + 4, "Damage cooldown initial: %i", player->damage_cooldown_initial);
-		mvprintw(GRAPHICS_HEALTH_Y + 12, GRAPHICS_HEALTH_X + 4, "Animation counter: %i", graphics_animation_counter);
-		attron(COLOR_PAIR(1));
-		
-		bomb_amount = gameplay_bombs_amount();
-		for(i = 0; i < bomb_amount; i++)
-		{
-			bomb = gameplay_bombs_get(i);
-			if(bomb == NULL)
-			{
-				continue;
-			}
-			
-			mvprintw(GRAPHICS_HEALTH_Y + 13 + i, GRAPHICS_HEALTH_X, "Bomb %i: %p at (%i, %i), %i, %i", i, bomb, bomb->position_x, bomb->position_y, bomb->explosion_timeout); //, bomb->fire_timeout);
-		}
+		graphics_show_debug();
 		
 		// players
 		player_amount = gameplay_players_amount();
