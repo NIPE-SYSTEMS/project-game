@@ -24,9 +24,9 @@ void gameplay_players_add(int position_x, int position_y, gameplay_players_type_
 	player->movement_cooldown_initial = GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN;
 	player->position_x = position_x;
 	player->position_y = position_y;
-	player->placeable_bombs = 3;
+	player->placeable_bombs = GAMEPLAY_PLAYERS_AMOUNT_BOMBS;
 	player->placed_bombs = 0;
-	player->explosion_radius = GAMEPLAY_PLAYER_EXPLOSION_RADIUS;
+	player->explosion_radius = GAMEPLAY_PLAYERS_EXPLOSION_RADIUS;
 	player->item = EMPTY;
 	player->item_usage_time = 0;
 	player->damage_cooldown = 0;

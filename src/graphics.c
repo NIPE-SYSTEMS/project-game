@@ -10,6 +10,7 @@
 #include "gameplay-bombs.h"
 #include "core.h"
 #include "gameplay-items.h"
+#include "ai-core.h"
 
 static int graphics_animation_counter = 0;
 static int graphics_startscreen_counter = 0;
@@ -320,6 +321,8 @@ void graphics_main(void)
 	//I believe, that the Ai can already make decisions before the player gets to see the field. That is why the start screen should delay the entire game and not just the rendering.
 	if (graphics_startscreen_counter >= graphics_frames_for_startscreen && graphics_animation_counter < 2000)
 	{
+		ai_core_enable();
+		
 		//graphics_read_array(5,3); //Test
 		
 		init_pair(1, COLOR_WHITE, -1);//test

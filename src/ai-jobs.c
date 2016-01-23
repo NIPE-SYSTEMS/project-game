@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "ai-jobs.h"
+#include "ai-pathfinding.h"
 #include "core.h"
 
 static int ai_jobs_test_occurrence(ai_jobs_t *list, int position_x, int position_y, ai_jobs_type_t type);
@@ -39,6 +40,7 @@ ai_jobs_t *ai_jobs_allocate(int position_x, int position_y, ai_jobs_type_t type)
 	job->position_x = position_x;
 	job->position_y = position_y;
 	job->type = type;
+	job->score = 0;
 	job->next = NULL;
 	
 	return job;
@@ -100,7 +102,7 @@ void ai_jobs_print(ai_jobs_t *root)
 	
 	for(job_iterator = root; job_iterator != NULL; job_iterator = job_iterator->next)
 	{
-		core_debug("    (type: %s, x: %i, y: %i)", serialized_type[job_iterator->type], job_iterator->position_x, job_iterator->position_y);
+		core_debug("    (%s, %i, %i, %7.2f)", serialized_type[job_iterator->type], job_iterator->position_x, job_iterator->position_y, job_iterator->score);
 	}
 	
 	core_debug("End of Jobs");
@@ -149,4 +151,49 @@ void ai_jobs_remove(ai_jobs_t **root, int position_x, int position_y, ai_jobs_ty
 			return;
 		}
 	}
+}
+
+ai_jobs_t *ai_jobs_get_optimal(ai_jobs_t *root, int position_x_user, int position_y_user, int position_x_ai, int position_y_ai)
+{
+	ai_jobs_t *job_iterator = NULL;
+	int distance_to_player = 0;
+	int distance_to_walk = 0;
+	float saved_score = -1;
+	ai_jobs_t *job_optimal = NULL;
+	
+	for(job_iterator = root; job_iterator != NULL; job_iterator = job_iterator->next)
+	{
+		job_iterator->score = 0;
+		
+		distance_to_walk = ai_pathfinding_move_to_length(position_x_ai, position_y_ai, job_iterator->position_x, job_iterator->position_y);
+		distance_to_player = ai_pathfinding_move_to_length(job_iterator->position_x, job_iterator->position_y, position_x_user, position_y_user);
+		
+		if(distance_to_player == -1)
+		{
+			job_iterator->score += 5;
+		}
+		else
+		{
+			job_iterator->score += distance_to_player * 0.2;
+		}
+		
+		job_iterator->score += distance_to_walk * 0.1;
+		
+		if(job_iterator->score > saved_score)
+		{
+			saved_score = job_iterator->score;
+			job_optimal = job_iterator;
+		}
+	}
+	
+	for(job_iterator = root; job_iterator != NULL; job_iterator = job_iterator->next)
+	{
+		if(job_iterator->score < saved_score)
+		{
+			saved_score = job_iterator->score;
+			job_optimal = job_iterator;
+		}
+	}
+	
+	return job_optimal;
 }

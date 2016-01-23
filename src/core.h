@@ -4,7 +4,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#define CORE_FRAME_TIME 100000 // -> 10 fps, specified in microseconds (usleep)
+// #define CORE_FRAME_TIME 100000 // -> 10 fps, specified in microseconds (usleep)
+#define CORE_FRAME_TIME 75000 // -> 10 fps, specified in microseconds (usleep)
 
 void core_init(void);
 void core_main(void);

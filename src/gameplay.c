@@ -31,6 +31,7 @@ void gameplay_field_init(void)
 		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
 		{
 			GAMEPLAY_FIELD(gameplay_field, x, y).type = DESTRUCTIVE;
+			// GAMEPLAY_FIELD(gameplay_field, x, y).type = FLOOR;
 			GAMEPLAY_FIELD(gameplay_field, x, y).ai_position_x = x;
 			GAMEPLAY_FIELD(gameplay_field, x, y).ai_position_y = y;
 			GAMEPLAY_FIELD(gameplay_field, x, y).ai_pathfinding_number = -1;
@@ -98,8 +99,8 @@ void gameplay_players_initialize(void)
 {
 	gameplay_players_add(1, 1, GAMEPLAY_PLAYERS_TYPE_USER);
 	gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, 1, GAMEPLAY_PLAYERS_TYPE_AI);
-	// gameplay_players_add(1, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
-	// gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
+	gameplay_players_add(1, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
+	gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
 }
 
 void gameplay_cleanup(void)

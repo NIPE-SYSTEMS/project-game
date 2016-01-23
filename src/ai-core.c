@@ -7,13 +7,31 @@
 #include "gameplay.h"
 #include "core.h"
 
-// static char ai_core_ai_enabled = 0;
+static char ai_core_ai_enabled = 0;
+
+void ai_core_enable(void)
+{
+	ai_core_ai_enabled = 1;
+}
 
 void ai_core_update(gameplay_players_player_t *player)
 {
 	int x = 0;
 	int y = 0;
 	ai_jobs_t *job = NULL;
+	gameplay_players_player_t *player_user = NULL;
+	
+	if(ai_core_ai_enabled == 0)
+	{
+		return;
+	}
+	
+	player_user = gameplay_players_get_user();
+	if(player_user == NULL)
+	{
+		core_error("Failed to find user controlled player.");
+		return;
+	}
 	
 	if(player->type != GAMEPLAY_PLAYERS_TYPE_AI)
 	{
@@ -75,14 +93,16 @@ void ai_core_update(gameplay_players_player_t *player)
 	}
 	
 	// remove current tile
-	ai_jobs_remove(&(player->jobs), player->position_x, player->position_y, BOMB_DROP);
+	// ai_jobs_remove(&(player->jobs), player->position_x, player->position_y, BOMB_DROP);
+	
+	job = ai_jobs_get_optimal(player->jobs, player_user->position_x, player_user->position_y, player->position_x, player->position_y);
 	
 	// debug output
 	ai_jobs_print(player->jobs);
 	
-	if(player->jobs != NULL && player->movement_cooldown == 0)
+	if(job != NULL && player->movement_cooldown == 0)
 	{
-		if(ai_pathfinding_move_to_next(player->position_x, player->position_y, player->jobs->position_x, player->jobs->position_y, &x, &y) != -1)
+		if(ai_pathfinding_move_to_next(player->position_x, player->position_y, job->position_x, job->position_y, &x, &y) != -1)
 		{
 			core_debug("Go to (%i, %i)", x, y);
 			player->position_x = x;
