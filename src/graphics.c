@@ -114,7 +114,7 @@ int graphics_text_to_array(int iterator, int width, int height)
 	}
 	*/
 	fclose(current_file);
-	graphics_list_of_sprites[iterator].data = &array;
+	graphics_list_of_sprites[iterator].data = array;
 	return 0;
 }
 
