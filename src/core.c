@@ -34,6 +34,8 @@ void core_init(void)
 	noecho();
 	keypad(stdscr, TRUE);
 	nodelay(stdscr, TRUE);
+	start_color();
+	use_default_colors();
 	
 	random_drop_init();
 }

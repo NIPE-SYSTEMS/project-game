@@ -51,23 +51,23 @@ void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t index, char
 	int x = 0;
 	int y = 0;
 	
-	init_pair(1, COLOR_WHITE, COLOR_BLACK);//UNDESTROYABLE
-	init_pair(2, COLOR_WHITE, COLOR_BLACK);//DESTROYABLE
-	init_pair(3, COLOR_RED, COLOR_BLACK);//DESTROYED
-	init_pair(4, COLOR_GREEN, COLOR_BLACK);//PLAYER
-	init_pair(5, COLOR_GREEN, COLOR_BLACK);//PLAYER_STANDING
-	init_pair(6, COLOR_RED, COLOR_BLACK);//ENEMY
-	init_pair(7, COLOR_RED, COLOR_BLACK);//ENEMY_STANDING
-	init_pair(8, COLOR_RED, COLOR_BLACK);//BOMB
-	init_pair(9, COLOR_YELLOW, COLOR_BLACK);//BOMB_UP
-	init_pair(10, COLOR_YELLOW, COLOR_BLACK);//FIRE
-	init_pair(11, COLOR_RED, COLOR_BLACK);//HEART
-	init_pair(12, COLOR_YELLOW, COLOR_BLACK);//SNEAKERS
-	init_pair(13, COLOR_GREEN, COLOR_BLACK);//1_UP
-	init_pair(14, COLOR_YELLOW, COLOR_BLACK);//SHIELD
-	init_pair(15, COLOR_YELLOW, COLOR_BLACK);//EXPLOSION
-	init_pair(16, COLOR_RED, COLOR_BLACK);//EXPLOSION
-	init_pair(17, COLOR_BLACK, COLOR_BLACK);//NORMAL
+	init_pair(1, COLOR_WHITE, -1);//UNDESTROYABLE
+	init_pair(2, COLOR_WHITE, -1);//DESTROYABLE
+	init_pair(3, COLOR_RED, -1);//DESTROYED
+	init_pair(4, COLOR_GREEN, -1);//PLAYER
+	init_pair(5, COLOR_GREEN, -1);//PLAYER_STANDING
+	init_pair(6, COLOR_RED, -1);//ENEMY
+	init_pair(7, COLOR_RED, -1);//ENEMY_STANDING
+	init_pair(8, COLOR_RED, -1);//BOMB
+	init_pair(9, COLOR_YELLOW, -1);//BOMB_UP
+	init_pair(10, COLOR_YELLOW, -1);//FIRE
+	init_pair(11, COLOR_RED, -1);//HEART
+	init_pair(12, COLOR_YELLOW, -1);//SNEAKERS
+	init_pair(13, COLOR_GREEN, -1);//1_UP
+	init_pair(14, COLOR_YELLOW, -1);//SHIELD
+	init_pair(15, COLOR_YELLOW, -1);//EXPLOSION
+	init_pair(16, COLOR_RED, -1);//EXPLOSION
+	init_pair(17, COLOR_BLACK, -1);//NORMAL
 	
 	for(y = 0; y < GRAPHICS_SPRITE_HEIGHT; y++)
 	{
@@ -222,17 +222,14 @@ void graphics_get_arrays (void)
  */
 void graphics_startscreen(void)
 {
-	initscr();//test
-	start_color();//test
-	init_pair(1, COLOR_WHITE, COLOR_BLACK);//test
-	init_pair(2, COLOR_RED, COLOR_BLACK);//test
-	init_pair(3, COLOR_BLUE, COLOR_BLACK);//test
-	init_pair(4, COLOR_GREEN, COLOR_BLACK);//test
-//	init_pair(5, COLOR_PURPLE, COLOR_BLACK);//test
+	init_pair(1, COLOR_WHITE, -1);//test
+	init_pair(2, COLOR_RED, -1);//test
+	init_pair(3, COLOR_BLUE, -1);//test
+	init_pair(4, COLOR_GREEN, -1);//test
+//	init_pair(5, COLOR_PURPLE, -1);//test
 	
 	int i = 0;
 	int b = 0;
-	
 	
 	for(i = 0; i < 26; i++)
 	{
@@ -260,24 +257,19 @@ void graphics_startscreen(void)
 	}
 	move(0, 0);
 	refresh();
-	
 }
 
 void graphics_game_over_function(void)
 {
+	init_pair(1, COLOR_WHITE, -1);//test
+	init_pair(2, COLOR_RED, -1);//test
+	init_pair(3, COLOR_BLUE, -1);//test
+	init_pair(4, COLOR_GREEN, -1);//test
+	init_pair(5, COLOR_BLACK, -1);//tes
+	init_pair(6, COLOR_YELLOW, -1);//tes
+	init_pair(7, COLOR_CYAN, -1);//tes
+	init_pair(8, COLOR_MAGENTA, -1);//tes
 	
-	initscr();//test
-	start_color();//test
-	init_pair(1, COLOR_WHITE, COLOR_BLACK);//test
-	init_pair(2, COLOR_RED, COLOR_BLACK);//test
-	init_pair(3, COLOR_BLUE, COLOR_BLACK);//test
-	init_pair(4, COLOR_GREEN, COLOR_BLACK);//test
-	init_pair(5, COLOR_BLACK, COLOR_BLACK);//tes
-	init_pair(6, COLOR_YELLOW, COLOR_BLACK);//tes
-	init_pair(7, COLOR_CYAN, COLOR_BLACK);//tes
-	init_pair(8, COLOR_MAGENTA, COLOR_BLACK);//tes
-	initscr();//test
-	start_color();//test
 	int i = 0;
 	int b = 0;
 	
@@ -326,18 +318,15 @@ void graphics_main(void)
 	//graphics_get_arrays(); //Test by Jonas
 	
 	//I believe, that the Ai can already make decisions before the player gets to see the field. That is why the start screen should delay the entire game and not just the rendering.
-	if (graphics_startscreen_counter >= graphics_frames_for_startscreen && graphics_animation_counter < 2000)
+	if (graphics_startscreen_counter >= graphics_frames_for_startscreen && graphics_animation_counter < 100)
 	{
 		//graphics_read_array(5,3); //Test
 		
-		initscr();//test
-		start_color();//test
-
-		init_pair(1, COLOR_WHITE, COLOR_BLACK);//test
-		init_pair(2, COLOR_RED, COLOR_BLACK);//test
-		init_pair(3, COLOR_BLUE, COLOR_BLACK);//test
-		init_pair(4, COLOR_GREEN, COLOR_BLACK);//test
-//		init_pair(5, COLOR_PURPLE, COLOR_BLACK);//test
+		init_pair(1, COLOR_WHITE, -1);//test
+		init_pair(2, COLOR_RED, -1);//test
+		init_pair(3, COLOR_BLUE, -1);//test
+		init_pair(4, COLOR_GREEN, -1);//test
+//		init_pair(5, COLOR_PURPLE, -1);//test
 		
 		int x = 0;
 		int y = 0;
