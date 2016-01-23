@@ -332,7 +332,7 @@ void gameplay_players_use_item(void)
 			player->movement_cooldown = 0;
 			if(player->movement_cooldown_initial > 3)
 			{
-			player->movement_cooldown_initial--;	
+				player->movement_cooldown_initial--;
 			}
 			//player->movement_cooldown_initial = GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN_POWERED;
 			player->item = EMPTY;

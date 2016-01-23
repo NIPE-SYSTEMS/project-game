@@ -62,14 +62,21 @@ void core_main(void)
 			switch(character)
 			{
 				case 'q': case 27: // <Q> or <Esc>
+				{
 					core_debug("Invoked quit event.");
 					core_running = 0;
 					break;
+				}
 				case 'w': case 'a': case 's': case 'd': case ' ': case 'f': case 't': case 'u': case 'r': case 'b': case 'o':
+				{
 					gameplay_key(character);
 					break;
+				}
 				default:
+				{
 					core_debug("Pressed unhandled key. Keycode: %i", character);
+					break;
+				}
 			}
 		}
 		

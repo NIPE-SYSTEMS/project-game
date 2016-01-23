@@ -247,18 +247,11 @@ void gameplay_turbo_activated()
 	gameplay_turbo.b = 0;
 	gameplay_turbo.o = 0;
 }
-/**
- * This function changes roundly changed values like item timers.
- */
-void gameplay_update(void)
+
+void gameplay_reset_fire(void)
 {
-	int y;
-	int x;
-	
-	gameplay_players_update();
-	gameplay_bombs_update();
-	gameplay_players_ai_update();
-	gameplay_items_item_update();
+	int x = 0;
+	int y = 0;
 	
 	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
 	{
@@ -277,6 +270,18 @@ void gameplay_update(void)
 	}
 }
 
+/**
+ * This function changes roundly changed values like item timers.
+ */
+void gameplay_update(void)
+{
+	gameplay_reset_fire();
+	gameplay_players_update();
+	gameplay_bombs_update();
+	gameplay_players_ai_update();
+	gameplay_items_item_update();
+}
+
 gameplay_field_t *gameplay_get_field(void)
 {
 	return gameplay_field;
@@ -288,6 +293,7 @@ void gameplay_set_fire(int position_x, int position_y)
 	{
 		return;
 	}
+	
 	GAMEPLAY_FIELD(gameplay_field, position_x, position_y).fire = 1;
 	GAMEPLAY_FIELD(gameplay_field, position_x, position_y).fire_despawn_timer = GAMEPLAY_FIRE_DESPAWN;
 }
