@@ -1,6 +1,43 @@
 #ifndef __GRAPHICS_SPRITES_H__
 #define __GRAPHICS_SPRITES_H__
 
+typedef enum graphics_sprites_type_e
+{
+	GRAPHICS_SPRITES_TYPE_UNDESTROYABLE = 0,
+	GRAPHICS_SPRITES_TYPE_DESTROYABLE = 1,
+	GRAPHICS_SPRITES_TYPE_DESTROYED = 2,
+	GRAPHICS_SPRITES_TYPE_PLAYER = 3,
+	GRAPHICS_SPRITES_TYPE_PLAYER_STANDING = 4,
+	GRAPHICS_SPRITES_TYPE_ENEMY = 5,
+	GRAPHICS_SPRITES_TYPE_ENEMY_STANDING = 6,
+	GRAPHICS_SPRITES_TYPE_BOMB = 7,
+	GRAPHICS_SPRITES_TYPE_BOMB_UP = 8,
+	GRAPHICS_SPRITES_TYPE_FIRE = 9,
+	GRAPHICS_SPRITES_TYPE_HEART = 10,
+	GRAPHICS_SPRITES_TYPE_SNEAKER = 11,
+	GRAPHICS_SPRITES_TYPE_UP = 12,
+	GRAPHICS_SPRITES_TYPE_SHIELD = 13,
+	GRAPHICS_SPRITES_TYPE_EXPLOSION_1 = 14,
+	GRAPHICS_SPRITES_TYPE_EXPLOSION_2 = 15,
+	GRAPHICS_SPRITES_TYPE_BOMBS_PLACABLE = 16,
+	GRAPHICS_SPRITES_TYPE_SPEED = 17
+} graphics_sprites_type_t;
+
+typedef struct graphics_sprites_sprite_s
+{
+	graphics_sprites_type_t type;
+	char *path;
+	int width;
+	int height;
+	char *data;
+} graphics_sprites_sprite_t;
+
+char *graphics_sprites_read(char *path, int width, int height);
+void graphics_sprites_init(void);
+void graphics_sprites_cleanup(void);
+graphics_sprites_sprite_t *graphics_sprites_get(graphics_sprites_type_t type);
+void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t type, char transparency);
+
 //static char graphics_spinning_animation[4] = { '/', '-', '\\', '|' };
 static char graphics_sprites[16][3][5] =
 {
@@ -102,7 +139,7 @@ static char graphics_sprites[16][3][5] =
 	}
 };
 
-char displayed_text[26][103] =
+static char displayed_text[26][103] =
 {
 { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
 { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
@@ -132,7 +169,7 @@ char displayed_text[26][103] =
 { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'M', 'a', 'd', 'e', ' ', 'b', 'y', ' ', 'N', 'I', 'P', 'E', '-', 'S', 'Y', 'S', 'T', 'E', 'M', 'S', ',', ' ', 'T', 'i', 'm', ' ', 'G', 'e', 'v', 'e', 'r', 's', ' ', 'a', 'n', 'd', ' ', 'J', 'o', 'n', 'a', 's', ' ', 'K', 'r', 'u', 'g',}
 };
 
-char startscreen_frames[31][26][103] =
+static char startscreen_frames[31][26][103] =
 {
 
 {
@@ -1041,7 +1078,7 @@ char startscreen_frames[31][26][103] =
 };
 
 
-char graphics_game_over[14][35][70] =
+static char graphics_game_over[14][35][70] =
 {
 
 {
