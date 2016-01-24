@@ -16,6 +16,7 @@ static int graphics_animation_counter = 0;
 static int graphics_startscreen_counter = 0;
 static int graphics_frames_for_startscreen = 60;
 static int graphics_game_over_counter = 0;
+static int graphics_game_over_checker = 0;
 static struct graphics_sprite_s graphics_list_of_sprites[] =
 {
 	{GRAPHICS_SPRITES_UNDESTROYABLE, "assets/undestructable.sprite", 5, 3, NULL},
@@ -110,6 +111,15 @@ void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t index, char
 	init_pair(16, COLOR_RED, -1);//EXPLOSION
 	init_pair(17, COLOR_BLACK, -1);//NORMAL
 	
+	init_pair(18, COLOR_WHITE, -1);
+	init_pair(19, COLOR_RED, -1);
+	init_pair(20, COLOR_BLUE, -1);
+	init_pair(21, COLOR_GREEN, -1);
+	init_pair(22, COLOR_BLACK, -1);
+	init_pair(23, COLOR_YELLOW, -1);
+	init_pair(24, COLOR_CYAN, -1);
+	init_pair(25, COLOR_MAGENTA, -1);
+	
 	for(y = 0; y < GRAPHICS_SPRITE_HEIGHT; y++)
 	{
 		for(x = 0; x < GRAPHICS_SPRITE_WIDTH; x++)
@@ -117,9 +127,9 @@ void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t index, char
 			// if transparency == 1 then render only if character of sprite != ' '
 			if(transparency == 0 || (transparency == 1 && graphics_sprites[index][y][x] != ' '))
 			{
-				if(animation_turbo_activated == 1 && index == 3 || animation_turbo_activated == 1 && index == 4)
+				if((animation_turbo_activated == 1 && index == 3) || (animation_turbo_activated == 1 && index == 4))
 				{
-					attron(COLOR_PAIR((rand()%17)+1));
+					attron(COLOR_PAIR((rand()%8)+18));
 					mvaddch(pos_y + y, pos_x + x, graphics_sprites[index][y][x]);
 					attron(COLOR_PAIR(17));
 				}
@@ -137,7 +147,7 @@ void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t index, char
 int graphics_text_to_array(int iterator, int width, int height)
 {
 	printf("debug1\n");//debug
-	int i = 0;
+	//int i = 0;
 	char *array;
 	array = malloc(width*height*sizeof(char));
 	
@@ -151,7 +161,7 @@ int graphics_text_to_array(int iterator, int width, int height)
 		return 0;
 	}
 	*/
-	i = 0;
+	//i = 0;
 	printf("debug\n");//debug
 	/*
 	while(i < (width*height))
@@ -272,12 +282,6 @@ void graphics_get_arrays (void)
  */
 void graphics_startscreen(void)
 {
-	init_pair(1, COLOR_WHITE, -1);//test
-	init_pair(2, COLOR_RED, -1);//test
-	init_pair(3, COLOR_BLUE, -1);//test
-	init_pair(4, COLOR_GREEN, -1);//test
-//	init_pair(5, COLOR_PURPLE, -1);//test
-	
 	int i = 0;
 	int b = 0;
 	
@@ -311,14 +315,14 @@ void graphics_startscreen(void)
 
 void graphics_game_over_function(void)
 {
-	init_pair(1, COLOR_WHITE, -1);//test
-	init_pair(2, COLOR_RED, -1);//test
-	init_pair(3, COLOR_BLUE, -1);//test
-	init_pair(4, COLOR_GREEN, -1);//test
-	init_pair(5, COLOR_BLACK, -1);//tes
-	init_pair(6, COLOR_YELLOW, -1);//tes
-	init_pair(7, COLOR_CYAN, -1);//tes
-	init_pair(8, COLOR_MAGENTA, -1);//tes
+	init_pair(1, COLOR_WHITE, -1);
+	init_pair(2, COLOR_RED, -1);
+	init_pair(3, COLOR_BLUE, -1);
+	init_pair(4, COLOR_GREEN, -1);
+	init_pair(5, COLOR_YELLOW, -1);
+	init_pair(6, COLOR_CYAN, -1);
+	init_pair(7, COLOR_MAGENTA, -1);
+	//init_pair(8, COLOR_BLACK, -1);
 	
 	int i = 0;
 	int b = 0;
@@ -338,7 +342,7 @@ void graphics_game_over_function(void)
 			{
 				if(graphics_game_over[13][i][b] == '#')
 				{
-					attron(COLOR_PAIR(rand()%9));
+					attron(COLOR_PAIR(rand()%8));
 					mvaddch(3+i, 3+b, graphics_game_over[13][i][b]);
 				}
 			}
@@ -368,13 +372,19 @@ void graphics_main(void)
 	int player_amount = 0;
 	gameplay_players_player_t *player = NULL;
 	//graphics_get_arrays ();
-	//graphics_get_arrays(); //Test by Jonas
+	//graphics_get_arrays();
 	
 	//I believe, that the Ai can already make decisions before the player gets to see the field. That is why the start screen should delay the entire game and not just the rendering.
-	if (graphics_startscreen_counter >= graphics_frames_for_startscreen && graphics_animation_counter < 2000)
+	if (graphics_startscreen_counter >= graphics_frames_for_startscreen && graphics_game_over_checker == 0)
 	{
-		ai_core_enable();
-		
+		if(graphics_startscreen_counter >= (graphics_frames_for_startscreen + 1))
+		{
+			ai_core_enable();
+		}
+		else
+		{
+			graphics_startscreen_counter++;
+		}
 		//graphics_read_array(5,3); //Test
 		
 		init_pair(1, COLOR_WHITE, -1);//test
@@ -389,7 +399,7 @@ void graphics_main(void)
 		int field_index = 0;
 		int render_x = 0;
 		int render_y = 0;
-		// int hearts = 0;
+		int hearts = 0;
 		gameplay_field_t *gameplay_field = NULL;
 		
 		gameplay_field = gameplay_get_field();
@@ -428,10 +438,16 @@ void graphics_main(void)
 		// hearts
 		// mvprintw(GRAPHICS_HEALTH_Y, GRAPHICS_HEALTH_X, "Health:");
 		player = gameplay_players_get_user();
-		// for(hearts = 0; hearts < player->health_points; hearts++)
-		// {
-		// 	graphics_render_sprite(GRAPHICS_HEALTH_X + (GRAPHICS_HEALTH_OFFSET_X * hearts), GRAPHICS_HEALTH_Y + GRAPHICS_HEALTH_OFFSET_Y, GRAPHICS_SPRITES_HEART, 0);
-		// }
+		if (player->health_points == 0)
+		{
+			graphics_game_over_checker = 1;
+		}
+		/*
+		for(hearts = 0; hearts < player->health_points; hearts++)
+		{
+			graphics_render_sprite(GRAPHICS_HEALTH_X + (GRAPHICS_HEALTH_OFFSET_X * hearts), GRAPHICS_HEALTH_Y + GRAPHICS_HEALTH_OFFSET_Y, GRAPHICS_SPRITES_HEART, 0);
+		}
+		*/
 		
 		// debug informations
 		attron(COLOR_PAIR(2));
@@ -451,16 +467,28 @@ void graphics_main(void)
 			render_y = (player->position_y * GRAPHICS_OFFSET_Y) + GRAPHICS_OFFSET_Y - GRAPHICS_SPRITE_HEIGHT;
 				if(player->movement_cooldown > 1)
 			{
-				graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER, 1);
+				if(player->type == GAMEPLAY_PLAYERS_TYPE_USER)
+				{
+					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER, 1);
+				}
+				else
+				{
+					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_ENEMY, 1);
+				}
+				
 			}
 			else
 			{
-				graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER_STANDING, 1);
+				if(player->type == GAMEPLAY_PLAYERS_TYPE_USER)
+				{
+					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_PLAYER_STANDING, 1);
+				}
+				else
+				{
+					graphics_render_sprite(render_x, render_y, GRAPHICS_SPRITES_ENEMY_STANDING, 1);
+				}
 			}
 		}
-		
-		// spinning animation
-		//mvaddch(GRAPHICS_SPINNING_ANIMATION_Y, GRAPHICS_SPINNING_ANIMATION_X, graphics_spinning_animation[graphics_animation_counter]);
 		
 		// mvprintw(20, 77, "Current item:");
 		// if(gameplay_player->item == 0)
@@ -474,17 +502,15 @@ void graphics_main(void)
 		graphics_animation_counter++;
 		move(0, 0);
 		refresh();
-		
-		//graphics_animation_counter++;
-		//graphics_animation_counter %= 4;
 	}
 	else if (graphics_animation_counter == 0)
 	{
 		graphics_startscreen();
 		graphics_startscreen_counter++;
 	}
-	else
+	else if(graphics_game_over_checker == 1)
 	{
+		//hier muss noch AI cleanup dazu!
 		graphics_game_over_function();
 	}
 	//getch();//test
