@@ -35,6 +35,11 @@ void gameplay_players_add(int position_x, int position_y, gameplay_players_type_
 	player->jobs = NULL;
 	player->next = NULL;
 	
+	if(type == GAMEPLAY_PLAYERS_TYPE_AI)
+	{
+		player->movement_cooldown = GAMEPLAY_PLAYERS_AI_START_COOLDOWN;
+	}
+	
 	// append to player list
 	player->next = gameplay_players_players;
 	gameplay_players_players = player;

@@ -189,3 +189,17 @@ void ai_simulation_print(void)
 	
 	core_debug("End of Walkables");
 }
+
+int ai_simulation_get_walkable(int position_x, int position_y)
+{
+	gameplay_field_t *field = NULL;
+	
+	field = gameplay_get_field();
+	
+	if(field == NULL)
+	{
+		return 0;
+	}
+	
+	return GAMEPLAY_FIELD(field, position_x, position_y).ai_simulation_walkable;
+}

@@ -53,7 +53,7 @@ void ai_core_update(gameplay_players_player_t *player)
 		}
 	}
 	
-	// remove tiles which are not walkable (a.k.a. floor tiles)
+	// remove tiles which are not walkable (a.k.a. non floor tiles)
 	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
 	{
 		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
@@ -65,8 +65,6 @@ void ai_core_update(gameplay_players_player_t *player)
 			}
 		}
 	}
-	
-	// ai_jobs_print(player->jobs);
 	
 	// remove tiles which are not accessable
 	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
@@ -81,8 +79,6 @@ void ai_core_update(gameplay_players_player_t *player)
 		}
 	}
 	
-	// ai_jobs_print(player->jobs);
-	
 	// remove tiles which have no save place for hiding
 	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
 	{
@@ -96,6 +92,32 @@ void ai_core_update(gameplay_players_player_t *player)
 		}
 	}
 	
+	// add escape job
+	if(ai_simulation_get_walkable(player->position_x, player->position_y) == 0)
+	{
+		// all tiles are potential escape spots
+		for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
+		{
+			for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
+			{
+				job = ai_jobs_allocate(x, y, ESCAPE);
+				ai_jobs_insert(&(player->jobs), job);
+			}
+		}
+		
+		// remove tiles which are not walkable (a.k.a. non floor tiles)
+		for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
+		{
+			for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
+			{
+				if(gameplay_get_walkable(x, y) == 0)
+				{
+					ai_jobs_remove(&(player->jobs), x, y, ESCAPE);
+				}
+			}
+		}
+	}
+	
 	// remove current tile
 	// ai_jobs_remove(&(player->jobs), player->position_x, player->position_y, BOMB_DROP);
 	
@@ -105,16 +127,34 @@ void ai_core_update(gameplay_players_player_t *player)
 	
 	if(job != NULL && player->movement_cooldown == 0)
 	{
-		if(ai_pathfinding_move_to_next(player->position_x, player->position_y, job->position_x, job->position_y, &x, &y, 0) != -1)
+		switch(job->type)
 		{
-			core_debug("Go to (%i, %i)", x, y);
-			player->position_x = x;
-			player->position_y = y;
-			player->movement_cooldown = player->movement_cooldown_initial;
-			
-			if(player->position_x == job->position_x && player->position_y == job->position_y)
+			case ESCAPE:
 			{
-				gameplay_players_place_bomb(player);
+				if(ai_pathfinding_move_to_next(player->position_x, player->position_y, job->position_x, job->position_y, &x, &y, 2) != -1)
+				{
+					player->position_x = x;
+					player->position_y = y;
+					player->movement_cooldown = player->movement_cooldown_initial;
+				}
+				
+				break;
+			}
+			case BOMB_DROP:
+			{
+				if(ai_pathfinding_move_to_next(player->position_x, player->position_y, job->position_x, job->position_y, &x, &y, 0) != -1)
+				{
+					player->position_x = x;
+					player->position_y = y;
+					player->movement_cooldown = player->movement_cooldown_initial;
+					
+					if(player->position_x == job->position_x && player->position_y == job->position_y)
+					{
+						gameplay_players_place_bomb(player);
+					}
+				}
+				
+				break;
 			}
 		}
 	}

@@ -41,7 +41,7 @@ void gameplay_bombs_add(gameplay_players_player_t *player, int position_x, int p
 		current->next = bomb;
 	}
 	
-	core_debug("Added bomb %p at (%i, %i)", gameplay_bombs_bombs, position_x, position_y);
+	// core_debug("Added bomb %p at (%i, %i)", gameplay_bombs_bombs, position_x, position_y);
 }
 
 void gameplay_bombs_cleanup(void)
@@ -75,7 +75,7 @@ void gameplay_bombs_remove(int position_x, int position_y)
 		return;
 	}
 	
-	core_debug("Remove bomb at (%i, %i)", position_x, position_y);
+	// core_debug("Remove bomb at (%i, %i)", position_x, position_y);
 	
 	// give the player the ability to place another bomb
 	current->owner->placed_bombs--;
