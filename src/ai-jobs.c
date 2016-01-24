@@ -171,6 +171,7 @@ ai_jobs_t *ai_jobs_get_optimal(ai_jobs_t *root, int position_x_user, int positio
 			case ESCAPE:
 			{
 				distance_to_walk = ai_pathfinding_move_to_length(position_x_ai, position_y_ai, job_iterator->position_x, job_iterator->position_y, 2);
+				distance_to_player = ai_pathfinding_move_to_length(job_iterator->position_x, job_iterator->position_y, position_x_user, position_y_user, 2);
 				
 				if(distance_to_walk == -1)
 				{
@@ -179,6 +180,11 @@ ai_jobs_t *ai_jobs_get_optimal(ai_jobs_t *root, int position_x_user, int positio
 				else
 				{
 					job_iterator->score += distance_to_walk * 0.1;
+				}
+				
+				if(distance_to_player != -1)
+				{
+					job_iterator->score += distance_to_player * 0.05;
 				}
 				
 				if(ai_simulation_get_walkable(job_iterator->position_x, job_iterator->position_y) == 0)
