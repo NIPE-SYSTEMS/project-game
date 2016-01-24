@@ -49,13 +49,17 @@ void core_main(void)
 	core_running = 1;
 	int character = 0;
 	gameplay_field_init();
+	int core_game_breaked = 0;
 	//graphics_read_arrays();
 	
 	while(core_running == 1)
 	{
 		clear();
 		
-		gameplay_update();
+		if(core_game_breaked == 0)
+		{
+			gameplay_update();
+		}
 		
 		while((character = getch()) != ERR)
 		{
@@ -67,10 +71,32 @@ void core_main(void)
 					core_running = 0;
 					break;
 				}
+				case 'p':
+				{
+					switch(core_game_breaked)
+					{
+						case 1:
+						{
+							core_game_breaked = 0;
+							core_debug("Turbo-Bomber was unbreaked.");
+							break;
+						}
+						case 0:
+						{
+							core_game_breaked = 1;
+							core_debug("Turbo-Bomber was breaked. To unbeak press 'p'.");
+							break;
+						}
+					}
+					break;
+				}
 				case 'w': case 'a': case 's': case 'd': case ' ': case 'f': case 't': case 'u': case 'r': case 'b': case 'o':
 				{
-					gameplay_key(character);
-					break;
+					if(core_game_breaked == 0)
+					{
+						gameplay_key(character);
+						break;
+					}
 				}
 				default:
 				{
@@ -79,9 +105,14 @@ void core_main(void)
 				}
 			}
 		}
-		
+		if(core_game_breaked == 0)
+		{
 		graphics_main();
-		
+		}
+		if(core_game_breaked == 1)
+		{
+			graphics_render_breaked_game();
+		}
 		if(core_running == 1)
 		{
 			usleep(CORE_FRAME_TIME);

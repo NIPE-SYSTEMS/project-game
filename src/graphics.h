@@ -50,5 +50,6 @@ void graphics_read_arrays(void);
 
 void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t field, char transparency);
 void graphics_main(void);
+void graphics_render_breaked_game();
 
 #endif /* __GRAPHICS_H__ */

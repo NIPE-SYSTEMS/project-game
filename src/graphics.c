@@ -641,3 +641,21 @@ void graphics_main(void)
 		graphics_game_over_function();
 	}
 }
+
+void graphics_render_breaked_game()
+{
+	attron(COLOR_PAIR(1));
+	if (set_show_debug)
+	{
+		graphics_show_debug();
+	}
+	else
+	{
+		graphics_render_information();
+	}
+	
+	graphics_render_field();
+	graphics_render_players();
+	move(0, 0);
+	refresh();
+}
