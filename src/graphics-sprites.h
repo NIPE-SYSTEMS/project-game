@@ -1,8 +1,7 @@
 #ifndef __GRAPHICS_SPRITES_H__
 #define __GRAPHICS_SPRITES_H__
 
-//static char graphics_spinning_animation[4] = { '/', '-', '\\', '|' };
-static char graphics_sprites[16][3][5] =
+static char graphics_sprites[18][3][5] =
 {
 	//Undestroyable field = 0
 	{
@@ -99,6 +98,18 @@ static char graphics_sprites[16][3][5] =
 		{'/','\\',' ','/','\\'},
 		{'|',' ', 'V', ' ', '|'},
 		{'\\','#','#','#', '/'}
+	},
+	//Bomb Placable
+	{
+		{' ',' ','/','~',' '},
+		{'/','#','\\',' ',' '},
+		{'\\','_','/',' ',' '}
+	},
+	//SPEED = 9
+	{
+		{' ',' ',' ',' ',' '},
+		{'|','L','_','_',' '},
+		{'L','_','_','_','D'}
 	}
 };
 
