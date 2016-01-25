@@ -12,6 +12,8 @@ static graphics_sprites_sprite_t graphics_sprites_sprites[] =
 	{ GRAPHICS_SPRITES_TYPE_DESTROYED, "assets/destroyed.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
 	{ GRAPHICS_SPRITES_TYPE_PLAYER, "assets/player.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_GREEN },
 	{ GRAPHICS_SPRITES_TYPE_PLAYER_STANDING, "assets/player_standing.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_GREEN },
+	{ GRAPHICS_SPRITES_TYPE_PLAYER_TURBO_MODE, "assets/player.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_RANDOM },
+	{ GRAPHICS_SPRITES_TYPE_PLAYER_STANDING_TURBO_MODE, "assets/player_standing.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_RANDOM },
 	{ GRAPHICS_SPRITES_TYPE_ENEMY, "assets/enemy.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_RED },
 	{ GRAPHICS_SPRITES_TYPE_ENEMY_STANDING, "assets/enemy_standing.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_RED },
 	{ GRAPHICS_SPRITES_TYPE_BOMB, "assets/bomb.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_RED },
@@ -129,6 +131,7 @@ void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t
 	int x = 0;
 	int y = 0;
 	graphics_sprites_sprite_t *sprite = NULL;
+	graphics_sprites_colors_t render_color = GRAPHICS_SPRITES_COLOR_WHITE;
 	
 	sprite = graphics_sprites_get(type);
 	if(sprite == NULL || sprite->data == NULL)
@@ -136,7 +139,18 @@ void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t
 		return;
 	}
 	
-	attron(COLOR_PAIR(sprite->color));
+	
+	if(sprite->color != GRAPHICS_SPRITES_COLOR_RANDOM && sprite->color != GRAPHICS_SPRITES_COLOR_RANDOM_FILL)
+	{
+		render_color = sprite->color;
+	}
+	else if(sprite->color == GRAPHICS_SPRITES_COLOR_RANDOM_FILL)
+	{
+		// get random number in [2, 8]
+		render_color = rand() % 7 + 2;
+	}
+	
+	attron(COLOR_PAIR(render_color));
 	
 	for(y = 0; y < sprite->height; y++)
 	{
@@ -145,11 +159,20 @@ void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t
 			// if transparency == 1 then render only if character of sprite != ' '
 			if(transparency == 0 || (transparency == 1 && sprite->data[y * sprite->width + x] != ' '))
 			{
-				// TODO: Turbo-Mode colors
+				if(sprite->color == GRAPHICS_SPRITES_COLOR_RANDOM)
+				{
+					attron(COLOR_PAIR(rand() % 7 + 2));
+				}
+				
 				mvaddch(render_y + y, render_x + x, sprite->data[y * sprite->width + x]);
+				
+				if(sprite->color == GRAPHICS_SPRITES_COLOR_RANDOM)
+				{
+					attroff(COLOR_PAIR(rand() % 7 + 2));
+				}
 			}
 		}
 	}
 	
-	attroff(COLOR_PAIR(sprite->color));
+	attron(COLOR_PAIR(render_color));
 }
