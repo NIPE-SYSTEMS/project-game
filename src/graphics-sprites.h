@@ -1,6 +1,18 @@
 #ifndef __GRAPHICS_SPRITES_H__
 #define __GRAPHICS_SPRITES_H__
 
+typedef enum graphics_sprites_colors_e
+{
+	GRAPHICS_SPRITES_COLOR_BLACK = 1,
+	GRAPHICS_SPRITES_COLOR_RED = 2,
+	GRAPHICS_SPRITES_COLOR_GREEN = 3,
+	GRAPHICS_SPRITES_COLOR_YELLOW = 4,
+	GRAPHICS_SPRITES_COLOR_BLUE = 5,
+	GRAPHICS_SPRITES_COLOR_MAGENTA = 6,
+	GRAPHICS_SPRITES_COLOR_CYAN = 7,
+	GRAPHICS_SPRITES_COLOR_WHITE = 8
+} graphics_sprites_colors_t;
+
 typedef enum graphics_sprites_type_e
 {
 	GRAPHICS_SPRITES_TYPE_UNDESTROYABLE = 0,
@@ -30,8 +42,10 @@ typedef struct graphics_sprites_sprite_s
 	int width;
 	int height;
 	char *data;
+	graphics_sprites_colors_t color;
 } graphics_sprites_sprite_t;
 
+void graphics_sprites_init_colors(void);
 char *graphics_sprites_read(char *path, int width, int height);
 void graphics_sprites_init(void);
 void graphics_sprites_cleanup(void);

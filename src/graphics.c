@@ -18,25 +18,6 @@ static int graphics_startscreen_counter = 0;
 static int graphics_frames_for_startscreen = 60;
 static int graphics_game_over_counter = 0;
 static int graphics_game_over_checker = 0;
-// static struct graphics_sprite_s graphics_list_of_sprites[] =
-// {
-// 	{GRAPHICS_SPRITES_UNDESTROYABLE, "assets/undestructable.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_DESTROYABLE, "assets/destructable.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_DESTROYED, "assets/destroyed.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_PLAYER, "assets/player.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_PLAYER_STANDING, "assets/player_standing.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_ENEMY, "assets/enemy.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_ENEMY_STANDING, "assets/enemy_standing.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_BOMB, "assets/bomb.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_BOMB_UP, "assets/bomb_up.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_FIRE, "assets/fire.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_HEART, "assets/heart.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_SNEAKER, "assets/sneaker.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_UP, "assets/one_up.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_SHIELD, "assets/shield.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_EXPLOSION_1, "assets/explosion_1.sprite", 5, 3, NULL},
-// 	{GRAPHICS_SPRITES_EXPLOSION_2, "assets/explosion_2.sprite", 5, 3, NULL}
-// };
 
 void graphics_render_debug(void)
 {

@@ -25,6 +25,18 @@ static graphics_sprites_sprite_t graphics_sprites_sprites[] =
 	{ GRAPHICS_SPRITES_TYPE_EXPLOSION_2, "assets/explosion_2.sprite", 5, 3, NULL }
 };
 
+void graphics_sprites_init_colors(void)
+{
+	init_pair(GRAPHICS_SPRITES_COLOR_BLACK, COLOR_BLACK, -1);
+	init_pair(GRAPHICS_SPRITES_COLOR_RED, COLOR_RED, -1);
+	init_pair(GRAPHICS_SPRITES_COLOR_GREEN, COLOR_GREEN, -1);
+	init_pair(GRAPHICS_SPRITES_COLOR_YELLOW, COLOR_YELLOW, -1);
+	init_pair(GRAPHICS_SPRITES_COLOR_BLUE, COLOR_BLUE, -1);
+	init_pair(GRAPHICS_SPRITES_COLOR_MAGENTA, COLOR_MAGENTA, -1);
+	init_pair(GRAPHICS_SPRITES_COLOR_CYAN, COLOR_CYAN, -1);
+	init_pair(GRAPHICS_SPRITES_COLOR_WHITE, COLOR_WHITE, -1);
+}
+
 char *graphics_sprites_read(char *path, int width, int height)
 {
 	char *data = NULL;
@@ -76,6 +88,8 @@ char *graphics_sprites_read(char *path, int width, int height)
 void graphics_sprites_init(void)
 {
 	int i = 0;
+	
+	graphics_sprites_init_colors();
 	
 	for(i = 0; i < (int)(sizeof(graphics_sprites_sprites) / sizeof(graphics_sprites_sprites[0])); i++)
 	{
