@@ -12,7 +12,7 @@
 #include "gameplay-items.h"
 #include "ai-core.h"
 
-static int set_show_debug = 1;
+static int set_show_debug = 0;
 static int graphics_animation_counter = 0;
 static int graphics_startscreen_counter = 0;
 static int graphics_frames_for_startscreen = 60;
