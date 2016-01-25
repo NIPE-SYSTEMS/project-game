@@ -7,24 +7,24 @@
 
 static graphics_sprites_sprite_t graphics_sprites_sprites[] =
 {
-	{ GRAPHICS_SPRITES_TYPE_UNDESTROYABLE, "assets/undestructable.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_DESTROYABLE, "assets/destructable.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_DESTROYED, "assets/destroyed.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_PLAYER, "assets/player.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_PLAYER_STANDING, "assets/player_standing.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_ENEMY, "assets/enemy.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_ENEMY_STANDING, "assets/enemy_standing.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_BOMB, "assets/bomb.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_BOMB_UP, "assets/bomb_up.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_FIRE, "assets/fire.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_HEART, "assets/heart.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_SNEAKER, "assets/sneaker.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_UP, "assets/one_up.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_SHIELD, "assets/shield.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_EXPLOSION_1, "assets/explosion_1.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_EXPLOSION_2, "assets/explosion_2.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_SPEED, "assets/speed.sprite", 5, 3, NULL },
-	{ GRAPHICS_SPRITES_TYPE_BOMBS_PLACABLE, "assets/bombs_placed.sprite", 5, 3, NULL }
+	{ GRAPHICS_SPRITES_TYPE_UNDESTROYABLE, "assets/undestructable.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_DESTROYABLE, "assets/destructable.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_DESTROYED, "assets/destroyed.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_PLAYER, "assets/player.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_GREEN },
+	{ GRAPHICS_SPRITES_TYPE_PLAYER_STANDING, "assets/player_standing.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_GREEN },
+	{ GRAPHICS_SPRITES_TYPE_ENEMY, "assets/enemy.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_RED },
+	{ GRAPHICS_SPRITES_TYPE_ENEMY_STANDING, "assets/enemy_standing.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_RED },
+	{ GRAPHICS_SPRITES_TYPE_BOMB, "assets/bomb.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_RED },
+	{ GRAPHICS_SPRITES_TYPE_BOMB_UP, "assets/bomb_up.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_YELLOW },
+	{ GRAPHICS_SPRITES_TYPE_FIRE, "assets/fire.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_YELLOW },
+	{ GRAPHICS_SPRITES_TYPE_HEART, "assets/heart.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_YELLOW },
+	{ GRAPHICS_SPRITES_TYPE_SNEAKER, "assets/sneaker.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_YELLOW },
+	{ GRAPHICS_SPRITES_TYPE_UP, "assets/one_up.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_YELLOW },
+	{ GRAPHICS_SPRITES_TYPE_SHIELD, "assets/shield.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_YELLOW },
+	{ GRAPHICS_SPRITES_TYPE_EXPLOSION_1, "assets/explosion_1.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_RED },
+	{ GRAPHICS_SPRITES_TYPE_EXPLOSION_2, "assets/explosion_2.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_YELLOW },
+	{ GRAPHICS_SPRITES_TYPE_SPEED, "assets/speed.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_BLUE },
+	{ GRAPHICS_SPRITES_TYPE_BOMBS_PLACABLE, "assets/bombs_placed.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_GREEN }
 };
 
 void graphics_sprites_init_colors(void)
@@ -136,6 +136,8 @@ void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t
 		return;
 	}
 	
+	attron(COLOR_PAIR(sprite->color));
+	
 	for(y = 0; y < sprite->height; y++)
 	{
 		for(x = 0; x < sprite->width; x++)
@@ -148,4 +150,6 @@ void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t
 			}
 		}
 	}
+	
+	attroff(COLOR_PAIR(sprite->color));
 }
