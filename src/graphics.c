@@ -18,25 +18,25 @@ static int graphics_startscreen_counter = 0;
 static int graphics_frames_for_startscreen = 60;
 static int graphics_game_over_counter = 0;
 static int graphics_game_over_checker = 0;
-static struct graphics_sprite_s graphics_list_of_sprites[] =
-{
-	{GRAPHICS_SPRITES_UNDESTROYABLE, "assets/undestructable.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_DESTROYABLE, "assets/destructable.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_DESTROYED, "assets/destroyed.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_PLAYER, "assets/player.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_PLAYER_STANDING, "assets/player_standing.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_ENEMY, "assets/enemy.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_ENEMY_STANDING, "assets/enemy_standing.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_BOMB, "assets/bomb.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_BOMB_UP, "assets/bomb_up.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_FIRE, "assets/fire.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_HEART, "assets/heart.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_SNEAKER, "assets/sneaker.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_UP, "assets/one_up.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_SHIELD, "assets/shield.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_EXPLOSION_1, "assets/explosion_1.sprite", 5, 3, NULL},
-	{GRAPHICS_SPRITES_EXPLOSION_2, "assets/explosion_2.sprite", 5, 3, NULL}
-};
+// static struct graphics_sprite_s graphics_list_of_sprites[] =
+// {
+// 	{GRAPHICS_SPRITES_UNDESTROYABLE, "assets/undestructable.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_DESTROYABLE, "assets/destructable.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_DESTROYED, "assets/destroyed.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_PLAYER, "assets/player.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_PLAYER_STANDING, "assets/player_standing.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_ENEMY, "assets/enemy.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_ENEMY_STANDING, "assets/enemy_standing.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_BOMB, "assets/bomb.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_BOMB_UP, "assets/bomb_up.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_FIRE, "assets/fire.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_HEART, "assets/heart.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_SNEAKER, "assets/sneaker.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_UP, "assets/one_up.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_SHIELD, "assets/shield.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_EXPLOSION_1, "assets/explosion_1.sprite", 5, 3, NULL},
+// 	{GRAPHICS_SPRITES_EXPLOSION_2, "assets/explosion_2.sprite", 5, 3, NULL}
+// };
 
 void graphics_render_debug(void)
 {
@@ -77,207 +77,6 @@ void graphics_render_debug(void)
 	}
 	mvprintw(GRAPHICS_DEBUG_Y + offset_line++, GRAPHICS_DEBUG_X, "]");
 }
-
-/**
- * This function renders a sprite at a given position. It also can handle
- * transparency.
- * 
- * @param pos_x The X position.
- * @param pos_y The Y position.
- * @param index The index of the sprite.
- * @param transparency 1 to enable transparency rendering, 0 to disable it. 0
- *                     means that every new rendering will overwrite the
- *                     existing characters.
- */
-void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t index, char transparency)
-{
-	int x = 0;
-	int y = 0;
-	
-	init_pair(1, COLOR_WHITE, -1);//UNDESTROYABLE
-	init_pair(2, COLOR_WHITE, -1);//DESTROYABLE
-	init_pair(3, COLOR_RED, -1);//DESTROYED
-	init_pair(4, COLOR_GREEN, -1);//PLAYER
-	init_pair(5, COLOR_GREEN, -1);//PLAYER_STANDING
-	init_pair(6, COLOR_RED, -1);//ENEMY
-	init_pair(7, COLOR_RED, -1);//ENEMY_STANDING
-	init_pair(8, COLOR_RED, -1);//BOMB
-	init_pair(9, COLOR_YELLOW, -1);//BOMB_UP
-	init_pair(10, COLOR_YELLOW, -1);//FIRE
-	init_pair(11, COLOR_RED, -1);//HEART
-	init_pair(12, COLOR_YELLOW, -1);//SNEAKERS
-	init_pair(13, COLOR_GREEN, -1);//1_UP
-	init_pair(14, COLOR_YELLOW, -1);//SHIELD
-	init_pair(15, COLOR_YELLOW, -1);//EXPLOSION
-	init_pair(16, COLOR_RED, -1);//EXPLOSION
-	init_pair(17, COLOR_GREEN, -1);//PLACABLE BOMBS
-	init_pair(18, COLOR_BLUE, -1);//SPEED
-	init_pair(19, COLOR_BLACK, -1);//Normal
-	
-	//TURBO MODE
-	init_pair(20, COLOR_WHITE, -1);
-	init_pair(21, COLOR_RED, -1);
-	init_pair(22, COLOR_BLUE, -1);
-	init_pair(23, COLOR_GREEN, -1);
-	init_pair(24, COLOR_BLACK, -1);
-	init_pair(25, COLOR_YELLOW, -1);
-	init_pair(26, COLOR_CYAN, -1);
-	init_pair(27, COLOR_MAGENTA, -1);
-	
-	for(y = 0; y < GRAPHICS_SPRITE_HEIGHT; y++)
-	{
-		for(x = 0; x < GRAPHICS_SPRITE_WIDTH; x++)
-		{
-			// if transparency == 1 then render only if character of sprite != ' '
-			if(transparency == 0 || (transparency == 1 && graphics_sprites[index][y][x] != ' '))
-			{
-				if((animation_turbo_activated == 1 && index == 3) || (animation_turbo_activated == 1 && index == 4))
-				{
-					attron(COLOR_PAIR((rand()%8)+20));
-					mvaddch(pos_y + y, pos_x + x, graphics_sprites[index][y][x]);
-					attron(COLOR_PAIR(19));
-				}
-				else
-				{
-					attron(COLOR_PAIR(index+1));
-					mvaddch(pos_y + y, pos_x + x, graphics_sprites[index][y][x]);
-					attron(COLOR_PAIR(19));
-				}
-			}
-		}
-	}
-}
-
-int graphics_text_to_array(int iterator, int width, int height)
-{
-	//int i = 0;
-	char *array;
-	array = malloc(width*height*sizeof(char));
-	
-	FILE *current_file;
-	//current_file = fopen("text.sprite", "r");
-	current_file = fopen(graphics_list_of_sprites[iterator].path, "r");
-	/*
-	if (current_file == NULL)
-	{
-		printf("error while opening file\n"); //ausgabe muss noch verändert werden!!!
-		return 0;
-	}
-	*/
-	//i = 0;
-	 mvprintw(0, 48, "Debug Test!");//debug
-	/*
-	while(i < (width*height))
-	{
-		array[i] = getc(current_file);
-		if(array[i] == ' ' || array[i] == '#' || array[i] == 'o' ||array[i] == '\\' || array[i] == '|' || array[i] == '/' || array[i] == 'Y' || array[i] == 'L' || array[i] == 'D' || array[i] == '_' || array[i] == '-' || array[i] == '+' || array[i] == '~' || array[i] == '1' || array[i] == 'V' || array[i] == 'v' || array[i] == 'O' || array[i] == 'T')
-		{
-			i++;
-		}
-	}
-	*/
-	fclose(current_file);
-	graphics_list_of_sprites[iterator].data = array;
-	return 0;
-}
-
-void graphics_read_arrays(void)
-{
-	int sprite_amount = 16;
-	int static_sprite_width = 5;
-	int static_sprite_height = 3;
-	int i;
-	
-	for (i = 0; i < sprite_amount; i++)
-	{
-		graphics_text_to_array(i, static_sprite_width, static_sprite_height);
-	}
-}
-/*
-char *graphics_read_array(char *path, int width, int height)
-{
-	char *array = NULL;
-	array = malloc (width*height*sizeof(char));
-	int i = 0; //Debug
-	
-	FILE *current_file;
-	current_file = fopen( "./assets/undestructable.sprite" *path, "r");
-	{
-			fprintf(stderr, "Failed to open file.\n");
-			return 0;
-	}
-	
-	//DEBUG
-	for (i = 0; i < (width*height); i++)
-	{
-		fprintf(stderr, "%c", array++);
-	}
-	
-	//
-	return *array;
-}
-
-void graphics_get_arrays (void)
-{
-	int i = 0;
-	int e = 0;
-	char c = 'q'; //nur übergangsweise
-	
-	for( i= 0; i < 16; i++)
-	{
-		FILE *current_file;
-		current_file = fopen(graphics_list_of_sprites[i].path, "r");
-		
-		if(current_file == NULL)
-		{
-			fprintf(stderr, "Failed to open file.\n");
-			return;
-		}
-		e = 0;
-		for()
-		{
-		
-			c = getc (current_file);
-			e++;
-		}
-	}
-}
-*/
-
-	/*
-	FILE *file_game_over;
-	char *Game_Over_Frames = NULL;
-	
-	int c;
-	int counter = 0;
-	file_game_over = fopen ("Game_Over_Array.txt", "r");
-	
-	if(file_game_over == NULL)
-	{
-		fprintf(stderr, "Failed to open file.\n");
-		return;
-	}
-	
-	do
-	{
-		c = getc (file_game_over);
-		counter++;
-	}while (c != EOF);
-	
-	
-	Game_Over_Frames = malloc(counter * sizeof(char));
-	
-	do
-	{
-		Game_Over_Frames = getc (file_game_over);
-		*Game_Over_Frames++;
-	}while (c != EOF);
-	
-	fclose (file_game_over);
-	
-}
-
-*/
 
 /**
  * This function will render the startscreen which will
