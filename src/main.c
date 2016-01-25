@@ -5,7 +5,7 @@
 int main(void)
 {
 	core_init();
-	// core_main();
+	core_main();
 	core_cleanup();
 	
 	return 0;

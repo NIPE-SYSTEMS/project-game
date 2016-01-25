@@ -42,10 +42,23 @@ void core_init(void)
 	
 	graphics_sprites_init();
 	
-	graphics_sprites_render(10, 10, GRAPHICS_SPRITES_TYPE_BOMB, 0);
-	refresh();
+	// graphics_sprites_render(10, 10, GRAPHICS_SPRITES_TYPE_BOMB, 0);
+	// gameplay_field_init();
+	// gameplay_reset_fire();
+	// gameplay_players_update();
+	// gameplay_bombs_update();
+	// gameplay_players_ai_update();
+	// gameplay_items_item_update();
 	
-	sleep(5);
+	// graphics_render_field();
+	// graphics_render_players();
+	// graphics_render_information();
+	// graphics_render_debug();
+	
+	// refresh();
+	// move(0, 0);
+	
+	// sleep(5);
 }
 
 /**
@@ -115,7 +128,7 @@ void core_main(void)
 		}
 		if(core_game_breaked == 0)
 		{
-		graphics_main();
+			graphics_main();
 		}
 		if(core_game_breaked == 1)
 		{

@@ -45,7 +45,7 @@ typedef struct graphics_sprite_s
 	char *data;
 } graphics_sprite_t;
 
-void graphics_show_debug(void);
+void graphics_render_debug(void);
 void graphics_read_arrays(void);
 
 void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t field, char transparency);
