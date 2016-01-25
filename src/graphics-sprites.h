@@ -39,7 +39,7 @@ graphics_sprites_sprite_t *graphics_sprites_get(graphics_sprites_type_t type);
 void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t type, char transparency);
 
 //static char graphics_spinning_animation[4] = { '/', '-', '\\', '|' };
-static char graphics_sprites[16][3][5] =
+static char graphics_sprites[18][3][5] =
 {
 	//Undestroyable field = 0
 	{
@@ -136,6 +136,18 @@ static char graphics_sprites[16][3][5] =
 		{'/','\\',' ','/','\\'},
 		{'|',' ', 'V', ' ', '|'},
 		{'\\','#','#','#', '/'}
+	},
+	//Bomb Placable
+	{
+		{' ',' ','/','~',' '},
+		{'/','#','\\',' ',' '},
+		{'\\','_','/',' ',' '}
+	},
+	//SPEED = 9
+	{
+		{' ',' ',' ',' ',' '},
+		{'|','L','_','_',' '},
+		{'L','_','_','_','D'}
 	}
 };
 
