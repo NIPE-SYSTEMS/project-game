@@ -4,11 +4,11 @@
 #include <ncurses.h>
 #include <time.h>
 
-
 #include "core.h"
 #include "random-drop.h"
 #include "graphics.h"
 #include "gameplay.h"
+#include "graphics-sprites.h"
 
 #ifdef DEBUG
 static void core_init_files(void);
@@ -36,8 +36,29 @@ void core_init(void)
 	nodelay(stdscr, TRUE);
 	start_color();
 	use_default_colors();
+	clear();
 	
 	random_drop_init();
+	
+	graphics_sprites_init();
+	
+	// graphics_sprites_render(10, 10, GRAPHICS_SPRITES_TYPE_BOMB, 0);
+	// gameplay_field_init();
+	// gameplay_reset_fire();
+	// gameplay_players_update();
+	// gameplay_bombs_update();
+	// gameplay_players_ai_update();
+	// gameplay_items_item_update();
+	
+	// graphics_render_field();
+	// graphics_render_players();
+	// graphics_render_information();
+	// graphics_render_debug();
+	
+	// refresh();
+	// move(0, 0);
+	
+	// sleep(5);
 }
 
 /**
@@ -107,7 +128,7 @@ void core_main(void)
 		}
 		if(core_game_breaked == 0)
 		{
-		graphics_main();
+			graphics_main();
 		}
 		if(core_game_breaked == 1)
 		{
@@ -125,7 +146,9 @@ void core_main(void)
  */
 void core_cleanup(void)
 {
+	graphics_sprites_cleanup();
 	gameplay_cleanup();
+	
 	endwin();
 	
 #ifdef DEBUG
