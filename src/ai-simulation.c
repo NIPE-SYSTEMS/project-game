@@ -131,7 +131,7 @@ void ai_simulation_copy_fire(void)
 
 // validates if a tile is valid. on a valid tile may be placed a bomb. the
 // validation tests if there are spots to hide from the explosion
-int ai_simulation_validate_tile(int position_x_player, int position_y_player, int explosion_radius, int position_x, int position_y)
+int ai_simulation_validate_tile(int explosion_radius, int position_x, int position_y)
 {
 	int x = 0;
 	int y = 0;
