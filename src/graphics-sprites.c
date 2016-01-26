@@ -39,6 +39,7 @@ void graphics_sprites_init_colors(void)
 	init_pair(GRAPHICS_SPRITES_COLOR_MAGENTA, COLOR_MAGENTA, -1);
 	init_pair(GRAPHICS_SPRITES_COLOR_CYAN, COLOR_CYAN, -1);
 	init_pair(GRAPHICS_SPRITES_COLOR_WHITE, COLOR_WHITE, -1);
+	init_pair(GRAPHICS_SPRITES_COLOR_WHITE_FILLED, COLOR_WHITE, COLOR_WHITE);
 }
 
 char *graphics_sprites_read(char *path, int width, int height)
@@ -175,4 +176,22 @@ void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t
 	}
 	
 	attroff(COLOR_PAIR(render_color));
+}
+
+void graphics_sprites_render_box(int render_x, int render_y, int width, int height)
+{
+	int x = 0;
+	int y = 0;
+	
+	attron(COLOR_PAIR(GRAPHICS_SPRITES_COLOR_WHITE_FILLED));
+	
+	for(y = 0; y < height; y++)
+	{
+		for(x = 0; x < width; x++)
+		{
+			mvaddch(render_y + y, render_x + x, '#');
+		}
+	}
+	
+	attroff(COLOR_PAIR(GRAPHICS_SPRITES_COLOR_WHITE_FILLED));
 }

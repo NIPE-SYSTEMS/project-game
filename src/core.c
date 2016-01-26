@@ -17,7 +17,7 @@ static void core_cleanup_files(void);
 static void core_log(FILE *file, char *fmt, va_list args);
 static FILE *core_file_debug = NULL;
 static FILE *core_file_error = NULL;
-#endif /* DEBUG*/
+#endif /* DEBUG */
 
 static core_state_t core_state = CORE_START_SCREEN;
 
@@ -59,7 +59,7 @@ void core_main(void)
 	{
 		clear();
 		
-		if(core_state != CORE_PAUSED)
+		if(core_state != CORE_PAUSED && core_state != CORE_QR_CODE)
 		{
 			gameplay_update();
 		}
@@ -72,6 +72,13 @@ void core_main(void)
 				{
 					core_debug("Invoked quit event.");
 					core_state = CORE_SHUTDOWN;
+					break;
+				}
+				case 'c':
+				{
+					core_debug("Showing QR Code");
+					core_state = CORE_QR_CODE;
+					
 					break;
 				}
 				case 'p':
@@ -154,6 +161,12 @@ void core_main(void)
 				{
 					core_state = CORE_GAME_OVER;
 				}
+				
+				break;
+			}
+			case CORE_QR_CODE:
+			{
+				graphics_render_qr_code();
 				
 				break;
 			}

@@ -16,6 +16,12 @@
 
 #define GRAPHICS_START_SCREEN_FRAMES 60
 
+#define GRAPHICS_QR_CODE_SIZE 29
+#define GRAPHICS_QR_CODE_OFFSET_X 15
+#define GRAPHICS_QR_CODE_OFFSET_Y 1
+#define GRAPHICS_QR_CODE_PIXEL_SIZE_WIDTH 2
+#define GRAPHICS_QR_CODE_PIXEL_SIZE_HEIGHT 1
+
 typedef enum graphics_sprites_e
 {
 	GRAPHICS_SPRITES_UNDESTROYABLE = 0,
@@ -53,5 +59,6 @@ void graphics_game_over_function(void);
 void graphics_render_players(void);
 void graphics_render_information(void);
 void graphics_render_field(void);
+void graphics_render_qr_code(void);
 
 #endif /* __GRAPHICS_H__ */

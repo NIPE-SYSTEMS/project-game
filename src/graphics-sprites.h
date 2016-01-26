@@ -12,7 +12,8 @@ typedef enum graphics_sprites_colors_e
 	GRAPHICS_SPRITES_COLOR_CYAN = 7,
 	GRAPHICS_SPRITES_COLOR_WHITE = 8,
 	GRAPHICS_SPRITES_COLOR_RANDOM = 9,
-	GRAPHICS_SPRITES_COLOR_RANDOM_FILL = 10
+	GRAPHICS_SPRITES_COLOR_RANDOM_FILL = 10,
+	GRAPHICS_SPRITES_COLOR_WHITE_FILLED = 11
 } graphics_sprites_colors_t;
 
 typedef enum graphics_sprites_type_e
@@ -104,6 +105,7 @@ void graphics_sprites_init(void);
 void graphics_sprites_cleanup(void);
 graphics_sprites_sprite_t *graphics_sprites_get(graphics_sprites_type_t type);
 void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t type, char transparency);
+void graphics_sprites_render_box(int render_x, int render_y, int width, int height);
 
 //static char graphics_spinning_animation[4] = { '/', '-', '\\', '|' };
 static char graphics_sprites[18][3][5] =
