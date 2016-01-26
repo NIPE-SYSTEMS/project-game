@@ -34,6 +34,7 @@ typedef struct gameplay_players_player_s
 	int damage_cooldown_initial;
 	gameplay_players_type_t type;
 	ai_jobs_t *jobs;
+	char turbo_mode_activated;
 	struct gameplay_players_player_s *next;
 } gameplay_players_player_t;
 
@@ -58,5 +59,6 @@ void gameplay_players_place_bomb(gameplay_players_player_t *player);
 void gameplay_players_use_item(void);
 void gameplay_players_harm(int position_x, int position_y);
 void gameplay_players_ai_update(void);
+void gameplay_player_activate_turbo_mode(void);
 
 #endif /* __GAMEPLAY_PLAYERS_H__ */

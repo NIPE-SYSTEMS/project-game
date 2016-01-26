@@ -10,7 +10,9 @@ typedef enum graphics_sprites_colors_e
 	GRAPHICS_SPRITES_COLOR_BLUE = 5,
 	GRAPHICS_SPRITES_COLOR_MAGENTA = 6,
 	GRAPHICS_SPRITES_COLOR_CYAN = 7,
-	GRAPHICS_SPRITES_COLOR_WHITE = 8
+	GRAPHICS_SPRITES_COLOR_WHITE = 8,
+	GRAPHICS_SPRITES_COLOR_RANDOM = 9,
+	GRAPHICS_SPRITES_COLOR_RANDOM_FILL = 10
 } graphics_sprites_colors_t;
 
 typedef enum graphics_sprites_type_e
@@ -81,6 +83,9 @@ typedef enum graphics_sprites_type_e
 	GRAPHICS_GAME_OVER_12 = 61,
 	GRAPHICS_GAME_OVER_13 = 62,
 	GRAPHICS_GAME_OVER_14 = 63,
+	
+	GRAPHICS_SPRITES_TYPE_PLAYER_TURBO_MODE = 64,
+	GRAPHICS_SPRITES_TYPE_PLAYER_STANDING_TURBO_MODE = 65
 } graphics_sprites_type_t;
 
 typedef struct graphics_sprites_sprite_s

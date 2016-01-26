@@ -98,8 +98,8 @@ void gameplay_field_init(void)
 void gameplay_players_initialize(void)
 {
 	gameplay_players_add(1, 1, GAMEPLAY_PLAYERS_TYPE_USER);
-	// gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, 1, GAMEPLAY_PLAYERS_TYPE_AI);
-	// gameplay_players_add(1, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
+	gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, 1, GAMEPLAY_PLAYERS_TYPE_AI);
+	gameplay_players_add(1, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
 	gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
 }
 
@@ -223,30 +223,11 @@ void gameplay_key(char gameplay_pressed_key)
 			if(gameplay_turbo.b == 1)
 			{
 				gameplay_turbo.o = 1;
-				gameplay_turbo_activated();
+				gameplay_player_activate_turbo_mode();
 			}
 			break;
 		}
 	}
-}
-
-
-void gameplay_turbo_activated()
-{
-	gameplay_players_player_t *player = NULL;
-	player = gameplay_players_get_user();
-	player->movement_cooldown_initial = 1;
-	player->health_points = 5;
-	player->placeable_bombs = 10;
-	player->explosion_radius = 9;
-	player->damage_cooldown_initial = 100;
-	animation_turbo_activated = 1;
-	
-	gameplay_turbo.t = 0;
-	gameplay_turbo.u = 0;
-	gameplay_turbo.r = 0;
-	gameplay_turbo.b = 0;
-	gameplay_turbo.o = 0;
 }
 
 void gameplay_reset_fire(void)
