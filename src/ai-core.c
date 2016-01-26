@@ -7,24 +7,12 @@
 #include "gameplay.h"
 #include "core.h"
 
-static char ai_core_ai_enabled = 0;
-
-void ai_core_enable(void)
-{
-	ai_core_ai_enabled = 1;
-}
-
 void ai_core_update(gameplay_players_player_t *player)
 {
 	int x = 0;
 	int y = 0;
 	ai_jobs_t *job = NULL;
 	gameplay_players_player_t *player_user = NULL;
-	
-	if(ai_core_ai_enabled == 0)
-	{
-		return;
-	}
 	
 	player_user = gameplay_players_get_user();
 	if(player_user == NULL)

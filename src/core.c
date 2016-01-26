@@ -59,7 +59,7 @@ void core_main(void)
 	{
 		clear();
 		
-		if(core_state != CORE_PAUSED && core_state != CORE_QR_CODE)
+		if(core_state == CORE_RUNNING)
 		{
 			gameplay_update();
 		}
@@ -146,8 +146,6 @@ void core_main(void)
 			}
 			case CORE_RUNNING: case CORE_PAUSED:
 			{
-				ai_core_enable();
-				
 				graphics_render_field();
 				graphics_render_players();
 #ifdef DEBUG_INFO
