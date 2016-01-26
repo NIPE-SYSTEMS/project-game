@@ -104,7 +104,7 @@ void graphics_sprites_init(void);
 void graphics_sprites_cleanup(void);
 graphics_sprites_sprite_t *graphics_sprites_get(graphics_sprites_type_t type);
 void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t type, char transparency);
-/*
+
 //static char graphics_spinning_animation[4] = { '/', '-', '\\', '|' };
 static char graphics_sprites[18][3][5] =
 {
@@ -1692,6 +1692,6 @@ static char graphics_game_over[14][35][70] =
 { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
 }
 };
-*/
+
 
 #endif /* __GRAPHICS_SPRITES_H__ */
