@@ -32,7 +32,55 @@ typedef enum graphics_sprites_type_e
 	GRAPHICS_SPRITES_TYPE_EXPLOSION_1 = 14,
 	GRAPHICS_SPRITES_TYPE_EXPLOSION_2 = 15,
 	GRAPHICS_SPRITES_TYPE_BOMBS_PLACABLE = 16,
-	GRAPHICS_SPRITES_TYPE_SPEED = 17
+	GRAPHICS_SPRITES_TYPE_SPEED = 17,
+	
+	GRAPHICS_STARTSCREEN_TEXT = 18,
+	GRAPHICS_STARTSCREEN_1 = 19,
+	GRAPHICS_STARTSCREEN_2 = 20,
+	GRAPHICS_STARTSCREEN_3 = 21,
+	GRAPHICS_STARTSCREEN_4 = 22,
+	GRAPHICS_STARTSCREEN_5 = 23,
+	GRAPHICS_STARTSCREEN_6 = 24,
+	GRAPHICS_STARTSCREEN_7 = 25,
+	GRAPHICS_STARTSCREEN_8 = 26,
+	GRAPHICS_STARTSCREEN_9 = 27,
+	GRAPHICS_STARTSCREEN_10 = 28,
+	GRAPHICS_STARTSCREEN_11 = 29,
+	GRAPHICS_STARTSCREEN_12 = 30,
+	GRAPHICS_STARTSCREEN_13 = 31,
+	GRAPHICS_STARTSCREEN_14 = 32,
+	GRAPHICS_STARTSCREEN_15 = 33,
+	GRAPHICS_STARTSCREEN_16 = 34,
+	GRAPHICS_STARTSCREEN_17 = 35,
+	GRAPHICS_STARTSCREEN_18 = 36,
+	GRAPHICS_STARTSCREEN_19 = 37,
+	GRAPHICS_STARTSCREEN_20 = 38,
+	GRAPHICS_STARTSCREEN_21 = 39,
+	GRAPHICS_STARTSCREEN_22 = 40,
+	GRAPHICS_STARTSCREEN_23 = 41,
+	GRAPHICS_STARTSCREEN_24 = 42,
+	GRAPHICS_STARTSCREEN_25 = 43,
+	GRAPHICS_STARTSCREEN_26 = 44,
+	GRAPHICS_STARTSCREEN_27 = 45,
+	GRAPHICS_STARTSCREEN_28 = 46,
+	GRAPHICS_STARTSCREEN_29 = 47,
+	GRAPHICS_STARTSCREEN_30 = 48,
+	GRAPHICS_STARTSCREEN_31 = 49,
+	
+	GRAPHICS_GAME_OVER_1 = 50,
+	GRAPHICS_GAME_OVER_2 = 51,
+	GRAPHICS_GAME_OVER_3 = 52,
+	GRAPHICS_GAME_OVER_4 = 53,
+	GRAPHICS_GAME_OVER_5 = 54,
+	GRAPHICS_GAME_OVER_6 = 55,
+	GRAPHICS_GAME_OVER_7 = 56,
+	GRAPHICS_GAME_OVER_8 = 57,
+	GRAPHICS_GAME_OVER_9 = 58,
+	GRAPHICS_GAME_OVER_10 = 59,
+	GRAPHICS_GAME_OVER_11 = 60,
+	GRAPHICS_GAME_OVER_12 = 61,
+	GRAPHICS_GAME_OVER_13 = 62,
+	GRAPHICS_GAME_OVER_14 = 63,
 } graphics_sprites_type_t;
 
 typedef struct graphics_sprites_sprite_s
@@ -51,7 +99,7 @@ void graphics_sprites_init(void);
 void graphics_sprites_cleanup(void);
 graphics_sprites_sprite_t *graphics_sprites_get(graphics_sprites_type_t type);
 void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t type, char transparency);
-
+/*
 //static char graphics_spinning_animation[4] = { '/', '-', '\\', '|' };
 static char graphics_sprites[18][3][5] =
 {
@@ -1639,5 +1687,6 @@ static char graphics_game_over[14][35][70] =
 { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
 }
 };
+*/
 
 #endif /* __GRAPHICS_SPRITES_H__ */
