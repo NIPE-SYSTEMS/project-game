@@ -26,7 +26,13 @@ static graphics_sprites_sprite_t graphics_sprites_sprites[] =
 	{ GRAPHICS_SPRITES_TYPE_EXPLOSION_1, "assets/explosion_1.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_RED },
 	{ GRAPHICS_SPRITES_TYPE_EXPLOSION_2, "assets/explosion_2.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_YELLOW },
 	{ GRAPHICS_SPRITES_TYPE_SPEED, "assets/speed.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_BLUE },
-	{ GRAPHICS_SPRITES_TYPE_BOMBS_PLACABLE, "assets/bombs_placed.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_GREEN }
+	{ GRAPHICS_SPRITES_TYPE_BOMBS_PLACABLE, "assets/bombs_placed.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_GREEN },
+	{ GRAPHICS_SPRITES_TYPE_MENU_KEY_1, "assets/menu_key_1.sprite", 39, 5, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_MENU_KEY_2, "assets/menu_key_2.sprite", 39, 5, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_MENU_KEY_3, "assets/menu_key_3.sprite", 39, 5, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_MENU_LOGO_1, "assets/menu_logo_1.sprite", 60, 12, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_MENU_LOGO_2, "assets/menu_logo_2.sprite", 60, 12, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_MENU_START, "assets/menu_start.sprite", 25, 1, NULL, GRAPHICS_SPRITES_COLOR_RANDOM_FILL }
 };
 
 void graphics_sprites_init_colors(void)

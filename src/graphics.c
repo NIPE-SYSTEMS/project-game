@@ -12,6 +12,42 @@
 #include "gameplay-items.h"
 #include "ai-core.h"
 
+void graphics_render_menu(void)
+{
+	static char keys_delay_counter = 0;
+	static char keys_index = 0;
+	static char animation_logo = 0;
+	graphics_sprites_type_t keys[] =
+	{
+		GRAPHICS_SPRITES_TYPE_MENU_KEY_1,
+		GRAPHICS_SPRITES_TYPE_MENU_KEY_2,
+		GRAPHICS_SPRITES_TYPE_MENU_KEY_3
+	};
+	
+	graphics_sprites_render(GRAPHICS_MENU_LOGO_X, GRAPHICS_MENU_LOGO_Y, GRAPHICS_SPRITES_TYPE_MENU_LOGO_1 + animation_logo, 0);
+	graphics_sprites_render(GRAPHICS_MENU_START_X, GRAPHICS_MENU_START_Y, GRAPHICS_SPRITES_TYPE_MENU_START, 0);
+	mvprintw(GRAPHICS_MENU_KEYS_TEXT_Y, GRAPHICS_MENU_KEYS_TEXT_X, "HOW TO PLAY:");
+	graphics_sprites_render(GRAPHICS_MENU_KEYS_X, GRAPHICS_MENU_KEYS_Y, keys[keys_index], 0);
+	
+	keys_delay_counter++;
+	keys_delay_counter %= GRAPHICS_MENU_KEYS_DELAY;
+	
+	if(keys_delay_counter == 0)
+	{
+		keys_index++;
+		keys_index %= sizeof(keys) / sizeof(keys[0]);
+	}
+	
+	if(animation_logo == 0)
+	{
+		animation_logo = 1;
+	}
+	else
+	{
+		animation_logo = 0;
+	}
+}
+
 void graphics_render_debug(void)
 {
 	int i = 0;

@@ -52,7 +52,6 @@ void core_init(void)
 void core_main(void)
 {
 	int character = 0;
-	core_state_t saved_state = CORE_RUNNING;
 	gameplay_players_player_t *player = NULL;
 	
 	while(core_state != CORE_SHUTDOWN)
@@ -83,19 +82,8 @@ void core_main(void)
 				}
 				case 'p':
 				{
-					if(core_state == CORE_PAUSED)
+					if(core_state == CORE_RUNNING)
 					{
-						core_state = saved_state;
-						
-						core_debug("");
-						core_debug(" +----------------------+");
-						core_debug(" | TURBO BOMBER RESUMED |");
-						core_debug(" +----------------------+");
-						core_debug("");
-					}
-					else
-					{
-						saved_state = core_state;
 						core_state = CORE_PAUSED;
 						
 						core_debug("");
@@ -104,16 +92,43 @@ void core_main(void)
 						core_debug(" +----------------------+");
 						core_debug("");
 						core_debug("Press <P> to resume.");
+						
+						break;
 					}
 					
-					break;
+					if(core_state == CORE_PAUSED)
+					{
+						core_state = CORE_RUNNING;
+						
+						core_debug("");
+						core_debug(" +----------------------+");
+						core_debug(" | TURBO BOMBER RESUMED |");
+						core_debug(" +----------------------+");
+						core_debug("");
+						
+						break;
+					}
 				}
 				case 'w': case 'a': case 's': case 'd': case ' ': case 'f': case 't': case 'u': case 'r': case 'b': case 'o':
 				{
 					// skip start screen
 					if(character == ' ' && core_state == CORE_START_SCREEN)
 					{
+						core_state = CORE_MENU;
+						break;
+					}
+					
+					// start game
+					if(character == ' ' && core_state == CORE_MENU)
+					{
 						core_state = CORE_RUNNING;
+						break;
+					}
+					
+					// return to menu
+					if(character == ' ' && (core_state == CORE_WIN || core_state == CORE_GAME_OVER))
+					{
+						core_state = CORE_MENU;
 						break;
 					}
 					
@@ -139,8 +154,14 @@ void core_main(void)
 			{
 				if(graphics_startscreen() == 0)
 				{
-					core_state = CORE_RUNNING;
+					core_state = CORE_MENU;
 				}
+				
+				break;
+			}
+			case CORE_MENU:
+			{
+				graphics_render_menu();
 				
 				break;
 			}

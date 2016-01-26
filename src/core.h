@@ -10,6 +10,7 @@
 typedef enum core_state_e
 {
 	CORE_START_SCREEN,
+	CORE_MENU,
 	CORE_RUNNING,
 	CORE_PAUSED,
 	CORE_QR_CODE,

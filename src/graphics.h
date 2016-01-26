@@ -22,6 +22,16 @@
 #define GRAPHICS_QR_CODE_PIXEL_SIZE_WIDTH 2
 #define GRAPHICS_QR_CODE_PIXEL_SIZE_HEIGHT 1
 
+#define GRAPHICS_MENU_KEYS_DELAY 35
+#define GRAPHICS_MENU_KEYS_X 15
+#define GRAPHICS_MENU_KEYS_Y 23
+#define GRAPHICS_MENU_KEYS_TEXT_X 29
+#define GRAPHICS_MENU_KEYS_TEXT_Y 21
+#define GRAPHICS_MENU_LOGO_X 7
+#define GRAPHICS_MENU_LOGO_Y 2
+#define GRAPHICS_MENU_START_X 23
+#define GRAPHICS_MENU_START_Y 17
+
 typedef enum graphics_sprites_e
 {
 	GRAPHICS_SPRITES_UNDESTROYABLE = 0,
@@ -53,6 +63,7 @@ typedef struct graphics_sprite_s
 	char *data;
 } graphics_sprite_t;
 
+void graphics_render_menu(void);
 void graphics_render_debug(void);
 int graphics_startscreen(void);
 void graphics_game_over_function(void);
