@@ -12,13 +12,6 @@
 #include "gameplay-items.h"
 #include "ai-core.h"
 
-static int set_show_debug = 0;
-static int graphics_animation_counter = 0;
-static int graphics_startscreen_counter = 0;
-static int graphics_frames_for_startscreen = 60;
-static int graphics_game_over_counter = 0;
-static int graphics_game_over_checker = 0;
-
 void graphics_render_debug(void)
 {
 	int i = 0;
@@ -63,10 +56,16 @@ void graphics_render_debug(void)
  * This function will render the startscreen which will
  * display the games logo and name.
  */
-void graphics_startscreen(void)
+int graphics_startscreen(void)
 {
+	static int graphics_startscreen_counter = 0;
 	int i = 0;
 	int b = 0;
+	
+	if(graphics_startscreen_counter >= (GRAPHICS_START_SCREEN_FRAMES + 1))
+	{
+		return 0;
+	}
 	
 	for(i = 0; i < 26; i++)
 	{
@@ -89,12 +88,15 @@ void graphics_startscreen(void)
 			}
 		}
 	}
-	move(0, 0);
-	refresh();
+	
+	graphics_startscreen_counter++;
+	
+	return 1;
 }
 
 void graphics_game_over_function(void)
 {
+	static int graphics_game_over_counter = 0;
 	int i = 0;
 	int b = 0;
 	
@@ -115,15 +117,16 @@ void graphics_game_over_function(void)
 			}
 		}
 	}
-	graphics_game_over_counter++;
 	
-	move(0, 0);
-	refresh();
+	if(graphics_game_over_counter <= 13)
+	{
+		graphics_game_over_counter++;
+	}
 }
 
 void graphics_render_players(void)
 {
-	// static char animation_blinking = 0;
+	static char animation_blinking = 0;
 	gameplay_players_player_t *player = NULL;
 	int player_amount = 0;
 	int render_x = 0;
@@ -153,7 +156,7 @@ void graphics_render_players(void)
 			continue;
 		}
 		
-		if(player->damage_cooldown > 0 && graphics_animation_counter%2 == 0)
+		if(player->damage_cooldown > 0 && animation_blinking == 0)
 		{
 			render_x = (player->position_x * GRAPHICS_OFFSET_X) + GRAPHICS_OFFSET_X - GRAPHICS_SPRITE_WIDTH;
 			render_y = (player->position_y * GRAPHICS_OFFSET_Y) + GRAPHICS_OFFSET_Y - GRAPHICS_SPRITE_HEIGHT;
@@ -212,6 +215,15 @@ void graphics_render_players(void)
 			}
 		}
 	}
+	
+	if(animation_blinking == 0)
+	{
+		animation_blinking = 1;
+	}
+	else
+	{
+		animation_blinking = 0;
+	}
 }
 
 void graphics_render_information(void)
@@ -261,6 +273,7 @@ void graphics_render_information(void)
 
 void graphics_render_field(void)
 {
+	static char animation_blinking = 0;
 	int x = 0;
 	int y = 0;
 	int field_index = 0;
@@ -284,7 +297,7 @@ void graphics_render_field(void)
 			}
 			else if(gameplay_get_fire(x, y) == 1) // fire
 			{
-				graphics_sprites_render(render_x, render_y, GRAPHICS_SPRITES_EXPLOSION_1 + graphics_animation_counter % 2, 0);
+				graphics_sprites_render(render_x, render_y, GRAPHICS_SPRITES_EXPLOSION_1 + animation_blinking, 0);
 			}
 			else if(gameplay_items_item_placed(x, y) != 0) // item
 			{
@@ -296,79 +309,13 @@ void graphics_render_field(void)
 			}
 		}
 	}
-}
-
-/**
- * This function handles everything of the rendering. It will render the user
- * interface by interpreting the field of the gameplay module.
- */
-void graphics_main(void)
-{
-	gameplay_players_player_t *player = NULL;
 	
-	//I believe, that the Ai can already make decisions before the player gets to see the field. That is why the start screen should delay the entire game and not just the rendering.
-	if(graphics_startscreen_counter >= graphics_frames_for_startscreen && graphics_game_over_checker == 0)
+	if(animation_blinking == 0)
 	{
-		if(graphics_startscreen_counter >= (graphics_frames_for_startscreen + 1)) //Delayes the start of the AI by one frame
-		{
-			ai_core_enable();
-		}
-		else
-		{
-			graphics_startscreen_counter++;
-		}
-		
-		player = gameplay_players_get_user();
-		
-		//Game Over scrren activation
-		if(player->health_points == 0)
-		{
-			graphics_game_over_checker = 1;
-		}
-		
-		//Debug Information
-		
-		if (set_show_debug)
-		{
-			graphics_render_debug();
-		}
-		else
-		{
-			graphics_render_information();
-		}
-		
-		graphics_render_field();
-		graphics_render_players();
-		
-		graphics_animation_counter++;
-		move(0, 0);
-		refresh();
-	}
-	else if(graphics_animation_counter == 0)
-	{
-		graphics_startscreen();
-		graphics_startscreen_counter++;
-	}
-	else if(graphics_game_over_checker == 1)
-	{
-		//hier muss noch AI cleanup dazu!
-		graphics_game_over_function();
-	}
-}
-
-void graphics_render_breaked_game()
-{
-	if(set_show_debug)
-	{
-		graphics_render_debug();
+		animation_blinking = 1;
 	}
 	else
 	{
-		graphics_render_information();
+		animation_blinking = 0;
 	}
-	
-	graphics_render_field();
-	graphics_render_players();
-	move(0, 0);
-	refresh();
 }

@@ -14,6 +14,8 @@
 #define GRAPHICS_DEBUG_X 75
 #define GRAPHICS_DEBUG_Y 1
 
+#define GRAPHICS_START_SCREEN_FRAMES 60
+
 typedef enum graphics_sprites_e
 {
 	GRAPHICS_SPRITES_UNDESTROYABLE = 0,
@@ -46,10 +48,10 @@ typedef struct graphics_sprite_s
 } graphics_sprite_t;
 
 void graphics_render_debug(void);
-void graphics_read_arrays(void);
-
-void graphics_render_sprite(int pos_x, int pos_y, graphics_sprites_t field, char transparency);
-void graphics_main(void);
-void graphics_render_breaked_game();
+int graphics_startscreen(void);
+void graphics_game_over_function(void);
+void graphics_render_players(void);
+void graphics_render_information(void);
+void graphics_render_field(void);
 
 #endif /* __GRAPHICS_H__ */

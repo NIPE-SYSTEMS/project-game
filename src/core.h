@@ -7,6 +7,16 @@
 // #define CORE_FRAME_TIME 100000 // -> 10 fps, specified in microseconds (usleep)
 #define CORE_FRAME_TIME 75000 // -> 10 fps, specified in microseconds (usleep)
 
+typedef enum core_state_e
+{
+	CORE_START_SCREEN,
+	CORE_RUNNING,
+	CORE_PAUSED,
+	CORE_WIN,
+	CORE_GAME_OVER,
+	CORE_SHUTDOWN
+} core_state_t;
+
 void core_init(void);
 void core_main(void);
 void core_cleanup(void);

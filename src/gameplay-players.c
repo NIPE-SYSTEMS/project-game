@@ -29,7 +29,7 @@ void gameplay_players_add(int position_x, int position_y, gameplay_players_type_
 	player->explosion_radius = GAMEPLAY_PLAYERS_EXPLOSION_RADIUS;
 	player->item = EMPTY;
 	player->item_usage_time = 0;
-	player->damage_cooldown = 0;
+	player->damage_cooldown = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_START;
 	player->damage_cooldown_initial = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN;
 	player->type = type;
 	player->jobs = NULL;

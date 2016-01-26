@@ -97,7 +97,9 @@ void ai_jobs_insert(ai_jobs_t **root, ai_jobs_t *insertion)
 void ai_jobs_print(ai_jobs_t *root)
 {
 	ai_jobs_t *job_iterator = NULL;
+#ifdef DEBUG
 	char *serialized_type[] = { "", "ESCAPE", "BOMB_DROP", "POWER_UP" };
+#endif /* DEBUG */
 	
 	core_debug("Jobs:");
 	

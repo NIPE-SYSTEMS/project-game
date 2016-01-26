@@ -9,16 +9,17 @@
 #include "graphics.h"
 #include "gameplay.h"
 #include "graphics-sprites.h"
+#include "ai-core.h"
 
 #ifdef DEBUG
 static void core_init_files(void);
 static void core_cleanup_files(void);
 static void core_log(FILE *file, char *fmt, va_list args);
-#endif /* DEBUG*/
-
-static char core_running = 0;
 static FILE *core_file_debug = NULL;
 static FILE *core_file_error = NULL;
+#endif /* DEBUG*/
+
+static core_state_t core_state = CORE_START_SCREEN;
 
 /**
  * This function initializes everything. It initializes ncurses.
@@ -36,11 +37,12 @@ void core_init(void)
 	nodelay(stdscr, TRUE);
 	start_color();
 	use_default_colors();
+	curs_set(0);
 	clear();
 	
 	random_drop_init();
-	
 	graphics_sprites_init();
+	gameplay_field_init();
 }
 
 /**
@@ -49,17 +51,15 @@ void core_init(void)
  */
 void core_main(void)
 {
-	core_running = 1;
 	int character = 0;
-	gameplay_field_init();
-	int core_game_breaked = 0;
-	//graphics_read_arrays();
+	core_state_t saved_state = CORE_RUNNING;
+	gameplay_players_player_t *player = NULL;
 	
-	while(core_running == 1)
+	while(core_state != CORE_SHUTDOWN)
 	{
 		clear();
 		
-		if(core_game_breaked == 0)
+		if(core_state != CORE_PAUSED)
 		{
 			gameplay_update();
 		}
@@ -71,35 +71,52 @@ void core_main(void)
 				case 'q': case 27: // <Q> or <Esc>
 				{
 					core_debug("Invoked quit event.");
-					core_running = 0;
+					core_state = CORE_SHUTDOWN;
 					break;
 				}
 				case 'p':
 				{
-					switch(core_game_breaked)
+					if(core_state == CORE_PAUSED)
 					{
-						case 1:
-						{
-							core_game_breaked = 0;
-							core_debug("Turbo-Bomber was unbreaked.");
-							break;
-						}
-						case 0:
-						{
-							core_game_breaked = 1;
-							core_debug("Turbo-Bomber was breaked. To unbeak press 'p'.");
-							break;
-						}
+						core_state = saved_state;
+						
+						core_debug("");
+						core_debug(" +----------------------+");
+						core_debug(" | TURBO BOMBER RESUMED |");
+						core_debug(" +----------------------+");
+						core_debug("");
 					}
+					else
+					{
+						saved_state = core_state;
+						core_state = CORE_PAUSED;
+						
+						core_debug("");
+						core_debug(" +----------------------+");
+						core_debug(" | TURBO BOMBER PAUSED  |");
+						core_debug(" +----------------------+");
+						core_debug("");
+						core_debug("Press <P> to resume.");
+					}
+					
 					break;
 				}
 				case 'w': case 'a': case 's': case 'd': case ' ': case 'f': case 't': case 'u': case 'r': case 'b': case 'o':
 				{
-					if(core_game_breaked == 0)
+					// skip start screen
+					if(character == ' ' && core_state == CORE_START_SCREEN)
 					{
-						gameplay_key(character);
+						core_state = CORE_RUNNING;
 						break;
 					}
+					
+					// only process keyboard input when game is unpaused
+					if(core_state != CORE_PAUSED)
+					{
+						gameplay_key(character);
+					}
+					
+					break;
 				}
 				default:
 				{
@@ -108,15 +125,60 @@ void core_main(void)
 				}
 			}
 		}
-		if(core_game_breaked == 0)
+		
+		switch(core_state)
 		{
-			graphics_main();
+			case CORE_START_SCREEN:
+			{
+				if(graphics_startscreen() == 0)
+				{
+					core_state = CORE_RUNNING;
+				}
+				
+				break;
+			}
+			case CORE_RUNNING: case CORE_PAUSED:
+			{
+				ai_core_enable();
+				
+				graphics_render_field();
+				graphics_render_players();
+#ifdef DEBUG_INFO
+				graphics_render_debug();
+#else
+				graphics_render_information();
+#endif /* DEBUG_INFO */
+				
+				player = gameplay_players_get_user();
+				if(player->health_points == 0)
+				{
+					core_state = CORE_GAME_OVER;
+				}
+				
+				break;
+			}
+			case CORE_WIN:
+			{
+				core_state = CORE_GAME_OVER;
+				
+				break;
+			}
+			case CORE_GAME_OVER:
+			{
+				graphics_game_over_function();
+				
+				break;
+			}
+			default:
+			{
+				break;
+			}
 		}
-		if(core_game_breaked == 1)
-		{
-			graphics_render_breaked_game();
-		}
-		if(core_running == 1)
+		
+		move(0, 0);
+		refresh();
+		
+		if(core_state != CORE_SHUTDOWN)
 		{
 			usleep(CORE_FRAME_TIME);
 		}
