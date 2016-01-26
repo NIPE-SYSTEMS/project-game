@@ -174,5 +174,5 @@ void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t
 		}
 	}
 	
-	attron(COLOR_PAIR(render_color));
+	attroff(COLOR_PAIR(render_color));
 }

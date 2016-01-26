@@ -76,19 +76,19 @@ void graphics_startscreen(void)
 	int i = 0;
 	int b = 0;
 	
-	if (animation_turbo_activated == 1)
-	{
-		for(i = 0; i < 26; i++)
-		{
-			for(b = 0; b < 103; b++)
-			{
-				// attron(COLOR_PAIR(rand()%8));
-				mvaddch(3+i, 3+b, displayed_text[i][b]);
-				// attron(COLOR_PAIR(1));
-			}
-		}
-	}
-	else
+	// if (animation_turbo_activated == 1)
+	// {
+	// 	for(i = 0; i < 26; i++)
+	// 	{
+	// 		for(b = 0; b < 103; b++)
+	// 		{
+	// 			// attron(COLOR_PAIR(rand()%8));
+	// 			mvaddch(3+i, 3+b, displayed_text[i][b]);
+	// 			// attron(COLOR_PAIR(1));
+	// 		}
+	// 	}
+	// }
+	// else
 	{
 		for(i = 0; i < 26; i++)
 		{
@@ -146,15 +146,15 @@ void graphics_game_over_function(void)
 			}
 			else
 			{
-				if(animation_turbo_activated == 1)
-				{
-					if(graphics_game_over[13][i][b] == '#')
-					{
-						// attron(COLOR_PAIR(rand()%8));
-						mvaddch(3+i, 3+b, graphics_game_over[13][i][b]);
-					}
-				}
-				else
+				// if(animation_turbo_activated == 1)
+				// {
+				// 	if(graphics_game_over[13][i][b] == '#')
+				// 	{
+				// 		// attron(COLOR_PAIR(rand()%8));
+				// 		mvaddch(3+i, 3+b, graphics_game_over[13][i][b]);
+				// 	}
+				// }
+				// else
 				{
 					if(graphics_game_over[13][i][b] == '#')
 					{
@@ -186,6 +186,20 @@ void graphics_render_players(void)
 	int render_x = 0;
 	int render_y = 0;
 	int i = 0;
+	graphics_sprites_type_t player_sprite = GRAPHICS_SPRITES_TYPE_PLAYER;
+	graphics_sprites_type_t player_sprite_standing = GRAPHICS_SPRITES_TYPE_PLAYER_STANDING;
+	
+	player = gameplay_players_get_user();
+	if(player == NULL)
+	{
+		return;
+	}
+	
+	if(player->turbo_mode_activated == 1)
+	{
+		player_sprite = GRAPHICS_SPRITES_TYPE_PLAYER_TURBO_MODE;
+		player_sprite_standing = GRAPHICS_SPRITES_TYPE_PLAYER_STANDING_TURBO_MODE;
+	}
 	
 	player_amount = gameplay_players_amount();
 	for(i = 0; i < player_amount; i++)
@@ -205,7 +219,7 @@ void graphics_render_players(void)
 			{
 				if(player->type == GAMEPLAY_PLAYERS_TYPE_USER)
 				{
-					graphics_sprites_render(render_x, render_y, GRAPHICS_SPRITES_PLAYER, 1);
+					graphics_sprites_render(render_x, render_y, player_sprite, 1);
 				}
 				else
 				{
@@ -217,7 +231,7 @@ void graphics_render_players(void)
 			{
 				if(player->type == GAMEPLAY_PLAYERS_TYPE_USER)
 				{
-					graphics_sprites_render(render_x, render_y, GRAPHICS_SPRITES_PLAYER_STANDING, 1);
+					graphics_sprites_render(render_x, render_y, player_sprite_standing, 1);
 				}
 				else
 				{
@@ -234,7 +248,7 @@ void graphics_render_players(void)
 			{
 				if(player->type == GAMEPLAY_PLAYERS_TYPE_USER)
 				{
-					graphics_sprites_render(render_x, render_y, GRAPHICS_SPRITES_PLAYER, 1);
+					graphics_sprites_render(render_x, render_y, player_sprite, 1);
 				}
 				else
 				{
@@ -246,7 +260,7 @@ void graphics_render_players(void)
 			{
 				if(player->type == GAMEPLAY_PLAYERS_TYPE_USER)
 				{
-					graphics_sprites_render(render_x, render_y, GRAPHICS_SPRITES_PLAYER_STANDING, 1);
+					graphics_sprites_render(render_x, render_y, player_sprite_standing, 1);
 				}
 				else
 				{

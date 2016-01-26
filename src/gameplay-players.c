@@ -386,3 +386,21 @@ void gameplay_players_ai_update(void)
 		ai_core_update(current);
 	}
 }
+
+void gameplay_player_activate_turbo_mode(void)
+{
+	gameplay_players_player_t *player = NULL;
+	
+	player = gameplay_players_get_user();
+	if(player == NULL)
+	{
+		return;
+	}
+	
+	player->turbo_mode_activated = 1;
+	player->movement_cooldown_initial = 1;
+	player->health_points = 5;
+	player->placeable_bombs = 10;
+	player->explosion_radius = 9;
+	player->damage_cooldown_initial = 100;
+}

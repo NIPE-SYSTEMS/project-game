@@ -52,7 +52,5 @@ void gameplay_explosion(int x, int y);
 gameplay_field_t *gameplay_get_field(void);
 void gameplay_set_fire(int position_x, int position_y);
 int gameplay_get_fire(int position_x, int position_y);
-void gameplay_turbo_activated();
-int animation_turbo_activated;
 
 #endif /* __GAMEPLAY_H__ */
