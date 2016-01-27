@@ -198,7 +198,7 @@ void core_main(void)
 		{
 			case CORE_START_SCREEN:
 			{
-				if(graphics_startscreen() == 0)
+				if(graphics_render_start_screen() == 0)
 				{
 					core_state = CORE_MENU;
 				}
@@ -244,7 +244,7 @@ void core_main(void)
 			}
 			case CORE_GAME_OVER:
 			{
-				graphics_game_over_function();
+				graphics_render_game_over_screen();
 				
 				break;
 			}

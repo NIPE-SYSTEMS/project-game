@@ -15,8 +15,9 @@
 void graphics_render_menu(void)
 {
 	static char keys_delay_counter = 0;
-	static char keys_index = 0;
+	static unsigned char keys_index = 0;
 	static char animation_logo = 0;
+	
 	graphics_sprites_type_t keys[] =
 	{
 		GRAPHICS_SPRITES_TYPE_MENU_KEY_1,
@@ -93,94 +94,70 @@ void graphics_render_debug(void)
  * This function will render the startscreen which will
  * display the games logo and name.
  */
-int graphics_startscreen(void)
+int graphics_render_start_screen(void)
 {
-	static int graphics_startscreen_counter = 0;
-	int i = 0;
-	int b = 0;
+	static int animation_counter = 0;
 	
-	if(graphics_startscreen_counter >= (GRAPHICS_START_SCREEN_FRAMES + 1))
+	if(animation_counter > 60)
 	{
 		return 0;
 	}
 	
-	for(i = 0; i < 26; i++)
+	graphics_sprites_render(0, 0, GRAPHICS_SPRITES_TYPE_START_SCREEN_TEXT, 0);
+	
+	if(animation_counter <= 30)
 	{
-		for(b = 0; b < 103; b++)
-		{
-			mvaddch(3+i, 3+b, displayed_text[i][b]);
-		}
+		graphics_sprites_render(0, 0, GRAPHICS_SPRITES_TYPE_START_SCREEN_1 + animation_counter, 2);
 	}
 	
-	if(graphics_startscreen_counter <= 30)
-	{
-		for(i = 0; i < 26; i++)
-		{
-			for(b = 0; b < 103; b++)
-			{
-				if(startscreen_frames[graphics_startscreen_counter][i][b] != '#')
-				{
-					mvaddch(3+i, 3+b, startscreen_frames[graphics_startscreen_counter][i][b]);
-				}
-			}
-		}
-	}
-	
-	graphics_startscreen_counter++;
+	animation_counter++;
 	
 	return 1;
 }
 
-void graphics_game_over_function(void)
+void graphics_render_game_over_screen(void)
 {
-	static int graphics_game_over_counter = 0;
+	static int animation_counter = 0;
 	
-	char *current_frame = NULL;
-	
-	graphics_sprites_type_t GRAPHICS_GAME_OVER_1 = current_frame;
-	
-	current_frame += graphics_game_over_counter;
-	
-	if(graphics_game_over_counter <= 13)
+	if(animation_counter <= 13)
 	{
-		graphics_sprites_render(0, 0, current_frame, 0);
+		graphics_sprites_render(0, 0, GRAPHICS_SPRITES_TYPE_GAME_OVER_SCREEN_1 + animation_counter, 0);
 	}
 	else
 	{
-		graphics_sprites_render(0, 0, graphics_sprites_sprites[GRAPHICS_GAME_OVER_14].data, 0);
+		graphics_sprites_render(0, 0, GRAPHICS_SPRITES_TYPE_GAME_OVER_SCREEN_14, 0);
 	}
 	
-	
-	if(graphics_game_over_counter <= 13)
+	if(animation_counter <= 13)
 	{
-		graphics_game_over_counter++;
+		animation_counter++;
 	}
 }
 
 void graphics_win_screen(void)
 {
-	static int graphics_win_counter = 0;
+	// static int graphics_win_counter = 0;
 	
-	char *current_frame = NULL;
+	// char *current_frame = NULL;
 	
-	graphics_sprites_type_t /*GRAPHICS_GAME_OVER_1*/ = current_frame; ///Not defined jet
+	// graphics_sprites_type_t /*GRAPHICS_GAME_OVER_1*/ = current_frame; ///Not defined jet
 	
-	current_frame += graphics_win_counter;
+	// current_frame += graphics_win_counter;
 	
-	if(graphics_win_counter <= 13)
-	{
-		graphics_sprites_render(0, 0, current_frame, 0);
-	}
-	else
-	{
-		graphics_sprites_render(0, 0, graphics_sprites_sprites[/*GRAPHICS_GAME_OVER_14*/].data, 0); //Not defined jet
-	}
+	// if(graphics_win_counter <= 13)
+	// {
+	// 	graphics_sprites_render(0, 0, current_frame, 0);
+	// }
+	// else
+	// {
+	// 	graphics_sprites_render(0, 0, graphics_sprites_sprites[/*GRAPHICS_GAME_OVER_14*/].data, 0); //Not defined jet
+	// }
 	
 	
-	if(graphics_win_counter <= /*13*/) //Not defined jet
-	{
-		graphics_win_counter++;
-	}
+	// if(graphics_win_counter <= /*13*/) //Not defined jet
+	// {
+	// 	graphics_win_counter++;
+	// }
 }
 
 
@@ -450,26 +427,32 @@ void graphics_render_qr_code(void)
 	
 	offset_line = 2;
 	
-	mvprintw(render_y + offset_line++, render_x + 1, "- command line game");
-	mvprintw(render_y + offset_line++, render_x + 1, "- animations");
-	mvprintw(render_y + offset_line++, render_x + 1, "- colors (more or less)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- ASCII art");
-	mvprintw(render_y + offset_line++, render_x + 1, "- cheats (TURBO-MODE)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- sprite rendering (external files)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- AI: bomb spot selection");
-	mvprintw(render_y + offset_line++, render_x + 1, "- AI: explosion simulation (array magic)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- AI: pathfinding");
-	mvprintw(render_y + offset_line++, render_x + 1, "- AI: job lists (linked lists)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- explosion algorithm (array magic v2)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- items, power ups (linked lists, structs)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- random drops (item drops, probabilities)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- game states (enums, controlled state changes)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- logging, debug output (external files)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- git");
-	mvprintw(render_y + offset_line++, render_x + 1, "- modular code (many header files)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- game loop (timing)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- keyboard input handling (through ncurses)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- QR code (maybe this one)");
-	mvprintw(render_y + offset_line++, render_x + 1, "- game pausing");
-	mvprintw(render_y + offset_line++, render_x + 1, "- screenshot taking (external files)");
+	mvprintw(render_y + offset_line++, render_x, " - Command line game (based on ncurses)");
+	mvprintw(render_y + offset_line++, render_x, " - Animations");
+	mvprintw(render_y + offset_line++, render_x, " - Complex cutscenes (made by hand)");
+	mvprintw(render_y + offset_line++, render_x, " - Colors (more or less)");
+	mvprintw(render_y + offset_line++, render_x, " - ASCII art");
+	mvprintw(render_y + offset_line++, render_x, " - Cheats (TURBO-MODE)");
+	mvprintw(render_y + offset_line++, render_x, " - Sprite rendering (based on ncurses)");
+	mvprintw(render_y + offset_line++, render_x, " - Dynamic sprite reading (file I/O)");
+	mvprintw(render_y + offset_line++, render_x, " - Multilayered rendering (alpha rendering)");
+	mvprintw(render_y + offset_line++, render_x, " - AI: Bomb spot selection");
+	mvprintw(render_y + offset_line++, render_x, " - AI: Explosion simulation (array magic)");
+	mvprintw(render_y + offset_line++, render_x, " - AI: Pathfinding (wavefront/floodfill)");
+	mvprintw(render_y + offset_line++, render_x, " - AI: Job lists (linked lists)");
+	mvprintw(render_y + offset_line++, render_x, " - Explosion algorithm (array magic v2)");
+	mvprintw(render_y + offset_line++, render_x, " - Explosion triggers nearby bombs");
+	mvprintw(render_y + offset_line++, render_x, " - Items, power ups (linked lists, structs)");
+	mvprintw(render_y + offset_line++, render_x, " - Destroyable items");
+	mvprintw(render_y + offset_line++, render_x, " - Destructable walls");
+	mvprintw(render_y + offset_line++, render_x, " - Random drops (item drops, probabilities)");
+	mvprintw(render_y + offset_line++, render_x, " - Game states (enums, controlled state changes)");
+	mvprintw(render_y + offset_line++, render_x, " - Logging, debug output (file I/O)");
+	mvprintw(render_y + offset_line++, render_x, " - Git, public repository with complete code");
+	mvprintw(render_y + offset_line++, render_x, " - Modular code (many header files)");
+	mvprintw(render_y + offset_line++, render_x, " - Game loop (timing)");
+	mvprintw(render_y + offset_line++, render_x, " - Keyboard input handling (based on ncurses)");
+	mvprintw(render_y + offset_line++, render_x, " - QR code (maybe this one)");
+	mvprintw(render_y + offset_line++, render_x, " - Game pausing");
+	mvprintw(render_y + offset_line++, render_x, " - Screenshot taking (file I/O)");
 }

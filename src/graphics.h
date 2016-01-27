@@ -14,8 +14,6 @@
 #define GRAPHICS_DEBUG_X 75
 #define GRAPHICS_DEBUG_Y 1
 
-#define GRAPHICS_START_SCREEN_FRAMES 60
-
 #define GRAPHICS_QR_CODE_SIZE 31
 #define GRAPHICS_QR_CODE_OFFSET_X 5
 #define GRAPHICS_QR_CODE_OFFSET_Y 1
@@ -65,8 +63,8 @@ typedef struct graphics_sprite_s
 
 void graphics_render_menu(void);
 void graphics_render_debug(void);
-int graphics_startscreen(void);
-void graphics_game_over_function(void);
+int graphics_render_start_screen(void);
+void graphics_render_game_over_screen(void);
 void graphics_render_players(void);
 void graphics_render_information(void);
 void graphics_render_field(void);
