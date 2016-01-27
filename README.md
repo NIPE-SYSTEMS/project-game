@@ -1,6 +1,17 @@
 # Turbo-Bomber
 
-![Logo](specification/logo.png)
+                       TTTTTT
+            TTTTT    TTT     T
+         TTTTTTTTTTTTTT
+      TTTTTTTTTTTTTTTTT
+     TTTT           TTTT
+    TTTTT  TT   TT  TTTTT
+    TTTTT  TT   TT  TTTTT
+    TTTTTTTTT   TTTTTTTTT
+    TTTTTTTTT   TTTTTTTTT
+     TTTTTT       TTTTTT
+      TTTTTTTTTTTTTTTTT
+        TTTTTTTTTTTTT
 
 > A game made with ncurses in C, inspired by Bomberman.
 
