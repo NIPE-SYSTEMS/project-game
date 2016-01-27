@@ -1,17 +1,17 @@
 # Turbo-Bomber
 
-                       TTTTTT
-            TTTTT    TTT     T
-         TTTTTTTTTTTTTT
-      TTTTTTTTTTTTTTTTT
-     TTTT           TTTT
-    TTTTT  TT   TT  TTTTT
-    TTTTT  TT   TT  TTTTT
-    TTTTTTTTT   TTTTTTTTT
-    TTTTTTTTT   TTTTTTTTT
-     TTTTTT       TTTTTT
-      TTTTTTTTTTTTTTTTT
-        TTTTTTTTTTTTT
+                       TTTTTT    MMMMMMM  MM   MM  MMMMMMMM  MMMMMMM   MMMMMMM               
+            TTTTT    TTT     T      MM    MM   MM  MM    MM  MM   MM  MM     MM              
+         TTTTTTTTTTTTTT             MM    MM   MM  MMMMMMM   MMMMMM   MM     MM              
+      TTTTTTTTTTTTTTTTT             MM    MM   MM  MM   MM   MM    MM  MM    MM              
+     TTTT           TTTT            MM     MMMMM   MM    MM  MMMMMMM    MMMMM                
+    TTTTT  TT   TT  TTTTT                                                                    
+    TTTTT  TT   TT  TTTTT                          MM                                        
+    TTTTTTTTT   TTTTTTTTT         MMMMMMM     MMMM M   MMM   MMM  MMMMMMM   MMMMMMM  MMMMMM  
+    TTTTTTTTT   TTTTTTTTT         MM   MMM  MM  MMMMM  MMMM MMMM  MM   MM   MM       M    MM 
+     TTTTTT       TTTTTT          MMMMMMMM  MMMMMMMMM  MM M MMMM  MMMMMMMM  MMMMMM   MMMMM   
+      TTTTTTTTTTTTTTTTT           MM     MM MMMMMMMMM  MM MMM MM  MM    MM  MM       M   MM  
+        TTTTTTTTTTTTT             MMMMMMMM   MMMMMM    MM MMM MM  MMMMMMMM  MMMMMMM  M    MM 
 
 > A game made with ncurses in C, inspired by Bomberman.
 
