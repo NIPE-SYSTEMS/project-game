@@ -46,7 +46,7 @@ void ai_core_update(gameplay_players_player_t *player)
 	{
 		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
 		{
-			if(gameplay_get_walkable(x, y) == 0)
+			if(gameplay_get_walkable(x, y, 0) == 0)
 			{
 				// core_debug("Remove (%i, %i), cause: walkable", x, y);
 				ai_jobs_remove(&(player->jobs), x, y, BOMB_DROP);
@@ -98,7 +98,7 @@ void ai_core_update(gameplay_players_player_t *player)
 		{
 			for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
 			{
-				if(gameplay_get_walkable(x, y) == 0)
+				if(gameplay_get_walkable(x, y, 0) == 0)
 				{
 					ai_jobs_remove(&(player->jobs), x, y, ESCAPE);
 				}

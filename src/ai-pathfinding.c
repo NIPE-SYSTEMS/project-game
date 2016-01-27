@@ -44,25 +44,25 @@ void ai_pathfinding_expand_numbers(int x, int y, int number, int ignore_simulate
 	// core_debug("Pathfinding: Expanding at (%i, %i): %i", x, y, number);
 	
 	// try north
-	if(y > 0 && GAMEPLAY_FIELD(field, x, y - 1).ai_pathfinding_number == -1 && gameplay_get_walkable(x, y - 1) == 1 && (ignore_simulated > 1 || (ignore_simulated < 2 && GAMEPLAY_FIELD(field, x, y - 1).ai_simulation_walkable == 1)) && (ignore_simulated > 0 || (ignore_simulated == 0 && GAMEPLAY_FIELD(field, x, y - 1).ai_simulation_walkable_simulated == 1)))
+	if(y > 0 && GAMEPLAY_FIELD(field, x, y - 1).ai_pathfinding_number == -1 && gameplay_get_walkable(x, y - 1, 0) == 1 && (ignore_simulated > 1 || (ignore_simulated < 2 && GAMEPLAY_FIELD(field, x, y - 1).ai_simulation_walkable == 1)) && (ignore_simulated > 0 || (ignore_simulated == 0 && GAMEPLAY_FIELD(field, x, y - 1).ai_simulation_walkable_simulated == 1)))
 	{
 		GAMEPLAY_FIELD(field, x, y - 1).ai_pathfinding_number = number;
 	}
 	
 	// try east
-	if(x < GAMEPLAY_FIELD_WIDTH - 1 && GAMEPLAY_FIELD(field, x + 1, y).ai_pathfinding_number == -1 && gameplay_get_walkable(x + 1, y) == 1 && (ignore_simulated > 1 || (ignore_simulated < 2 && GAMEPLAY_FIELD(field, x + 1, y).ai_simulation_walkable == 1)) && (ignore_simulated > 0 || (ignore_simulated == 0 && GAMEPLAY_FIELD(field, x + 1, y).ai_simulation_walkable_simulated == 1)))
+	if(x < GAMEPLAY_FIELD_WIDTH - 1 && GAMEPLAY_FIELD(field, x + 1, y).ai_pathfinding_number == -1 && gameplay_get_walkable(x + 1, y, 0) == 1 && (ignore_simulated > 1 || (ignore_simulated < 2 && GAMEPLAY_FIELD(field, x + 1, y).ai_simulation_walkable == 1)) && (ignore_simulated > 0 || (ignore_simulated == 0 && GAMEPLAY_FIELD(field, x + 1, y).ai_simulation_walkable_simulated == 1)))
 	{
 		GAMEPLAY_FIELD(field, x + 1, y).ai_pathfinding_number = number;
 	}
 	
 	// try south
-	if(y < GAMEPLAY_FIELD_HEIGHT - 1 && GAMEPLAY_FIELD(field, x, y + 1).ai_pathfinding_number == -1 && gameplay_get_walkable(x, y + 1) == 1 && (ignore_simulated > 1 || (ignore_simulated < 2 && GAMEPLAY_FIELD(field, x, y + 1).ai_simulation_walkable == 1)) && (ignore_simulated > 0 || (ignore_simulated == 0 && GAMEPLAY_FIELD(field, x, y + 1).ai_simulation_walkable_simulated == 1)))
+	if(y < GAMEPLAY_FIELD_HEIGHT - 1 && GAMEPLAY_FIELD(field, x, y + 1).ai_pathfinding_number == -1 && gameplay_get_walkable(x, y + 1, 0) == 1 && (ignore_simulated > 1 || (ignore_simulated < 2 && GAMEPLAY_FIELD(field, x, y + 1).ai_simulation_walkable == 1)) && (ignore_simulated > 0 || (ignore_simulated == 0 && GAMEPLAY_FIELD(field, x, y + 1).ai_simulation_walkable_simulated == 1)))
 	{
 		GAMEPLAY_FIELD(field, x, y + 1).ai_pathfinding_number = number;
 	}
 	
 	// try west
-	if(x > 0 && GAMEPLAY_FIELD(field, x - 1, y).ai_pathfinding_number == -1 && gameplay_get_walkable(x - 1, y) == 1 && (ignore_simulated > 1 || (ignore_simulated < 2 && GAMEPLAY_FIELD(field, x - 1, y).ai_simulation_walkable == 1)) && (ignore_simulated > 0 || (ignore_simulated == 0 && GAMEPLAY_FIELD(field, x - 1, y).ai_simulation_walkable_simulated == 1)))
+	if(x > 0 && GAMEPLAY_FIELD(field, x - 1, y).ai_pathfinding_number == -1 && gameplay_get_walkable(x - 1, y, 0) == 1 && (ignore_simulated > 1 || (ignore_simulated < 2 && GAMEPLAY_FIELD(field, x - 1, y).ai_simulation_walkable == 1)) && (ignore_simulated > 0 || (ignore_simulated == 0 && GAMEPLAY_FIELD(field, x - 1, y).ai_simulation_walkable_simulated == 1)))
 	{
 		GAMEPLAY_FIELD(field, x - 1, y).ai_pathfinding_number = number;
 	}

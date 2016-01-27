@@ -83,22 +83,22 @@ void ai_simulation_explosion(int position_x, int position_y, int explosion_radiu
 	// 	core_debug("Simulate at (%i, %i)", position_x, position_y);
 	// }
 	
-	for(x = position_x; x < GAMEPLAY_FIELD_WIDTH && x < position_x + explosion_radius && gameplay_get_walkable(x, position_y); x++)
+	for(x = position_x; x < GAMEPLAY_FIELD_WIDTH && x < position_x + explosion_radius && gameplay_get_walkable(x, position_y, 1); x++)
 	{
 		ai_simulation_explosion_set_unwalkable(x, position_y, simulated);
 	}
 	
-	for(x = position_x - 1; x > 0 && x > position_x - explosion_radius && gameplay_get_walkable(x, position_y); x--)
+	for(x = position_x - 1; x > 0 && x > position_x - explosion_radius && gameplay_get_walkable(x, position_y, 1); x--)
 	{
 		ai_simulation_explosion_set_unwalkable(x, position_y, simulated);
 	}
 	
-	for(y = position_y; y < GAMEPLAY_FIELD_HEIGHT && y < position_y + explosion_radius && gameplay_get_walkable(position_x, y); y++)
+	for(y = position_y; y < GAMEPLAY_FIELD_HEIGHT && y < position_y + explosion_radius && gameplay_get_walkable(position_x, y, 1); y++)
 	{
 		ai_simulation_explosion_set_unwalkable(position_x, y, simulated);
 	}
 	
-	for(y = position_y - 1; y > 0 && y > position_y - explosion_radius && gameplay_get_walkable(position_x, y); y--)
+	for(y = position_y - 1; y > 0 && y > position_y - explosion_radius && gameplay_get_walkable(position_x, y, 1); y--)
 	{
 		ai_simulation_explosion_set_unwalkable(position_x, y, simulated);
 	}
@@ -152,7 +152,7 @@ int ai_simulation_validate_tile(int explosion_radius, int position_x, int positi
 	{
 		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
 		{
-			if(gameplay_get_walkable(x, y) == 1 && GAMEPLAY_FIELD(field, x, y).ai_simulation_walkable == 1 && GAMEPLAY_FIELD(field, x, y).ai_simulation_walkable_simulated == 1 && ai_pathfinding_move_to_length(position_x, position_y, x, y, 1) != -1)
+			if(gameplay_get_walkable(x, y, 0) == 1 && GAMEPLAY_FIELD(field, x, y).ai_simulation_walkable == 1 && GAMEPLAY_FIELD(field, x, y).ai_simulation_walkable_simulated == 1 && ai_pathfinding_move_to_length(position_x, position_y, x, y, 1) != -1)
 			{
 				count_hiding_places++;
 			}
