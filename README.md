@@ -37,5 +37,7 @@ To compile the project the library `ncurses` is needed. It must also be availabl
 
 If `ncurses` is installed, change (`cd`) to the root directory of the project and run the following:
 
-    $ make
-    $ bin/turbo-bomber
+```bash
+$ make
+$ bin/turbo-bomber
+```
