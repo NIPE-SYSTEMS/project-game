@@ -134,32 +134,55 @@ int graphics_startscreen(void)
 void graphics_game_over_function(void)
 {
 	static int graphics_game_over_counter = 0;
-	int i = 0;
-	int b = 0;
 	
-	for(i = 0; i < 35; i++)
+	char *current_frame = NULL;
+	
+	graphics_sprites_type_t GRAPHICS_GAME_OVER_1 = current_frame;
+	
+	current_frame += graphics_game_over_counter;
+	
+	if(graphics_game_over_counter <= 13)
 	{
-		for(b = 0; b < 69; b++)
-		{
-			if(graphics_game_over_counter <= 13)
-			{
-				mvaddch(3+i, 3+b, graphics_game_over[graphics_game_over_counter][i][b]);
-			}
-			else
-			{
-				if(graphics_game_over[13][i][b] == '#')
-				{
-					mvaddch(3+i, 3+b, graphics_game_over[13][i][b]);
-				}
-			}
-		}
+		graphics_sprites_render(0, 0, current_frame, 0);
 	}
+	else
+	{
+		graphics_sprites_render(0, 0, graphics_sprites_sprites[GRAPHICS_GAME_OVER_14].data, 0);
+	}
+	
 	
 	if(graphics_game_over_counter <= 13)
 	{
 		graphics_game_over_counter++;
 	}
 }
+
+void graphics_win_screen(void)
+{
+	static int graphics_win_counter = 0;
+	
+	char *current_frame = NULL;
+	
+	graphics_sprites_type_t /*GRAPHICS_GAME_OVER_1*/ = current_frame; ///Not defined jet
+	
+	current_frame += graphics_win_counter;
+	
+	if(graphics_win_counter <= 13)
+	{
+		graphics_sprites_render(0, 0, current_frame, 0);
+	}
+	else
+	{
+		graphics_sprites_render(0, 0, graphics_sprites_sprites[/*GRAPHICS_GAME_OVER_14*/].data, 0); //Not defined jet
+	}
+	
+	
+	if(graphics_win_counter <= /*13*/) //Not defined jet
+	{
+		graphics_win_counter++;
+	}
+}
+
 
 void graphics_render_players(void)
 {
