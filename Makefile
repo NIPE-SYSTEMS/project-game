@@ -19,20 +19,22 @@ CFLAGS += -Wall
 CFLAGS += -Wextra
 
 CFLAGS += `pkg-config --cflags ncurses`
+
+# Enable debug output to "debug.log" and "error.log"
 # CFLAGS += -DDEBUG
+
+# Enable debug informations instead of normal sidebar in the game (a.k.a. debug stats)
 # CFLAGS += -DDEBUG_INFO
 
 LIBS += `pkg-config --libs ncurses`
-
-PROGRAM_NAME = project-game
 
 # game sources
 SRC = $(notdir $(wildcard src/*.c))
 OBJS = $(addprefix bin/obj/, $(SRC:%.c=%.o))
 
-.PHONY: all clean
+.PHONY: all clean specification debug
 
-all: bin/project-game
+all: bin/turbo-bomber
 
 # create object directory for game objects
 bin/obj:
@@ -43,8 +45,8 @@ bin/modules:
 	mkdir -p bin/modules
 
 # compile all objects into the binary
-bin/project-game: bin/obj $(OBJS)
-	$(CC) $(CFLAGS) $(CFLAGS) $(OBJS) -o bin/project-game $(LIBS)
+bin/turbo-bomber: bin/obj $(OBJS)
+	$(CC) $(CFLAGS) $(CFLAGS) $(OBJS) -o bin/turbo-bomber $(LIBS)
 
 # compile a game object
 bin/obj/%.o: src/%.c
@@ -53,3 +55,9 @@ bin/obj/%.o: src/%.c
 # clean complete objects directory
 clean:
 	rm -Rf bin
+
+specification:
+	make -C 'specification'
+
+debug:
+	valgrind --log-file=valgrind.log --leak-check=full --show-leak-kinds=all bin/turbo-bomber
