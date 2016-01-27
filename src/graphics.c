@@ -103,11 +103,11 @@ int graphics_render_start_screen(void)
 		return 0;
 	}
 	
-	graphics_sprites_render(0, 0, GRAPHICS_STARTSCREEN_TEXT, 0);
+	graphics_sprites_render(0, 0, GRAPHICS_SPRITES_TYPE_START_SCREEN_TEXT, 0);
 	
 	if(animation_counter <= 30)
 	{
-		graphics_sprites_render(0, 0, GRAPHICS_STARTSCREEN_1 + animation_counter, 2);
+		graphics_sprites_render(0, 0, GRAPHICS_SPRITES_TYPE_START_SCREEN_1 + animation_counter, 2);
 	}
 	
 	animation_counter++;
@@ -121,11 +121,11 @@ void graphics_render_game_over_screen(void)
 	
 	if(animation_counter <= 13)
 	{
-		graphics_sprites_render(0, 0, GRAPHICS_GAME_OVER_1 + animation_counter, 0);
+		graphics_sprites_render(0, 0, GRAPHICS_SPRITES_TYPE_GAME_OVER_SCREEN_1 + animation_counter, 0);
 	}
 	else
 	{
-		graphics_sprites_render(0, 0, GRAPHICS_GAME_OVER_14, 0);
+		graphics_sprites_render(0, 0, GRAPHICS_SPRITES_TYPE_GAME_OVER_SCREEN_14, 0);
 	}
 	
 	if(animation_counter <= 13)
