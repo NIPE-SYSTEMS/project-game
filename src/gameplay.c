@@ -105,9 +105,16 @@ void gameplay_cleanup(void)
 	gameplay_items_cleanup();
 }
 
-int gameplay_get_walkable(int position_x, int position_y)
+int gameplay_get_walkable(int position_x, int position_y, char bomb_is_walkable)
 {
-	return (GAMEPLAY_FIELD(gameplay_field, position_x, position_y).type == FLOOR);
+	if(bomb_is_walkable == 1)
+	{
+		return (GAMEPLAY_FIELD(gameplay_field, position_x, position_y).type == FLOOR);
+	}
+	else
+	{
+		return (GAMEPLAY_FIELD(gameplay_field, position_x, position_y).type == FLOOR && gameplay_bombs_get_bomb_placed(position_x, position_y) == 0);
+	}
 }
 
 /* also removes the item from the tile

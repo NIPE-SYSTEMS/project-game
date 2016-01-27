@@ -42,7 +42,7 @@ typedef struct gameplay_turbo_s
 
 void gameplay_init(void);
 void gameplay_cleanup(void);
-int gameplay_get_walkable(int position_x, int position_y);
+int gameplay_get_walkable(int position_x, int position_y, char bomb_is_walkable);
 //gameplay_items_item_t gameplay_get_item(int position_x, int position_y);
 void gameplay_destroy(int position_x, int position_y);
 void gameplay_key(char gameplay_pressed_key);
