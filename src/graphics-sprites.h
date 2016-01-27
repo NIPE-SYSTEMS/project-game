@@ -1,6 +1,9 @@
 #ifndef __GRAPHICS_SPRITES_H__
 #define __GRAPHICS_SPRITES_H__
 
+#define GRAPHICS_SPRITES_SCREENSHOT_WIDTH 150
+#define GRAPHICS_SPRITES_SCREENSHOT_HEIGHT 40
+
 typedef enum graphics_sprites_colors_e
 {
 	GRAPHICS_SPRITES_COLOR_BLACK = 1,
@@ -114,6 +117,7 @@ void graphics_sprites_cleanup(void);
 graphics_sprites_sprite_t *graphics_sprites_get(graphics_sprites_type_t type);
 void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t type, char transparency);
 void graphics_sprites_render_box(int render_x, int render_y, int width, int height);
+void graphics_sprites_screenshot(void);
 
 //static char graphics_spinning_animation[4] = { '/', '-', '\\', '|' };
 static char graphics_sprites[18][3][5] =

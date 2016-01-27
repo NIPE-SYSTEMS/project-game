@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
+#include <time.h>
+#include <string.h>
 
 #include "graphics-sprites.h"
 #include "core.h"
@@ -201,4 +203,42 @@ void graphics_sprites_render_box(int render_x, int render_y, int width, int heig
 	}
 	
 	attroff(COLOR_PAIR(GRAPHICS_SPRITES_COLOR_WHITE_FILLED));
+}
+
+void graphics_sprites_screenshot(void)
+{
+	char path[80];
+	time_t rawtime = 0;
+	struct tm *timeinfo = NULL;
+	FILE *file = NULL;
+	int x = 0;
+	int y = 0;
+	
+	memset(path, 0, 80 * sizeof(char));
+	
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	
+	strftime(path, 80, "screenshot-turbo-bomber-%Y-%m-%d-%H%M%S.txt", timeinfo);
+	
+	core_debug("Taking screenshot... %s", path);
+	
+	file = fopen(path, "w");
+	if(file == NULL)
+	{
+		core_error("Failed to open screenshot file.");
+		return;
+	}
+	
+	for(y = 0; y < GRAPHICS_SPRITES_SCREENSHOT_HEIGHT; y++)
+	{
+		for(x = 0; x < GRAPHICS_SPRITES_SCREENSHOT_WIDTH; x++)
+		{
+			fputc(mvinch(y, x) & A_CHARTEXT, file);
+		}
+		
+		fputc('\n', file);
+	}
+	
+	fclose(file);
 }

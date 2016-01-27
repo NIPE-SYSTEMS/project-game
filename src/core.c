@@ -53,6 +53,7 @@ void core_main(void)
 	int character = 0;
 	core_state_t saved_state = CORE_RUNNING;
 	gameplay_players_player_t *player = NULL;
+	char screenshot_request = 0;
 	
 	while(core_state != CORE_SHUTDOWN)
 	{
@@ -69,6 +70,7 @@ void core_main(void)
 			{
 				// <Q> or <Esc>: Quit game loop
 				// <C>: Show QR code
+				// <V>: Take screenshot
 				// <P>: Pause or resume game loop updating
 				// <W>: Move user player up
 				// <A>: Move user player left
@@ -86,6 +88,13 @@ void core_main(void)
 				{
 					core_debug("Invoked quit event.");
 					core_state = CORE_SHUTDOWN;
+					break;
+				}
+				case 'v':
+				{
+					// only request screenshot, take it at the end of drawing
+					screenshot_request = 1;
+					
 					break;
 				}
 				case 'c':
@@ -243,6 +252,12 @@ void core_main(void)
 			{
 				break;
 			}
+		}
+		
+		if(screenshot_request == 1)
+		{
+			graphics_sprites_screenshot();
+			screenshot_request = 0;
 		}
 		
 		move(0, 0);
