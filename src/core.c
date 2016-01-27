@@ -51,6 +51,7 @@ void core_init(void)
 void core_main(void)
 {
 	int character = 0;
+	core_state_t saved_state = CORE_RUNNING;
 	gameplay_players_player_t *player = NULL;
 	
 	while(core_state != CORE_SHUTDOWN)
@@ -74,8 +75,15 @@ void core_main(void)
 				}
 				case 'c':
 				{
-					core_debug("Showing QR Code");
-					core_state = CORE_QR_CODE;
+					if(core_state != CORE_QR_CODE)
+					{
+						saved_state = core_state;
+						core_state = CORE_QR_CODE;
+					}
+					else
+					{
+						core_state = saved_state;
+					}
 					
 					break;
 				}
@@ -108,7 +116,7 @@ void core_main(void)
 						break;
 					}
 				}
-				case 'w': case 'a': case 's': case 'd': case ' ': case 'f': case 't': case 'u': case 'r': case 'b': case 'o':
+				case 'w': case 'a': case 's': case 'd': case ' ': case 'f': case 't': case 'u': case 'r': case 'b': case 'o': case 'm':
 				{
 					// skip start screen
 					if(character == ' ' && core_state == CORE_START_SCREEN)
@@ -125,10 +133,23 @@ void core_main(void)
 						break;
 					}
 					
-					// return to menu
+					// return to menu from end screen
 					if(character == ' ' && (core_state == CORE_WIN || core_state == CORE_GAME_OVER))
 					{
 						core_state = CORE_MENU;
+						break;
+					}
+					
+					// return to menu from game
+					if(character == 'm')
+					{
+						if(core_state == CORE_RUNNING || core_state == CORE_PAUSED)
+						{
+							gameplay_cleanup();
+						}
+						
+						core_state = CORE_MENU;
+						
 						break;
 					}
 					
