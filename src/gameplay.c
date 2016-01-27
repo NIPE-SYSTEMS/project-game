@@ -179,7 +179,7 @@ void gameplay_key(char gameplay_pressed_key)
 			gameplay_players_place_bomb(NULL);
 			break;
 		}
-		case 'f':
+		case 'e':
 		{
 			gameplay_players_use_item();
 			break;

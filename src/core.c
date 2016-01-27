@@ -67,7 +67,22 @@ void core_main(void)
 		{
 			switch(character)
 			{
-				case 'q': case 27: // <Q> or <Esc>
+				// <Q> or <Esc>: Quit game loop
+				// <C>: Show QR code
+				// <P>: Pause or resume game loop updating
+				// <W>: Move user player up
+				// <A>: Move user player left
+				// <S>: Move user player down
+				// <D>: Move user player right
+				// <E>: Pick up item (user player)
+				// <SPACE>: Place bomb (user player), skip start screen, return to menu
+				// <T>: TURBO-MODE
+				// <U>: TURBO-MODE
+				// <R>: TURBO-MODE
+				// <B>: TURBO-MODE
+				// <O>: TURBO-MODE
+				// <M>: Return to menu
+				case 'q': case 27: // 27 = <Esc>
 				{
 					core_debug("Invoked quit event.");
 					core_state = CORE_SHUTDOWN;
@@ -116,7 +131,8 @@ void core_main(void)
 						break;
 					}
 				}
-				case 'w': case 'a': case 's': case 'd': case ' ': case 'f': case 't': case 'u': case 'r': case 'b': case 'o': case 'm':
+				// 
+				case 'w': case 'a': case 's': case 'd': case ' ': case 'e': case 't': case 'u': case 'r': case 'b': case 'o': case 'm':
 				{
 					// skip start screen
 					if(character == ' ' && core_state == CORE_START_SCREEN)
@@ -140,7 +156,7 @@ void core_main(void)
 						break;
 					}
 					
-					// return to menu from game
+					// return to menu from everywhere
 					if(character == 'm')
 					{
 						if(core_state == CORE_RUNNING || core_state == CORE_PAUSED)
