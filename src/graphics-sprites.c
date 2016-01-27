@@ -37,58 +37,59 @@ static graphics_sprites_sprite_t graphics_sprites_sprites[] =
 	{ GRAPHICS_SPRITES_TYPE_MENU_LOGO_2, "assets/menu_logo_2.sprite", 60, 12, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
 	{ GRAPHICS_SPRITES_TYPE_MENU_START, "assets/menu_start.sprite", 25, 1, NULL, GRAPHICS_SPRITES_COLOR_RANDOM_FILL },
 	
-	{ GRAPHICS_STARTSCREEN_TEXT, "assets/Field_START_Text.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_1, "assets/Field_START_1.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_2, "assets/Field_START_2.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_3, "assets/Field_START_3.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_4, "assets/Field_START_4.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_5, "assets/Field_START_5.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_6, "assets/Field_START_6.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_7, "assets/Field_START_7.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_8, "assets/Field_START_8.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_9, "assets/Field_START_9.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_10, "assets/Field_START_10.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_11, "assets/Field_START_11.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_12, "assets/Field_START_12.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_13, "assets/Field_START_13.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_14, "assets/Field_START_14.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_15, "assets/Field_START_15.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_16, "assets/Field_START_16.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_17, "assets/Field_START_17.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_18, "assets/Field_START_18.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_19, "assets/Field_START_19.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_20, "assets/Field_START_20.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_21, "assets/Field_START_21.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_22, "assets/Field_START_22.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_23, "assets/Field_START_23.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_24, "assets/Field_START_24.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_25, "assets/Field_START_25.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_26, "assets/Field_START_26.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_27, "assets/Field_START_27.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_28, "assets/Field_START_28.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_29, "assets/Field_START_29.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_30, "assets/Field_START_30.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_STARTSCREEN_31, "assets/Field_START_31.sprite", 39, 103, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_TEXT, "assets/start_screen_text.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_1, "assets/start_screen_1.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_2, "assets/start_screen_2.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_3, "assets/start_screen_3.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_4, "assets/start_screen_4.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_5, "assets/start_screen_5.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_6, "assets/start_screen_6.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_7, "assets/start_screen_7.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_8, "assets/start_screen_8.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_9, "assets/start_screen_9.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_10, "assets/start_screen_10.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_11, "assets/start_screen_11.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_12, "assets/start_screen_12.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_13, "assets/start_screen_13.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_14, "assets/start_screen_14.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_15, "assets/start_screen_15.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_16, "assets/start_screen_16.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_17, "assets/start_screen_17.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_18, "assets/start_screen_18.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_19, "assets/start_screen_19.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_20, "assets/start_screen_20.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_21, "assets/start_screen_21.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_22, "assets/start_screen_22.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_23, "assets/start_screen_23.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_24, "assets/start_screen_24.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_25, "assets/start_screen_25.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_26, "assets/start_screen_26.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_27, "assets/start_screen_27.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_28, "assets/start_screen_28.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_29, "assets/start_screen_29.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_30, "assets/start_screen_30.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_STARTSCREEN_31, "assets/start_screen_31.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
 	
-	
-	{ GRAPHICS_GAME_OVER_1, "assets/Game_over_1.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_GAME_OVER_2, "assets/Game_over_2.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_GAME_OVER_3, "assets/Game_over_3.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_GAME_OVER_4, "assets/Game_over_4.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_GAME_OVER_5, "assets/Game_over_5.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_GAME_OVER_6, "assets/Game_over_6.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_GAME_OVER_7, "assets/Game_over_7.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_GAME_OVER_8, "assets/Game_over_8.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_GAME_OVER_9, "assets/Game_over_9.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_GAME_OVER_10, "assets/Game_over_10.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_GAME_OVER_11, "assets/Game_over_11.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_GAME_OVER_12, "assets/Game_over_12.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_GAME_OVER_13, "assets/Game_over_13.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
-	{ GRAPHICS_GAME_OVER_14, "assets/Game_over_14.sprite", 35, 169, NULL, GRAPHICS_SPRITES_COLOR_WHITE }
+	{ GRAPHICS_GAME_OVER_1, "assets/game_over_screen_1.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_GAME_OVER_2, "assets/game_over_screen_2.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_GAME_OVER_3, "assets/game_over_screen_3.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_GAME_OVER_4, "assets/game_over_screen_4.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_GAME_OVER_5, "assets/game_over_screen_5.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_GAME_OVER_6, "assets/game_over_screen_6.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_GAME_OVER_7, "assets/game_over_screen_7.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_GAME_OVER_8, "assets/game_over_screen_8.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_GAME_OVER_9, "assets/game_over_screen_9.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_GAME_OVER_10, "assets/game_over_screen_10.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_GAME_OVER_11, "assets/game_over_screen_11.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_GAME_OVER_12, "assets/game_over_screen_12.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_GAME_OVER_13, "assets/game_over_screen_13.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_GAME_OVER_14, "assets/game_over_screen_14.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE }
 };
 
 void graphics_sprites_init_colors(void)
 {
+	core_debug("Initializing colors...");
+	
 	init_pair(GRAPHICS_SPRITES_COLOR_BLACK, COLOR_BLACK, -1);
 	init_pair(GRAPHICS_SPRITES_COLOR_RED, COLOR_RED, -1);
 	init_pair(GRAPHICS_SPRITES_COLOR_GREEN, COLOR_GREEN, -1);
@@ -151,6 +152,8 @@ char *graphics_sprites_read(char *path, int width, int height)
 void graphics_sprites_init(void)
 {
 	int i = 0;
+	
+	core_debug("Loading sprites...");
 	
 	graphics_sprites_init_colors();
 	
@@ -216,7 +219,7 @@ void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t
 		for(x = 0; x < sprite->width; x++)
 		{
 			// if transparency == 1 then render only if character of sprite != ' '
-			if(transparency == 0 || (transparency == 1 && sprite->data[y * sprite->width + x] != ' '))
+			if(transparency == 0 || (transparency == 1 && sprite->data[y * sprite->width + x] != ' ') || (transparency == 2 && sprite->data[y * sprite->width + x] != '#'))
 			{
 				if(sprite->color == GRAPHICS_SPRITES_COLOR_RANDOM)
 				{

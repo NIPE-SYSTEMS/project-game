@@ -123,7 +123,7 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 	{
 		gameplay_players_harm(x, position_y);
 		gameplay_bombs_trigger_explosion(x, position_y);
-		if(!gameplay_get_walkable(x, position_y))
+		if(!gameplay_get_walkable(x, position_y, 1))
 		{
 			gameplay_destroy(x, position_y);
 			gameplay_set_fire(x, position_y);
@@ -141,7 +141,7 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 	{
 		gameplay_players_harm(x, position_y);
 		gameplay_bombs_trigger_explosion(x, position_y);
-		if(!gameplay_get_walkable(x, position_y))
+		if(!gameplay_get_walkable(x, position_y, 1))
 		{
 			gameplay_destroy(x, position_y);
 			gameplay_set_fire(x, position_y);
@@ -159,7 +159,7 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 	{
 		gameplay_players_harm(position_x, y);
 		gameplay_bombs_trigger_explosion(position_x, y);
-		if(!gameplay_get_walkable(position_x, y))
+		if(!gameplay_get_walkable(position_x, y, 1))
 		{
 			gameplay_destroy(position_x, y);
 			gameplay_set_fire(position_x, y);
@@ -177,7 +177,7 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 	{
 		gameplay_players_harm(position_x, y);
 		gameplay_bombs_trigger_explosion(position_x, y);
-		if(!gameplay_get_walkable(position_x, y))
+		if(!gameplay_get_walkable(position_x, y, 1))
 		{
 			gameplay_destroy(position_x, y);
 			gameplay_set_fire(position_x, y);

@@ -216,7 +216,7 @@ void gameplay_players_move(gameplay_players_direction_t direction)
 	}
 	
 	// test walkability
-	if(!gameplay_get_walkable(position_target_x, position_target_y))
+	if(!gameplay_get_walkable(position_target_x, position_target_y, 0))
 	{
 		return;
 	}
