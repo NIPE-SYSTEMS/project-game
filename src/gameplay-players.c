@@ -379,13 +379,24 @@ void gameplay_players_use_item(void)
 void gameplay_players_harm(int position_x, int position_y)
 {
 	gameplay_players_player_t *current = NULL;
+	gameplay_players_player_t *next_backup = NULL;
 	
-	for(current = gameplay_players_players; current != NULL; current = current->next)
+	for(current = gameplay_players_players; current != NULL; current = next_backup)
 	{
-		if(current->position_x == position_x && current->position_y == position_y && current->damage_cooldown == 0 && current->health_points > 0)
+		next_backup = current->next;
+		
+		if(current->position_x == position_x && current->position_y == position_y)
 		{
-			current->health_points--;
-			current->damage_cooldown = current->damage_cooldown_initial;
+			if(current->damage_cooldown == 0 && current->health_points > 0)
+			{
+				current->health_points--;
+				current->damage_cooldown = current->damage_cooldown_initial;
+			}
+			
+			if(current->health_points == 0 && current->type == GAMEPLAY_PLAYERS_TYPE_AI)
+			{
+				gameplay_players_remove(position_x, position_y);
+			}
 		}
 	}
 }
