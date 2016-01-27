@@ -39,7 +39,7 @@ void gameplay_items_add_item(gameplay_items_item_type_t type, int position_x, in
 		current->next = item;
 	}
 	
-	core_debug("Added bomb %p at (%i, %i)", gameplay_items_items, position_x, position_y);
+	core_debug("Added item %p at (%i, %i)", gameplay_items_items, position_x, position_y);
 }
 
 
@@ -48,11 +48,15 @@ void gameplay_items_cleanup(void)
 	gameplay_items_item_t *current = NULL;
 	gameplay_items_item_t *next_backup = NULL;
 	
+	core_debug("Cleanup items...");
+	
 	for(current = gameplay_items_items; current != NULL; current = next_backup)
 	{
 		next_backup = current->next;
 		free(current);
 	}
+	
+	gameplay_items_items = NULL;
 }
 
 void gameplay_items_remove(int position_x, int position_y)

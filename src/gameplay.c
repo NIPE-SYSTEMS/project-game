@@ -18,7 +18,7 @@ static gameplay_turbo_t gameplay_turbo;
  * This function fills the field array before the game starts with all 
  * neccesary informations.
  */
-void gameplay_field_init(void)
+void gameplay_init(void)
 {
 	int x = 0;
 	int y = 0;
@@ -86,21 +86,16 @@ void gameplay_field_init(void)
 	GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 3, GAMEPLAY_FIELD_HEIGHT - 2).type = FLOOR; // remove wall at (width - 3, height - 2)
 	GAMEPLAY_FIELD(gameplay_field, GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 3).type = FLOOR; // remove wall at (width - 2, height - 3)
 	
-	gameplay_players_initialize();
+	gameplay_players_add(1, 1, GAMEPLAY_PLAYERS_TYPE_USER);
+	gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, 1, GAMEPLAY_PLAYERS_TYPE_AI);
+	gameplay_players_add(1, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
+	gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
 	
 	gameplay_turbo.t = 0;
 	gameplay_turbo.u = 0;
 	gameplay_turbo.r = 0;
 	gameplay_turbo.b = 0;
 	gameplay_turbo.o = 0;
-}
-
-void gameplay_players_initialize(void)
-{
-	gameplay_players_add(1, 1, GAMEPLAY_PLAYERS_TYPE_USER);
-	gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, 1, GAMEPLAY_PLAYERS_TYPE_AI);
-	gameplay_players_add(1, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
-	gameplay_players_add(GAMEPLAY_FIELD_WIDTH - 2, GAMEPLAY_FIELD_HEIGHT - 2, GAMEPLAY_PLAYERS_TYPE_AI);
 }
 
 void gameplay_cleanup(void)

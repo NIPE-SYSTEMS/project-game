@@ -49,11 +49,15 @@ void gameplay_bombs_cleanup(void)
 	gameplay_bombs_bomb_t *current = NULL;
 	gameplay_bombs_bomb_t *next_backup = NULL;
 	
+	core_debug("Cleanup bombs...");
+	
 	for(current = gameplay_bombs_bombs; current != NULL; current = next_backup)
 	{
 		next_backup = current->next;
 		free(current);
 	}
+	
+	gameplay_bombs_bombs = NULL;
 }
 
 void gameplay_bombs_remove(int position_x, int position_y)

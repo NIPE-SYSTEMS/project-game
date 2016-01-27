@@ -40,8 +40,7 @@ typedef struct gameplay_turbo_s
 	int o;
 } gameplay_turbo_t;
 
-void gameplay_field_init(void);
-void gameplay_players_initialize(void);
+void gameplay_init(void);
 void gameplay_cleanup(void);
 int gameplay_get_walkable(int position_x, int position_y);
 //gameplay_items_item_t gameplay_get_item(int position_x, int position_y);

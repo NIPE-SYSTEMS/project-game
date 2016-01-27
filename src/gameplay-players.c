@@ -29,7 +29,16 @@ void gameplay_players_add(int position_x, int position_y, gameplay_players_type_
 	player->explosion_radius = GAMEPLAY_PLAYERS_EXPLOSION_RADIUS;
 	player->item = EMPTY;
 	player->item_usage_time = 0;
-	player->damage_cooldown = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_START;
+	
+	if(type == GAMEPLAY_PLAYERS_TYPE_USER)
+	{
+		player->damage_cooldown = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_START_USER;
+	}
+	else
+	{
+		player->damage_cooldown = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_START_AI;
+	}
+	
 	player->damage_cooldown_initial = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN;
 	player->type = type;
 	player->jobs = NULL;
@@ -52,12 +61,16 @@ void gameplay_players_cleanup(void)
 	gameplay_players_player_t *current = NULL;
 	gameplay_players_player_t *next_backup = NULL;
 	
+	core_debug("Cleanup players...");
+	
 	for(current = gameplay_players_players; current != NULL; current = next_backup)
 	{
 		next_backup = current->next;
 		ai_core_cleanup(current);
 		free(current);
 	}
+	
+	gameplay_players_players = NULL;
 }
 
 void gameplay_players_remove(int position_x, int position_y)

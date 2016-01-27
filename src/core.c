@@ -42,7 +42,6 @@ void core_init(void)
 	
 	random_drop_init();
 	graphics_sprites_init();
-	gameplay_field_init();
 }
 
 /**
@@ -122,6 +121,7 @@ void core_main(void)
 					if(character == ' ' && core_state == CORE_MENU)
 					{
 						core_state = CORE_RUNNING;
+						gameplay_init();
 						break;
 					}
 					
@@ -179,6 +179,7 @@ void core_main(void)
 				if(player->health_points == 0)
 				{
 					core_state = CORE_GAME_OVER;
+					gameplay_cleanup();
 				}
 				
 				break;
