@@ -27,6 +27,7 @@
 #include "random-drop.h"
 #include "graphics.h"
 #include "gameplay.h"
+#include "gameplay-players.h"
 #include "graphics-sprites.h"
 #include "ai-core.h"
 
@@ -39,7 +40,7 @@ static FILE *core_file_error = NULL;
 #endif /* DEBUG */
 
 static core_state_t core_state = CORE_START_SCREEN;
-
+static char core_cutscene_reset = 0;
 /**
  * This function initializes everything. It initializes ncurses.
  */
@@ -88,6 +89,7 @@ void core_main(void)
 			switch(character)
 			{
 				// <Q> or <Esc>: Quit game loop
+				// <H>: start win screen manually
 				// <C>: Show QR code
 				// <V>: Take screenshot
 				// <P>: Pause or resume game loop updating
@@ -107,6 +109,14 @@ void core_main(void)
 				{
 					core_debug("Invoked quit event.");
 					core_state = CORE_SHUTDOWN;
+					break;
+				}
+				case 'h':
+				{
+					core_cutscene_reset = 1;
+					graphics_render_win_screen(core_cutscene_reset);
+					core_state = CORE_WIN;
+					gameplay_cleanup();
 					break;
 				}
 				case 'v':
@@ -243,7 +253,13 @@ void core_main(void)
 				player = gameplay_players_get_user();
 				if(player->health_points == 0)
 				{
+					core_cutscene_reset = 1;
 					core_state = CORE_GAME_OVER;
+					gameplay_cleanup();
+				}
+				if(gameplay_players_ai_amount() == 0)
+				{
+					core_state = CORE_WIN;
 					gameplay_cleanup();
 				}
 				
@@ -257,13 +273,15 @@ void core_main(void)
 			}
 			case CORE_WIN:
 			{
-				core_state = CORE_GAME_OVER;
+				graphics_render_win_screen(core_cutscene_reset);
+				core_cutscene_reset = 0;
 				
 				break;
 			}
 			case CORE_GAME_OVER:
 			{
-				graphics_render_game_over_screen();
+				graphics_render_game_over_screen(core_cutscene_reset);
+				core_cutscene_reset = 0;
 				
 				break;
 			}

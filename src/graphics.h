@@ -82,8 +82,9 @@ typedef struct graphics_sprite_s
 
 void graphics_render_menu(void);
 void graphics_render_debug(void);
-int graphics_render_start_screen(void);
-void graphics_render_game_over_screen(void);
+int graphics_render_start_screen();
+void graphics_render_game_over_screen(char reset_screens);
+void graphics_render_win_screen(char reset_screens);
 void graphics_render_players(void);
 void graphics_render_information(void);
 void graphics_render_field(void);

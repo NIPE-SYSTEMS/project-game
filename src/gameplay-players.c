@@ -305,6 +305,27 @@ int gameplay_players_amount(void)
 }
 
 /**
+ * This function returns the amount of (living) AI players.
+ * 
+ * @return The amount of AI players.
+ */
+int gameplay_players_ai_amount(void)
+{
+	gameplay_players_player_t *current = NULL;
+	int amount = 0;
+	
+	for(current = gameplay_players_players; current != NULL; current = current->next)
+	{
+		if(current->type == GAMEPLAY_PLAYERS_TYPE_AI)
+		{
+			amount++;
+		}
+	}
+	
+	return amount;
+}
+
+/**
  * This function returns the player with the given index.
  * 
  * @param index The index of the player.
