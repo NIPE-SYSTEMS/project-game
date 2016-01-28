@@ -48,7 +48,7 @@ Contact the developers if you have questions: [dev.nipe.systems@gmail.com](mailt
 
 ## Found a bug?
 
-Write an issue: [https://github.com/NIPE-SYSTEMS/node-vgcanvas/issues](https://github.com/NIPE-SYSTEMS/node-vgcanvas/issues)
+Write an issue: [https://github.com/NIPE-SYSTEMS/turbo-bomber/issues](https://github.com/NIPE-SYSTEMS/turbo-bomber/issues)
 
 ## License
 
