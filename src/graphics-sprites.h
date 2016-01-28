@@ -152,10 +152,8 @@ typedef struct graphics_sprites_sprite_s
 } graphics_sprites_sprite_t;
 
 void graphics_sprites_init_colors(void);
-char *graphics_sprites_read(char *path, int width, int height);
 void graphics_sprites_init(void);
 void graphics_sprites_cleanup(void);
-graphics_sprites_sprite_t *graphics_sprites_get(graphics_sprites_type_t type);
 void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t type, char transparency);
 void graphics_sprites_render_box(int render_x, int render_y, int width, int height);
 void graphics_sprites_screenshot(void);

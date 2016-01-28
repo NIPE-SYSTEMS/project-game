@@ -26,6 +26,8 @@
 #include "gameplay-items.h"
 #include "gameplay.h"
 
+static void gameplay_bombs_trigger_explosion(int position_x, int position_y);
+
 gameplay_bombs_bomb_t *gameplay_bombs_bombs = NULL;
 
 void gameplay_bombs_add(gameplay_players_player_t *player, int position_x, int position_y)
@@ -403,7 +405,7 @@ int gameplay_bombs_get_fire(int position_x, int position_y)
 	return 0;
 }*/
 
-void gameplay_bombs_trigger_explosion(int position_x, int position_y)
+static void gameplay_bombs_trigger_explosion(int position_x, int position_y)
 {
 	if(gameplay_bombs_get_bomb_placed(position_x, position_y) ==1)
 	{

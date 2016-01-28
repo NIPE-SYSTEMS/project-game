@@ -26,6 +26,8 @@
 #include "graphics-sprites.h"
 #include "core.h"
 
+static char *graphics_sprites_read(char *path, int width, int height);
+static graphics_sprites_sprite_t *graphics_sprites_get(graphics_sprites_type_t type);
 static graphics_sprites_sprite_t graphics_sprites_sprites[] =
 {
 	{ GRAPHICS_SPRITES_TYPE_UNDESTROYABLE, "assets/undestructable.sprite", 5, 3, NULL, GRAPHICS_SPRITES_COLOR_WHITE },

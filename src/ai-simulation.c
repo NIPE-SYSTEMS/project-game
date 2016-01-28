@@ -25,6 +25,8 @@
 #include "gameplay.h"
 #include "core.h"
 
+static void ai_simulation_reset_simulated(void);
+
 void ai_simulation_reset(void)
 {
 	int x = 0;
@@ -47,7 +49,7 @@ void ai_simulation_reset(void)
 	}
 }
 
-void ai_simulation_reset_simulated(void)
+static void ai_simulation_reset_simulated(void)
 {
 	int x = 0;
 	int y = 0;
@@ -181,32 +183,6 @@ int ai_simulation_validate_tile(int explosion_radius, int position_x, int positi
 	// core_debug("Found %i hiding places for (%i, %i)", count_hiding_places, position_x, position_y);
 	
 	return count_hiding_places;
-}
-
-void ai_simulation_print(void)
-{
-	int x = 0;
-	int y = 0;
-	gameplay_field_t *field = NULL;
-	
-	field = gameplay_get_field();
-	
-	if(field == NULL)
-	{
-		return;
-	}
-	
-	core_debug("Walkables:");
-	
-	for(y = 0; y < GAMEPLAY_FIELD_HEIGHT; y++)
-	{
-		for(x = 0; x < GAMEPLAY_FIELD_WIDTH; x++)
-		{
-			core_debug("    (%i, %i): %i", x, y, GAMEPLAY_FIELD(field, x, y).ai_simulation_walkable);
-		}
-	}
-	
-	core_debug("End of Walkables");
 }
 
 int ai_simulation_get_walkable(int position_x, int position_y)

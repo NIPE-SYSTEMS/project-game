@@ -45,6 +45,5 @@ gameplay_bombs_bomb_t *gameplay_bombs_get(int index);
 int gameplay_bombs_get_bomb_placed(int position_x, int position_y);
 gameplay_bombs_bomb_t *gameplay_bombs_get_bomb(int position_x, int position_y);
 // int gameplay_bombs_get_fire(int position_x, int position_y);
-void gameplay_bombs_trigger_explosion(int position_x, int position_y);
 
 #endif /* __GAMEPLAY_BOMBS_H__ */

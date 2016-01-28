@@ -24,7 +24,12 @@
 #include "gameplay.h"
 #include "core.h"
 
-void ai_pathfinding_reset(void)
+static void ai_pathfinding_reset(void);
+static void ai_pathfinding_expand_numbers(int x, int y, int number, int ignore_simulated);
+static int ai_pathfinding_fill_numbers(int start_x, int start_y, int end_x, int end_y, int ignore_simulated);
+static int ai_pathfinding_link_tile(int x, int y, int number);
+
+static void ai_pathfinding_reset(void)
 {
 	int x = 0;
 	int y = 0;
@@ -49,7 +54,7 @@ void ai_pathfinding_reset(void)
 	}
 }
 
-void ai_pathfinding_expand_numbers(int x, int y, int number, int ignore_simulated)
+static void ai_pathfinding_expand_numbers(int x, int y, int number, int ignore_simulated)
 {
 	gameplay_field_t *field = NULL;
 	
@@ -87,7 +92,7 @@ void ai_pathfinding_expand_numbers(int x, int y, int number, int ignore_simulate
 	}
 }
 
-int ai_pathfinding_fill_numbers(int start_x, int start_y, int end_x, int end_y, int ignore_simulated)
+static int ai_pathfinding_fill_numbers(int start_x, int start_y, int end_x, int end_y, int ignore_simulated)
 {
 	int number = 0;
 	int exit = 0;
@@ -145,7 +150,7 @@ int ai_pathfinding_fill_numbers(int start_x, int start_y, int end_x, int end_y, 
 	return 0;
 }
 
-int ai_pathfinding_link_tile(int x, int y, int number)
+static int ai_pathfinding_link_tile(int x, int y, int number)
 {
 	gameplay_field_t *field = NULL;
 	

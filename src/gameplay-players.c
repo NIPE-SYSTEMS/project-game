@@ -26,6 +26,7 @@
 #include "ai-core.h"
 
 gameplay_players_player_t *gameplay_players_players = NULL;
+static void gameplay_players_remove(int position_x, int position_y);
 
 void gameplay_players_add(int position_x, int position_y, gameplay_players_type_t type)
 {
@@ -92,7 +93,7 @@ void gameplay_players_cleanup(void)
 	gameplay_players_players = NULL;
 }
 
-void gameplay_players_remove(int position_x, int position_y)
+static void gameplay_players_remove(int position_x, int position_y)
 {
 	gameplay_players_player_t *current = NULL;
 	gameplay_players_player_t *next_backup = NULL;

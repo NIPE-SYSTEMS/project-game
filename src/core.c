@@ -110,7 +110,7 @@ void core_main(void)
 					core_debug("Invoked quit event.");
 					core_state = CORE_SHUTDOWN;
 					break;
-				}
+				}void gameplay_players_remove(int position_x, int position_y);
 				case 'h':
 				{
 					core_cutscene_reset = 1;
