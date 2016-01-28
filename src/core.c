@@ -40,7 +40,7 @@ static FILE *core_file_error = NULL;
 #endif /* DEBUG */
 
 static core_state_t core_state = CORE_START_SCREEN;
-
+static char core_cutscene_reset = 0;
 /**
  * This function initializes everything. It initializes ncurses.
  */
@@ -114,6 +114,8 @@ void core_main(void)
 				case 'h':
 				{
 					graphics_win_screen();
+					core_cutscene_reset = 1;
+					core_state = CORE_WIN;
 					gameplay_cleanup();
 					break;
 				}
@@ -251,6 +253,7 @@ void core_main(void)
 				player = gameplay_players_get_user();
 				if(player->health_points == 0)
 				{
+					core_cutscene_reset = 1;
 					core_state = CORE_GAME_OVER;
 					gameplay_cleanup();
 				}
@@ -270,13 +273,15 @@ void core_main(void)
 			}
 			case CORE_WIN:
 			{
-				graphics_win_screen();
+				graphics_win_screen(core_cutscene_reset);
+				core_cutscene_reset = 0;
 				
 				break;
 			}
 			case CORE_GAME_OVER:
 			{
-				graphics_render_game_over_screen();
+				graphics_render_game_over_screen(core_cutscene_reset);
+				core_cutscene_reset = 0;
 				
 				break;
 			}
