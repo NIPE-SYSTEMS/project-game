@@ -69,6 +69,7 @@ void core_main(void)
 			switch(character)
 			{
 				// <Q> or <Esc>: Quit game loop
+				// <H>: start win screen manually
 				// <C>: Show QR code
 				// <V>: Take screenshot
 				// <P>: Pause or resume game loop updating
@@ -88,6 +89,11 @@ void core_main(void)
 				{
 					core_debug("Invoked quit event.");
 					core_state = CORE_SHUTDOWN;
+					break;
+				}
+				case 'h':
+				{
+					graphics_win_screen();
 					break;
 				}
 				case 'v':
