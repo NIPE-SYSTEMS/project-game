@@ -189,19 +189,6 @@ void graphics_render_players(void)
 	int render_y = 0;
 	int i = 0;
 	graphics_sprites_type_t player_sprite = GRAPHICS_SPRITES_TYPE_PLAYER;
-	graphics_sprites_type_t player_sprite_standing = GRAPHICS_SPRITES_TYPE_PLAYER_STANDING;
-	
-	player = gameplay_players_get_user();
-	if(player == NULL)
-	{
-		return;
-	}
-	
-	if(player->turbo_mode_activated == 1)
-	{
-		player_sprite = GRAPHICS_SPRITES_TYPE_PLAYER_TURBO_MODE;
-		player_sprite_standing = GRAPHICS_SPRITES_TYPE_PLAYER_STANDING_TURBO_MODE;
-	}
 	
 	player_amount = gameplay_players_amount();
 	for(i = 0; i < player_amount; i++)
@@ -212,63 +199,33 @@ void graphics_render_players(void)
 			continue;
 		}
 		
-		if(player->damage_cooldown > 0 && animation_blinking == 0)
+		render_x = (player->position_x * GRAPHICS_OFFSET_X) + GRAPHICS_OFFSET_X - GRAPHICS_SPRITE_WIDTH;
+		render_y = (player->position_y * GRAPHICS_OFFSET_Y) + GRAPHICS_OFFSET_Y - GRAPHICS_SPRITE_HEIGHT;
+		
+		if(player->type == GAMEPLAY_PLAYERS_TYPE_USER)
 		{
-			render_x = (player->position_x * GRAPHICS_OFFSET_X) + GRAPHICS_OFFSET_X - GRAPHICS_SPRITE_WIDTH;
-			render_y = (player->position_y * GRAPHICS_OFFSET_Y) + GRAPHICS_OFFSET_Y - GRAPHICS_SPRITE_HEIGHT;
-			
-			if(player->movement_cooldown > 1)
+			if(player->turbo_mode_activated == 1)
 			{
-				if(player->type == GAMEPLAY_PLAYERS_TYPE_USER)
-				{
-					graphics_sprites_render(render_x, render_y, player_sprite, 1);
-				}
-				else
-				{
-					graphics_sprites_render(render_x, render_y, GRAPHICS_SPRITES_ENEMY, 1);
-				}
-				
-				}
+				player_sprite = GRAPHICS_SPRITES_TYPE_PLAYER_TURBO_MODE;
+			}
 			else
 			{
-				if(player->type == GAMEPLAY_PLAYERS_TYPE_USER)
-				{
-					graphics_sprites_render(render_x, render_y, player_sprite_standing, 1);
-				}
-				else
-				{
-					graphics_sprites_render(render_x, render_y, GRAPHICS_SPRITES_ENEMY_STANDING, 1);
-				}
+				player_sprite = GRAPHICS_SPRITES_TYPE_PLAYER;
 			}
 		}
-		else if(player->damage_cooldown == 0)
+		else
 		{
-			render_x = (player->position_x * GRAPHICS_OFFSET_X) + GRAPHICS_OFFSET_X - GRAPHICS_SPRITE_WIDTH;
-			render_y = (player->position_y * GRAPHICS_OFFSET_Y) + GRAPHICS_OFFSET_Y - GRAPHICS_SPRITE_HEIGHT;
-			
-			if(player->movement_cooldown > 1)
-			{
-				if(player->type == GAMEPLAY_PLAYERS_TYPE_USER)
-				{
-					graphics_sprites_render(render_x, render_y, player_sprite, 1);
-				}
-				else
-				{
-					graphics_sprites_render(render_x, render_y, GRAPHICS_SPRITES_ENEMY, 1);
-				}
-				
-				}
-			else
-			{
-				if(player->type == GAMEPLAY_PLAYERS_TYPE_USER)
-				{
-					graphics_sprites_render(render_x, render_y, player_sprite_standing, 1);
-				}
-				else
-				{
-					graphics_sprites_render(render_x, render_y, GRAPHICS_SPRITES_ENEMY_STANDING, 1);
-				}
-			}
+			player_sprite = GRAPHICS_SPRITES_ENEMY;
+		}
+		
+		if(player->movement_cooldown > 0)
+		{
+			player_sprite += 1;
+		}
+		
+		if(player->damage_cooldown == 0 || (player->damage_cooldown > 0 && animation_blinking == 0))
+		{
+			graphics_sprites_render(render_x, render_y, player_sprite, 1);
 		}
 	}
 	
