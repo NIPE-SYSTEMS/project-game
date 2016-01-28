@@ -257,7 +257,7 @@ void core_main(void)
 			}
 			case CORE_WIN:
 			{
-				core_state = CORE_GAME_OVER;
+				graphics_win_screen();
 				
 				break;
 			}

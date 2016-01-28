@@ -155,28 +155,21 @@ void graphics_render_game_over_screen(void)
 
 void graphics_win_screen(void)
 {
-	// static int graphics_win_counter = 0;
+	static int animation_counter = 0;
 	
-	// char *current_frame = NULL;
+	if(animation_counter <= 20)
+	{
+		graphics_sprites_render(0, 0, GRAPHICS_SPRITES_TYPE_WIN_SCREEN_1 + animation_counter, 0);
+	}
+	else
+	{
+		graphics_sprites_render(0, 0, GRAPHICS_SPRITES_TYPE_WIN_SCREEN_21, 0);
+	}
 	
-	// graphics_sprites_type_t /*GRAPHICS_GAME_OVER_1*/ = current_frame; ///Not defined jet
-	
-	// current_frame += graphics_win_counter;
-	
-	// if(graphics_win_counter <= 13)
-	// {
-	// 	graphics_sprites_render(0, 0, current_frame, 0);
-	// }
-	// else
-	// {
-	// 	graphics_sprites_render(0, 0, graphics_sprites_sprites[/*GRAPHICS_GAME_OVER_14*/].data, 0); //Not defined jet
-	// }
-	
-	
-	// if(graphics_win_counter <= /*13*/) //Not defined jet
-	// {
-	// 	graphics_win_counter++;
-	// }
+	if(animation_counter <= 20)
+	{
+		animation_counter++;
+	}
 }
 
 
