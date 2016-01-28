@@ -158,7 +158,7 @@ void graphics_render_game_over_screen(char reset_screens)
 	}
 }
 
-void graphics_win_screen(char reset_screens)
+void graphics_render_win_screen(char reset_screens)
 {
 	static int animation_counter = 0;
 	

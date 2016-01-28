@@ -113,8 +113,8 @@ void core_main(void)
 				}
 				case 'h':
 				{
-					graphics_win_screen();
 					core_cutscene_reset = 1;
+					graphics_render_win_screen(core_cutscene_reset);
 					core_state = CORE_WIN;
 					gameplay_cleanup();
 					break;
@@ -273,7 +273,7 @@ void core_main(void)
 			}
 			case CORE_WIN:
 			{
-				graphics_win_screen(core_cutscene_reset);
+				graphics_render_win_screen(core_cutscene_reset);
 				core_cutscene_reset = 0;
 				
 				break;
