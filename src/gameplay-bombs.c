@@ -28,6 +28,13 @@
 
 gameplay_bombs_bomb_t *gameplay_bombs_bombs = NULL;
 
+/**
+ * This function adds a bomb to the bomb list.
+ * 
+ * @param player The player which has placed the bomb. (Owner of the bomb.)
+ * @param position_x The x coordinate of the simulated bomb.
+ * @param position_y The y coordinate of the simulated bomb.
+ */
 void gameplay_bombs_add(gameplay_players_player_t *player, int position_x, int position_y)
 {
 	gameplay_bombs_bomb_t *bomb = NULL;
@@ -43,7 +50,6 @@ void gameplay_bombs_add(gameplay_players_player_t *player, int position_x, int p
 	bomb->position_x = position_x;
 	bomb->position_y = position_y;
 	bomb->explosion_timeout = GAMEPLAY_BOMBS_EXPLOSION_TIMEOUT;
-	//bomb->fire_timeout = GAMEPLAY_BOMBS_FIRE_TIMEOUT;
 	bomb->owner = player;
 	bomb->next = NULL;
 	
@@ -60,9 +66,12 @@ void gameplay_bombs_add(gameplay_players_player_t *player, int position_x, int p
 		current->next = bomb;
 	}
 	
-	// core_debug("Added bomb %p at (%i, %i)", gameplay_bombs_bombs, position_x, position_y);
+	core_debug("Added bomb %p at (%i, %i)", gameplay_bombs_bombs, position_x, position_y);
 }
 
+/**
+ * This function cleans up all bombs in the bomb list.
+ */
 void gameplay_bombs_cleanup(void)
 {
 	gameplay_bombs_bomb_t *current = NULL;
@@ -79,6 +88,12 @@ void gameplay_bombs_cleanup(void)
 	gameplay_bombs_bombs = NULL;
 }
 
+/**
+ * This function removes a bomb from the bomb list.
+ * 
+ * @param position_x The x coordinate of the bomb.
+ * @param position_y The y coordinate of the bomb.
+ */
 void gameplay_bombs_remove(int position_x, int position_y)
 {
 	gameplay_bombs_bomb_t *current = NULL;
@@ -97,8 +112,6 @@ void gameplay_bombs_remove(int position_x, int position_y)
 	{
 		return;
 	}
-	
-	// core_debug("Remove bomb at (%i, %i)", position_x, position_y);
 	
 	// give the player the ability to place another bomb
 	current->owner->placed_bombs--;
@@ -125,6 +138,12 @@ void gameplay_bombs_remove(int position_x, int position_y)
 	}
 }
 
+/**
+ * This function handles the explosion of a bomb on the field.
+ * 
+ * @param position_x The x coordinate of the bomb.
+ * @param position_y The y coordinate of the bomb.
+ */
 static void gameplay_bombs_explosion(int position_x, int position_y)
 {
 	int x = 0;
@@ -211,9 +230,14 @@ static void gameplay_bombs_explosion(int position_x, int position_y)
 	}
 }
 
+/**
+ * This function updates a bomb. (Timing, etc.)
+ * 
+ * @param bomb The bomb which should be updated.
+ */
 static void gameplay_bombs_bomb_update(gameplay_bombs_bomb_t *bomb)
 {
-	if(bomb->explosion_timeout == 0 )	//&& bomb->fire_timeout == 0)
+	if(bomb->explosion_timeout == 0 )
 	{
 		gameplay_bombs_explosion(bomb->position_x, bomb->position_y);
 		gameplay_bombs_remove(bomb->position_x, bomb->position_y);
@@ -224,21 +248,13 @@ static void gameplay_bombs_bomb_update(gameplay_bombs_bomb_t *bomb)
 	{
 		bomb->explosion_timeout--;
 	}
-	/*
-	if(bomb->explosion_timeout == 0 && bomb->fire_timeout == GAMEPLAY_BOMBS_FIRE_TIMEOUT)
-	{
-		gameplay_bombs_explosion(bomb->position_x, bomb->position_y);
-	}
-	
-	if(bomb->explosion_timeout == 0 && bomb->fire_timeout > 0)
-	{
-		bomb->fire_timeout--;
-	}
-	*/
 	
 	ai_simulation_explosion(bomb->position_x, bomb->position_y, bomb->owner->explosion_radius, 0);
 }
 
+/**
+ * This function updates a bomb. (Timing, etc.)
+ */
 void gameplay_bombs_update(void)
 {
 	gameplay_bombs_bomb_t *current = NULL;
@@ -248,8 +264,6 @@ void gameplay_bombs_update(void)
 	
 	for(current = gameplay_bombs_bombs; current != NULL; current = next_backup)
 	{
-		// core_debug("Found bomb: %p at (%i, %i)", current, current->position_x, current->position_y);
-		
 		next_backup = current->next;
 		gameplay_bombs_bomb_update(current);
 	}
@@ -257,6 +271,11 @@ void gameplay_bombs_update(void)
 	ai_simulation_copy_fire();
 }
 
+/**
+ * This function returns the amount of bombs in the bomb list.
+ * 
+ * @return The amount of bombs.
+ */
 int gameplay_bombs_amount(void)
 {
 	gameplay_bombs_bomb_t *current = NULL;
@@ -270,6 +289,12 @@ int gameplay_bombs_amount(void)
 	return amount;
 }
 
+/**
+ * This function returns the bomb with the given index.
+ * 
+ * @param index The index of the bomb.
+ * @return The selected bomb.
+ */
 gameplay_bombs_bomb_t *gameplay_bombs_get(int index)
 {
 	gameplay_bombs_bomb_t *current = NULL;
@@ -288,6 +313,13 @@ gameplay_bombs_bomb_t *gameplay_bombs_get(int index)
 	return NULL;
 }
 
+/**
+ * This function returns if a bomb is placed at the given position.
+ * 
+ * @param position_x The x coordinate of the tile.
+ * @param position_y The y coordinate of the tile.
+ * @return 1 if a bomb is placed, 0 if not.
+ */
 int gameplay_bombs_get_bomb_placed(int position_x, int position_y)
 {
 	gameplay_bombs_bomb_t *current = NULL;
@@ -303,6 +335,13 @@ int gameplay_bombs_get_bomb_placed(int position_x, int position_y)
 	return 0;
 }
 
+/**
+ * This function returns the bomb at the given position.
+ * 
+ * @param position_x The x coordinate of the tile.
+ * @param position_y The y coordinate of the tile.
+ * @return The bomb on the tile or NULL if no bomb is on the tile.
+ */
 gameplay_bombs_bomb_t *gameplay_bombs_get_bomb(int position_x, int position_y)
 {
 	gameplay_bombs_bomb_t *current = NULL;
@@ -317,95 +356,16 @@ gameplay_bombs_bomb_t *gameplay_bombs_get_bomb(int position_x, int position_y)
 	
 	return NULL;
 }
-/*
-int gameplay_bombs_get_fire(int position_x, int position_y)
-{
-	gameplay_bombs_bomb_t *bomb = NULL;
-	int x = 0;
-	int y = 0;
-	
-	for(x = position_x; x < GAMEPLAY_FIELD_WIDTH; x++)
-	{
-		if(!gameplay_get_walkable(x, position_y))
-		{
-			break;
-		}
-		
-		bomb = gameplay_bombs_get_bomb(x, position_y);
-		if(bomb == NULL)
-		{
-			continue;
-		}
-		
-		if(bomb->explosion_timeout == 0 && bomb->fire_timeout > 0)
-		{
-			return 1;
-		}
-	}
-	
-	for(x = position_x; x > 0; x--)
-	{
-		if(!gameplay_get_walkable(x, position_y))
-		{
-			break;
-		}
-		
-		bomb = gameplay_bombs_get_bomb(x, position_y);
-		if(bomb == NULL)
-		{
-			continue;
-		}
-		
-		if(bomb->explosion_timeout == 0 && bomb->fire_timeout > 0)
-		{
-			return 1;
-		}
-	}
-	
-	for(y = position_y; y < GAMEPLAY_FIELD_HEIGHT; y++)
-	{
-		if(!gameplay_get_walkable(position_x, y))
-		{
-			break;
-		}
-		
-		bomb = gameplay_bombs_get_bomb(position_x, y);
-		if(bomb == NULL)
-		{
-			continue;
-		}
-		
-		if(bomb->explosion_timeout == 0 && bomb->fire_timeout > 0)
-		{
-			return 1;
-		}
-	}
-	
-	for(y = position_y; y > 0; y--)
-	{
-		if(!gameplay_get_walkable(position_x, y))
-		{
-			break;
-		}
-		
-		bomb = gameplay_bombs_get_bomb(position_x, y);
-		if(bomb == NULL)
-		{
-			continue;
-		}
-		
-		if(bomb->explosion_timeout == 0 && bomb->fire_timeout > 0)
-		{
-			return 1;
-		}
-	}
-	
-	return 0;
-}*/
 
+/**
+ * This function triggers an explosion if a bomb is placed on the given tile.
+ * 
+ * @param position_x The x coordinate of the tile.
+ * @param position_y The y coordinate of the tile.
+ */
 void gameplay_bombs_trigger_explosion(int position_x, int position_y)
 {
-	if(gameplay_bombs_get_bomb_placed(position_x, position_y) ==1)
+	if(gameplay_bombs_get_bomb_placed(position_x, position_y) == 1)
 	{
 		gameplay_bombs_bomb_t *bomb = gameplay_bombs_get_bomb(position_x, position_y);
 		bomb->explosion_timeout = 0;

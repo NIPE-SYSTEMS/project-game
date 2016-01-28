@@ -29,7 +29,7 @@ typedef enum gameplay_items_item_type_e
 	EXTRA_BOMB = 8,
 	FIRE = 9,
 	SPEED = 11,
-	SHIELD = 13,
+	SHIELD = 13
 } gameplay_items_item_type_t;
 
 typedef struct gameplay_items_item_s

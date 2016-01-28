@@ -117,6 +117,9 @@ void gameplay_init(void)
 	gameplay_turbo.o = 0;
 }
 
+/**
+ * This function cleans up all of the submodules.
+ */
 void gameplay_cleanup(void)
 {
 	gameplay_players_cleanup();
@@ -124,6 +127,15 @@ void gameplay_cleanup(void)
 	gameplay_items_cleanup();
 }
 
+/**
+ * This function tests if a tile is walkable. It can interpret bombs as walls.
+ * 
+ * @param position_x The x coordinate of the tile.
+ * @param position_y The y coordinate of the tile.
+ * @param bomb_is_walkable 1 means that bombs are interpreted as floor tiles, 0
+ *                         means that bombs are interpreted as wall tiles.
+ * @return 0 if the tile is not walkable, 1 if it is walkable.
+ */
 int gameplay_get_walkable(int position_x, int position_y, char bomb_is_walkable)
 {
 	if(bomb_is_walkable == 1)
@@ -136,17 +148,12 @@ int gameplay_get_walkable(int position_x, int position_y, char bomb_is_walkable)
 	}
 }
 
-/* also removes the item from the tile
-gameplay_items_item_t gameplay_get_item(int position_x, int position_y)
-	{
-		gameplay_items_item_t item = EMPTY;
-	
-	item = GAMEPLAY_FIELD(gameplay_field, position_x, position_y).item;
-	GAMEPLAY_FIELD(gameplay_field, position_x, position_y).item = EMPTY;
-	
-	return item;
-}*/
-
+/**
+ * This function destroys a wall and potentially drops an item (random drops).
+ * 
+ * @param position_x The x coordinate of the tile.
+ * @param position_y The y coordinate of the tile.
+ */
 void gameplay_destroy(int position_x, int position_y)
 {
 	random_drop_t drop_list[] =
@@ -154,7 +161,7 @@ void gameplay_destroy(int position_x, int position_y)
 		{ EMPTY, 0.4 },
 		{ HEALTH, 0.1 },
 		{ EXTRA_BOMB, 0.2 },
-		{FIRE, 0.2},
+		{ FIRE, 0.2 },
 		{ SPEED, 0.2 },
 		{ SHIELD, 0.1 }
 	};
@@ -173,12 +180,13 @@ void gameplay_destroy(int position_x, int position_y)
 }
 
 /**
- * This function saves the pressed buttons into the gameplay_keys struct for 
- * one main loop.
+ * This function interprets all keyboard events.
+ * 
+ * @param key The keycode as ASCII character.
  */
-void gameplay_key(char gameplay_pressed_key)
+void gameplay_key(char key)
 {
-	switch(gameplay_pressed_key)
+	switch(key)
 	{
 		case 'w':
 		{
@@ -251,7 +259,10 @@ void gameplay_key(char gameplay_pressed_key)
 	}
 }
 
-void gameplay_reset_fire(void)
+/**
+ * This function updates all fire on the field. (Timing, etc.)
+ */
+void gameplay_fire_update(void)
 {
 	int x = 0;
 	int y = 0;
@@ -274,22 +285,33 @@ void gameplay_reset_fire(void)
 }
 
 /**
- * This function changes roundly changed values like item timers.
+ * This function updates all modules at every frame. It is called periodically.
  */
 void gameplay_update(void)
 {
-	gameplay_reset_fire();
+	gameplay_fire_update();
 	gameplay_players_update();
 	gameplay_bombs_update();
 	gameplay_players_ai_update();
 	gameplay_items_item_update();
 }
 
+/**
+ * This function returns the complete field.
+ * 
+ * @return The complete field.
+ */
 gameplay_field_t *gameplay_get_field(void)
 {
 	return gameplay_field;
 }
 
+/**
+ * This function sets fire to a given position.
+ * 
+ * @param position_x The x coordinate of the tile.
+ * @param position_y The y coordinate of the tile.
+ */
 void gameplay_set_fire(int position_x, int position_y)
 {
 	if(GAMEPLAY_FIELD(gameplay_field, position_x, position_y).type != FLOOR)
@@ -301,6 +323,13 @@ void gameplay_set_fire(int position_x, int position_y)
 	GAMEPLAY_FIELD(gameplay_field, position_x, position_y).fire_despawn_timer = GAMEPLAY_FIRE_DESPAWN;
 }
 
+/**
+ * This function returns if a fire at a given position.
+ * 
+ * @param position_x The x coordinate of the tile.
+ * @param position_y The y coordinate of the tile.
+ * @return 1 if fire is on the tile, 0 if not.
+ */
 int gameplay_get_fire(int position_x, int position_y)
 {
 	if(GAMEPLAY_FIELD(gameplay_field, position_x, position_y).fire == 1)

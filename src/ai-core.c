@@ -26,6 +26,13 @@
 #include "gameplay.h"
 #include "core.h"
 
+/**
+ * This function updates the player actions. This is only processed for AI
+ * players. It generates a job list and chooses a job by AI criteria. As final
+ * step it moves the player to execute the choosed job.
+ * 
+ * @param player The player to process.
+ */
 void ai_core_update(gameplay_players_player_t *player)
 {
 	int x = 0;
@@ -167,6 +174,11 @@ void ai_core_update(gameplay_players_player_t *player)
 	}
 }
 
+/**
+ * This function cleans the job list of a player.
+ * 
+ * @param player The player to be cleaned.
+ */
 void ai_core_cleanup(gameplay_players_player_t *player)
 {
 	if(player->type != GAMEPLAY_PLAYERS_TYPE_AI)

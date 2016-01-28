@@ -105,6 +105,9 @@ static graphics_sprites_sprite_t graphics_sprites_sprites[] =
 	{ GRAPHICS_SPRITES_TYPE_GAME_OVER_SCREEN_14, "assets/game_over_screen_14.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE }
 };
 
+/**
+ * This function initializes the colors.
+ */
 void graphics_sprites_init_colors(void)
 {
 	core_debug("Initializing colors...");
@@ -120,6 +123,14 @@ void graphics_sprites_init_colors(void)
 	init_pair(GRAPHICS_SPRITES_COLOR_WHITE_FILLED, COLOR_WHITE, COLOR_WHITE);
 }
 
+/**
+ * This function reads a sprite file of a given size and returns the data.
+ * 
+ * @param path The path of the sprite file.
+ * @param width The width of the sprite.
+ * @param height The height of the sprite.
+ * @return The read data.
+ */
 char *graphics_sprites_read(char *path, int width, int height)
 {
 	char *data = NULL;
@@ -168,6 +179,9 @@ char *graphics_sprites_read(char *path, int width, int height)
 	return data;
 }
 
+/**
+ * This function initializes all sprites.
+ */
 void graphics_sprites_init(void)
 {
 	int i = 0;
@@ -182,6 +196,9 @@ void graphics_sprites_init(void)
 	}
 }
 
+/**
+ * This function cleans up all sprites.
+ */
 void graphics_sprites_cleanup(void)
 {
 	int i = 0;
@@ -192,6 +209,12 @@ void graphics_sprites_cleanup(void)
 	}
 }
 
+/**
+ * This function returns the sprite of a given type.
+ * 
+ * @param type The type of the sprite.
+ * @return The sprite informations.
+ */
 graphics_sprites_sprite_t *graphics_sprites_get(graphics_sprites_type_t type)
 {
 	int i = 0;
@@ -207,6 +230,17 @@ graphics_sprites_sprite_t *graphics_sprites_get(graphics_sprites_type_t type)
 	return NULL;
 }
 
+/**
+ * This function renders a sprite of a given type at a given position. It is
+ * possible to render sprites with transparency.
+ * 
+ * @param render_x The x coordinate of the position on the screen.
+ * @param render_y The y coordinate of the position on the screen.
+ * @param type The type of the sprite.
+ * @param transparency 0 means no transparency, 1 means transparency where ' '
+ *                     are transparent, 2 means transparency where '#' are
+ *                     transparent.
+ */
 void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t type, char transparency)
 {
 	int x = 0;
@@ -258,6 +292,15 @@ void graphics_sprites_render(int render_x, int render_y, graphics_sprites_type_t
 	attroff(COLOR_PAIR(render_color));
 }
 
+/**
+ * This function renders a colored (white) box at a given position with a given
+ * size.
+ * 
+ * @param render_x The x coordinate of the position on the screen.
+ * @param render_y The y coordinate of the position on the screen.
+ * @param width The width of the box.
+ * @param height The height of the box.
+ */
 void graphics_sprites_render_box(int render_x, int render_y, int width, int height)
 {
 	int x = 0;
@@ -276,6 +319,10 @@ void graphics_sprites_render_box(int render_x, int render_y, int width, int heig
 	attroff(COLOR_PAIR(GRAPHICS_SPRITES_COLOR_WHITE_FILLED));
 }
 
+/**
+ * This function takes a screenshot and saves it to a text file. The filename
+ * includes the current date.
+ */
 void graphics_sprites_screenshot(void)
 {
 	char path[80];

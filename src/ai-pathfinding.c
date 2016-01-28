@@ -1,4 +1,3 @@
-#include <stdio.h>
 /*
  * Copyright (C) 2015 NIPE-SYSTEMS
  * Copyright (C) 2015 Jonas Krug
@@ -18,12 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "ai-pathfinding.h"
 #include "gameplay.h"
 #include "core.h"
 
+/**
+ * This function resets all pathfinding properties of all tiles in the field.
+ */
 void ai_pathfinding_reset(void)
 {
 	int x = 0;
@@ -49,6 +52,20 @@ void ai_pathfinding_reset(void)
 	}
 }
 
+/**
+ * This function tries to expand numbers to neighbor tiles. It respects if it
+ * should expand numbers to blocked tiles from the simulation.
+ * 
+ * @param x The x coordinate of a tile.
+ * @param y The y coordinate of a tile.
+ * @param number The number which should be set to obtainable tiles.
+ * @param ignore_simulated A setting to set which tiles should be ignored by
+ *                         the function. 0 means that all simulated tiles are
+ *                         interpreted as unobtainable tiles. 1 means that
+ *                         normal simulated tiles are ignored (are obtainable).
+ *                         2 means that all simulated tiles are ignored (are
+ *                         obtainable).
+ */
 void ai_pathfinding_expand_numbers(int x, int y, int number, int ignore_simulated)
 {
 	gameplay_field_t *field = NULL;
@@ -59,8 +76,6 @@ void ai_pathfinding_expand_numbers(int x, int y, int number, int ignore_simulate
 	{
 		return;
 	}
-	
-	// core_debug("Pathfinding: Expanding at (%i, %i): %i", x, y, number);
 	
 	// try north
 	if(y > 0 && GAMEPLAY_FIELD(field, x, y - 1).ai_pathfinding_number == -1 && gameplay_get_walkable(x, y - 1, 0) == 1 && (ignore_simulated > 1 || (ignore_simulated < 2 && GAMEPLAY_FIELD(field, x, y - 1).ai_simulation_walkable == 1)) && (ignore_simulated > 0 || (ignore_simulated == 0 && GAMEPLAY_FIELD(field, x, y - 1).ai_simulation_walkable_simulated == 1)))
@@ -87,6 +102,23 @@ void ai_pathfinding_expand_numbers(int x, int y, int number, int ignore_simulate
 	}
 }
 
+/**
+ * This function fills the field with pathfinding numbers for the wavefront/
+ * floodfill algorithm. It fills the numbers from a given start position to
+ * a given target/end position.
+ * 
+ * @param start_x The x coordinate of the start position.
+ * @param start_y The y coordinate of the start position.
+ * @param end_x The x coordinate of the end position.
+ * @param end_y The y coordinate of the end position.
+ * @param ignore_simulated A setting to set which tiles should be ignored by
+ *                         the function. 0 means that all simulated tiles are
+ *                         interpreted as unobtainable tiles. 1 means that
+ *                         normal simulated tiles are ignored (are obtainable).
+ *                         2 means that all simulated tiles are ignored (are
+ *                         obtainable).
+ * @return 0 on succes, -1 on error.
+ */
 int ai_pathfinding_fill_numbers(int start_x, int start_y, int end_x, int end_y, int ignore_simulated)
 {
 	int number = 0;
@@ -145,6 +177,16 @@ int ai_pathfinding_fill_numbers(int start_x, int start_y, int end_x, int end_y, 
 	return 0;
 }
 
+/**
+ * This function links all tiles and produces the shortest way through the
+ * field by backtracking the flooded numbers. This function works with
+ * recursion.
+ * 
+ * @param x The x coordinate of the processed tile.
+ * @param y The y coordinate of the processed tile.
+ * @param number The number which should be searched.
+ * @return The length of the calculated subpath.
+ */
 int ai_pathfinding_link_tile(int x, int y, int number)
 {
 	gameplay_field_t *field = NULL;
@@ -155,8 +197,6 @@ int ai_pathfinding_link_tile(int x, int y, int number)
 	{
 		return -1;
 	}
-	
-	// core_debug("Pathfinding: Number %i", number);
 	
 	if(number == -1)
 	{
@@ -191,18 +231,22 @@ int ai_pathfinding_link_tile(int x, int y, int number)
 	return 0;
 }
 
-// void ai_pathfinding_print(int start_x, int start_y)
-// {
-// 	ai_field_t *current = &field[start_x][start_y];
-	
-// 	while(current != NULL)
-// 	{
-// 		printf("%i, %i\n", current->ai_position_x, current->ai_position_y);
-		
-// 		current = current->ai_pathfinding_next;
-// 	}
-// }
-
+/**
+ * This function floods all numbers and backtracks the shortest way. It returns
+ * the length of the shortest way.
+ * 
+ * @param start_x The x coordinate of the start position.
+ * @param start_y The y coordinate of the start position.
+ * @param end_x The x coordinate of the end position.
+ * @param end_y The y coordinate of the end position.
+ * @param ignore_simulated A setting to set which tiles should be ignored by
+ *                         the function. 0 means that all simulated tiles are
+ *                         interpreted as unobtainable tiles. 1 means that
+ *                         normal simulated tiles are ignored (are obtainable).
+ *                         2 means that all simulated tiles are ignored (are
+ *                         obtainable).
+ * @return The length of the calculated path.
+ */
 int ai_pathfinding_move_to(int start_x, int start_y, int end_x, int end_y, int ignore_simulated)
 {
 	gameplay_field_t *field = NULL;
@@ -230,11 +274,43 @@ int ai_pathfinding_move_to(int start_x, int start_y, int end_x, int end_y, int i
 	return ai_pathfinding_link_tile(end_x, end_y, GAMEPLAY_FIELD(field, end_x, end_y).ai_pathfinding_number - 1);
 }
 
+/**
+ * This function calculates the length of a path through the field.
+ * 
+ * @param start_x The x coordinate of the start position.
+ * @param start_y The y coordinate of the start position.
+ * @param end_x The x coordinate of the end position.
+ * @param end_y The y coordinate of the end position.
+ * @param ignore_simulated A setting to set which tiles should be ignored by
+ *                         the function. 0 means that all simulated tiles are
+ *                         interpreted as unobtainable tiles. 1 means that
+ *                         normal simulated tiles are ignored (are obtainable).
+ *                         2 means that all simulated tiles are ignored (are
+ *                         obtainable).
+ * @return The length of the calculated path.
+ */
 int ai_pathfinding_move_to_length(int start_x, int start_y, int end_x, int end_y, int ignore_simulated)
 {
 	return ai_pathfinding_move_to(start_x, start_y, end_x, end_y, ignore_simulated);
 }
 
+/**
+ * This function calculates the next element of a path.
+ * 
+ * @param start_x The x coordinate of the start position.
+ * @param start_y The y coordinate of the start position.
+ * @param end_x The x coordinate of the end position.
+ * @param end_y The y coordinate of the end position.
+ * @param next_x The x coordinate of the next position (write by pointer).
+ * @param next_y The y coordinate of the next position (write by pointer).
+ * @param ignore_simulated A setting to set which tiles should be ignored by
+ *                         the function. 0 means that all simulated tiles are
+ *                         interpreted as unobtainable tiles. 1 means that
+ *                         normal simulated tiles are ignored (are obtainable).
+ *                         2 means that all simulated tiles are ignored (are
+ *                         obtainable).
+ * @return The length of the calculated path.
+ */
 int ai_pathfinding_move_to_next(int start_x, int start_y, int end_x, int end_y, int *next_x, int *next_y, int ignore_simulated)
 {
 	int return_length = 0;

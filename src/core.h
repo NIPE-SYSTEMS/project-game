@@ -46,8 +46,8 @@ void core_cleanup(void);
 void core_debug(char *fmt, ...);
 void core_error(char *fmt, ...);
 #else
-#define core_debug(...) (void)0
-#define core_error(...) (void)0
+#define core_debug(...) ((void)0)
+#define core_error(...) ((void)0)
 #endif /* DEBUG */
 
 #endif /* __CORE_H__ */

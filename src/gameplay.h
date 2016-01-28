@@ -65,6 +65,7 @@ int gameplay_get_walkable(int position_x, int position_y, char bomb_is_walkable)
 //gameplay_items_item_t gameplay_get_item(int position_x, int position_y);
 void gameplay_destroy(int position_x, int position_y);
 void gameplay_key(char gameplay_pressed_key);
+void gameplay_fire_update(void);
 void gameplay_update(void);
 void gameplay_explosion(int x, int y);
 gameplay_field_t *gameplay_get_field(void);

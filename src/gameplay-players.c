@@ -27,6 +27,14 @@
 
 gameplay_players_player_t *gameplay_players_players = NULL;
 
+/**
+ * This function adds a player to the player list.
+ * 
+ * @param position_x The x coordinate of the simulated player.
+ * @param position_y The y coordinate of the simulated player.
+ * @param type The type of the player which can be a user player or an AI
+ *             player.
+ */
 void gameplay_players_add(int position_x, int position_y, gameplay_players_type_t type)
 {
 	gameplay_players_player_t *player = NULL;
@@ -38,7 +46,6 @@ void gameplay_players_add(int position_x, int position_y, gameplay_players_type_
 		return;
 	}
 	
-	player->health_points = 3;
 	player->movement_cooldown = 0;
 	player->movement_cooldown_initial = GAMEPLAY_PLAYERS_MOVEMENT_COOLDOWN;
 	player->position_x = position_x;
@@ -51,10 +58,12 @@ void gameplay_players_add(int position_x, int position_y, gameplay_players_type_
 	
 	if(type == GAMEPLAY_PLAYERS_TYPE_USER)
 	{
+		player->health_points = GAMEPLAY_PLAYERS_HEALTH_POINTS_USER;
 		player->damage_cooldown = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_START_USER;
 	}
 	else
 	{
+		player->health_points = GAMEPLAY_PLAYERS_HEALTH_POINTS_AI;
 		player->damage_cooldown = GAMEPLAY_PLAYERS_DAMAGE_COOLDOWN_START_AI;
 	}
 	
@@ -75,6 +84,9 @@ void gameplay_players_add(int position_x, int position_y, gameplay_players_type_
 	core_debug("Added player %p at (%i, %i)", gameplay_players_players, position_x, position_y);
 }
 
+/**
+ * This function cleans up all players in the player list.
+ */
 void gameplay_players_cleanup(void)
 {
 	gameplay_players_player_t *current = NULL;
@@ -92,6 +104,12 @@ void gameplay_players_cleanup(void)
 	gameplay_players_players = NULL;
 }
 
+/**
+ * This function removes a player from the player list.
+ * 
+ * @param position_x The x coordinate of the player.
+ * @param position_y The y coordinate of the player.
+ */
 void gameplay_players_remove(int position_x, int position_y)
 {
 	gameplay_players_player_t *current = NULL;
@@ -133,6 +151,11 @@ void gameplay_players_remove(int position_x, int position_y)
 	}
 }
 
+/**
+ * This function updates a player. (Timing, cooldowns, etc.)
+ * 
+ * @param player The player which should be updated.
+ */
 static void gameplay_players_player_update(gameplay_players_player_t *player)
 {
 	if(player->movement_cooldown > 0)
@@ -156,6 +179,9 @@ static void gameplay_players_player_update(gameplay_players_player_t *player)
 	}
 }
 
+/**
+ * This function updates a player. (Timing, cooldowns, etc.)
+ */
 void gameplay_players_update(void)
 {
 	gameplay_players_player_t *current = NULL;
@@ -166,6 +192,12 @@ void gameplay_players_update(void)
 	}
 }
 
+/**
+ * This function searches the user player and returns it.
+ * 
+ * @return The user player or NULL if no user player was found in the player
+ *         list.
+ */
 gameplay_players_player_t *gameplay_players_get_user(void)
 {
 	gameplay_players_player_t *current = NULL;
@@ -181,6 +213,12 @@ gameplay_players_player_t *gameplay_players_get_user(void)
 	return NULL;
 }
 
+/**
+ * This function tries to move the user player to a given direction. It respects
+ * walking limitations (walls, bombs, etc.).
+ * 
+ * @param direction The direction in which the user player should move.
+ */
 void gameplay_players_move(gameplay_players_direction_t direction)
 {
 	gameplay_players_player_t *player = NULL;
@@ -248,6 +286,11 @@ void gameplay_players_move(gameplay_players_direction_t direction)
 	player->movement_cooldown = player->movement_cooldown_initial;
 }
 
+/**
+ * This function returns the amount of players in the player list.
+ * 
+ * @return The amount of players.
+ */
 int gameplay_players_amount(void)
 {
 	gameplay_players_player_t *current = NULL;
@@ -261,6 +304,12 @@ int gameplay_players_amount(void)
 	return amount;
 }
 
+/**
+ * This function returns the player with the given index.
+ * 
+ * @param index The index of the player.
+ * @return The selected player.
+ */
 gameplay_players_player_t *gameplay_players_get(int index)
 {
 	gameplay_players_player_t *current = NULL;
@@ -279,6 +328,13 @@ gameplay_players_player_t *gameplay_players_get(int index)
 	return NULL;
 }
 
+/**
+ * This function returns if a player is placed at the given position.
+ * 
+ * @param position_x The x coordinate of the tile.
+ * @param position_y The y coordinate of the tile.
+ * @return 1 if a player is placed, 0 if not.
+ */
 int gameplay_player_get_player(int position_x, int position_y)
 {
 	gameplay_players_player_t *current = NULL;
@@ -294,7 +350,12 @@ int gameplay_player_get_player(int position_x, int position_y)
 	return 0;
 }
 
-// NULL targets user player
+/**
+ * This function tries to place a bomb at the current position of the given
+ * player. If the player is NULL the user player is selected.
+ * 
+ * @param player The player which should place a bomb.
+ */
 void gameplay_players_place_bomb(gameplay_players_player_t *player)
 {
 	if(player == NULL)
@@ -327,6 +388,9 @@ void gameplay_players_place_bomb(gameplay_players_player_t *player)
 	player->placed_bombs++;
 }
 
+/**
+ * This function picks up an item on the current tile of the user player.
+ */
 void gameplay_players_use_item(void)
 {
 	gameplay_players_player_t *player = NULL;
@@ -395,6 +459,12 @@ void gameplay_players_use_item(void)
 	}
 }
 
+/**
+ * This function harms any players at the given position.
+ * 
+ * @param position_x The x coordinate of the tile.
+ * @param position_y The y coordinate of the tile.
+ */
 void gameplay_players_harm(int position_x, int position_y)
 {
 	gameplay_players_player_t *current = NULL;
@@ -420,6 +490,9 @@ void gameplay_players_harm(int position_x, int position_y)
 	}
 }
 
+/**
+ * This function updates the AI of all AI players.
+ */
 void gameplay_players_ai_update(void)
 {
 	gameplay_players_player_t *current = NULL;
@@ -430,6 +503,9 @@ void gameplay_players_ai_update(void)
 	}
 }
 
+/**
+ * This function activates the TURBO-MODE of the user player.
+ */
 void gameplay_player_activate_turbo_mode(void)
 {
 	gameplay_players_player_t *player = NULL;
