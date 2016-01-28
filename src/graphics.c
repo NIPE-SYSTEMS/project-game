@@ -134,9 +134,14 @@ int graphics_render_start_screen(void)
 	return 1;
 }
 
-void graphics_render_game_over_screen(void)
+void graphics_render_game_over_screen(char reset_screens)
 {
 	static int animation_counter = 0;
+	
+	if (reset_screens == 1)
+	{
+		animation_counter = 0;
+	}
 	
 	if(animation_counter <= 13)
 	{
@@ -153,9 +158,14 @@ void graphics_render_game_over_screen(void)
 	}
 }
 
-void graphics_win_screen(void)
+void graphics_win_screen(char reset_screens)
 {
 	static int animation_counter = 0;
+	
+	if (reset_screens == 1)
+	{
+		animation_counter = 0;
+	}
 	
 	if(animation_counter <= 20)
 	{
