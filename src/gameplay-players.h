@@ -74,6 +74,7 @@ void gameplay_players_update(void);
 gameplay_players_player_t *gameplay_players_get_user(void);
 void gameplay_players_move(gameplay_players_direction_t direction);
 int gameplay_players_amount(void);
+int gameplay_players_ai_amount(void);
 gameplay_players_player_t *gameplay_players_get(int index);
 int gameplay_player_get_player(int position_x, int position_y);
 void gameplay_players_place_bomb(gameplay_players_player_t *player);

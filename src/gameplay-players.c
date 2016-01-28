@@ -261,6 +261,22 @@ int gameplay_players_amount(void)
 	return amount;
 }
 
+int gameplay_players_ai_amount(void)
+{
+	gameplay_players_player_t *current = NULL;
+	int amount = 0;
+	
+	for(current = gameplay_players_players; current != NULL; current = current->next)
+	{
+		if(current->type == GAMEPLAY_PLAYERS_TYPE_AI)
+		{
+			amount++;
+		}
+	}
+	
+	return amount;
+}
+
 gameplay_players_player_t *gameplay_players_get(int index)
 {
 	gameplay_players_player_t *current = NULL;

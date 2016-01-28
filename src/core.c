@@ -27,6 +27,7 @@
 #include "random-drop.h"
 #include "graphics.h"
 #include "gameplay.h"
+#include "gameplay-players.h"
 #include "graphics-sprites.h"
 #include "ai-core.h"
 
@@ -113,6 +114,7 @@ void core_main(void)
 				case 'h':
 				{
 					graphics_win_screen();
+					gameplay_cleanup();
 					break;
 				}
 				case 'v':
@@ -250,6 +252,11 @@ void core_main(void)
 				if(player->health_points == 0)
 				{
 					core_state = CORE_GAME_OVER;
+					gameplay_cleanup();
+				}
+				if(gameplay_players_ai_amount() == 0)
+				{
+					core_state = CORE_WIN;
 					gameplay_cleanup();
 				}
 				
