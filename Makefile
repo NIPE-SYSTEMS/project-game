@@ -1,4 +1,6 @@
 # Copyright (C) 2015 NIPE-SYSTEMS
+# Copyright (C) 2015 Jonas Krug
+# Copyright (C) 2015 Tim Gevers
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

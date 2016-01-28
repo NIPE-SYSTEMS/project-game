@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2015 NIPE-SYSTEMS
+ * Copyright (C) 2015 Jonas Krug
+ * Copyright (C) 2015 Tim Gevers
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
@@ -69,6 +88,28 @@ static graphics_sprites_sprite_t graphics_sprites_sprites[] =
 	{ GRAPHICS_SPRITES_TYPE_START_SCREEN_29, "assets/start_screen_29.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
 	{ GRAPHICS_SPRITES_TYPE_START_SCREEN_30, "assets/start_screen_30.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
 	{ GRAPHICS_SPRITES_TYPE_START_SCREEN_31, "assets/start_screen_31.sprite", 103, 26, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_1, "assets/win_screen_1.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_2, "assets/win_screen_2.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_3, "assets/win_screen_3.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_4, "assets/win_screen_4.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_5, "assets/win_screen_5.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_6, "assets/win_screen_6.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_7, "assets/win_screen_7.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_8, "assets/win_screen_8.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_9, "assets/win_screen_9.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_10, "assets/win_screen_10.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_11, "assets/win_screen_11.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_12, "assets/win_screen_12.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_13, "assets/win_screen_13.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_14, "assets/win_screen_14.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_15, "assets/win_screen_15.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_16, "assets/win_screen_16.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_17, "assets/win_screen_17.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_18, "assets/win_screen_18.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_19, "assets/win_screen_19.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_20, "assets/win_screen_20.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
+	{ GRAPHICS_SPRITES_TYPE_WIN_SCREEN_21, "assets/win_screen_21.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
 	
 	{ GRAPHICS_SPRITES_TYPE_GAME_OVER_SCREEN_1, "assets/game_over_screen_1.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },
 	{ GRAPHICS_SPRITES_TYPE_GAME_OVER_SCREEN_2, "assets/game_over_screen_2.sprite", 69, 35, NULL, GRAPHICS_SPRITES_COLOR_WHITE },

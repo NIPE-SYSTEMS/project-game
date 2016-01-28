@@ -41,3 +41,17 @@ If `ncurses` is installed, change (`cd`) to the root directory of the project an
 $ make
 $ bin/turbo-bomber
 ```
+
+## Need help?
+
+Contact the developers if you have questions: [dev.nipe.systems@gmail.com](mailto:dev.nipe.systems@gmail.com)
+
+## Found a bug?
+
+Write an issue: [https://github.com/NIPE-SYSTEMS/node-vgcanvas/issues](https://github.com/NIPE-SYSTEMS/node-vgcanvas/issues)
+
+## License
+
+lastest GPL-license (see `LICENSE`-file)
+
+Copyright (C) 2015 NIPE-SYSTEMS ([http://nipe-systems.de](http://nipe-systems.de)), Jonas Krug, Tim Gevers

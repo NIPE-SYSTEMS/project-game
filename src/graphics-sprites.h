@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2015 NIPE-SYSTEMS
+ * Copyright (C) 2015 Jonas Krug
+ * Copyright (C) 2015 Tim Gevers
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef __GRAPHICS_SPRITES_H__
 #define __GRAPHICS_SPRITES_H__
 
@@ -72,6 +91,28 @@ typedef enum graphics_sprites_type_e
 	GRAPHICS_SPRITES_TYPE_START_SCREEN_29,
 	GRAPHICS_SPRITES_TYPE_START_SCREEN_30,
 	GRAPHICS_SPRITES_TYPE_START_SCREEN_31,
+	
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_1,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_2,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_3,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_4,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_5,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_6,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_7,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_8,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_9,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_10,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_11,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_12,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_13,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_14,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_15,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_16,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_17,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_18,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_19,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_20,
+	GRAPHICS_SPRITES_TYPE_WIN_SCREEN_21,
 	
 	GRAPHICS_SPRITES_TYPE_GAME_OVER_SCREEN_1,
 	GRAPHICS_SPRITES_TYPE_GAME_OVER_SCREEN_2,
