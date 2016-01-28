@@ -31,6 +31,9 @@
 #include "gameplay-items.h"
 #include "ai-core.h"
 
+/**
+ * This function renders the menu of the game.
+ */
 void graphics_render_menu(void)
 {
 	static char keys_delay_counter = 0;
@@ -69,6 +72,9 @@ void graphics_render_menu(void)
 	}
 }
 
+/**
+ * This function renders the debug informations of the game.
+ */
 void graphics_render_debug(void)
 {
 	int i = 0;
@@ -110,8 +116,7 @@ void graphics_render_debug(void)
 }
 
 /**
- * This function will render the startscreen which will
- * display the games logo and name.
+ * This function renders the start screen of the game.
  */
 int graphics_render_start_screen(void)
 {
@@ -134,6 +139,9 @@ int graphics_render_start_screen(void)
 	return 1;
 }
 
+/**
+ * This function renders the game over screen of the game.
+ */
 void graphics_render_game_over_screen(char reset_screens)
 {
 	static int animation_counter = 0;
@@ -158,6 +166,9 @@ void graphics_render_game_over_screen(char reset_screens)
 	}
 }
 
+/**
+ * This function renders the win screen of the game.
+ */
 void graphics_render_win_screen(char reset_screens)
 {
 	static int animation_counter = 0;
@@ -182,7 +193,9 @@ void graphics_render_win_screen(char reset_screens)
 	}
 }
 
-
+/**
+ * This function renders all players of the game.
+ */
 void graphics_render_players(void)
 {
 	static char animation_blinking = 0;
@@ -242,6 +255,9 @@ void graphics_render_players(void)
 	}
 }
 
+/**
+ * This function renders the information panel of the game.
+ */
 void graphics_render_information(void)
 {
 	int i = 0;
@@ -287,6 +303,9 @@ void graphics_render_information(void)
 	}
 }
 
+/**
+ * This function renders the field of the game.
+ */
 void graphics_render_field(void)
 {
 	static char animation_blinking = 0;
@@ -336,6 +355,9 @@ void graphics_render_field(void)
 	}
 }
 
+/**
+ * This function renders the QR code of the game.
+ */
 void graphics_render_qr_code(void)
 {
 	char qr_code[] =

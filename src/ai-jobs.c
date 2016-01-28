@@ -44,6 +44,16 @@ static int ai_jobs_test_occurrence(ai_jobs_t *list, int position_x, int position
 	return 0;
 }
 
+/**
+ * This function allocates a new job and returns it for saving in a player job
+ * list.
+ * 
+ * @param position_x The x coordinate of the target position of the new job.
+ * @param position_y The y coordinate of the target position of the new job.
+ * @param type The type of the new job. This determines what action should be
+ *             executed when the target is reached.
+ * @return The new allocated job.
+ */
 ai_jobs_t *ai_jobs_allocate(int position_x, int position_y, ai_jobs_type_t type)
 {
 	ai_jobs_t *job = NULL;
@@ -66,6 +76,14 @@ ai_jobs_t *ai_jobs_allocate(int position_x, int position_y, ai_jobs_type_t type)
 	return job;
 }
 
+/**
+ * This function inserts a job into an existing job list of a player (singly
+ * linked list). It also chooses a location in the list that the job types are
+ * inserted in groups.
+ * 
+ * @param root The list root element. This element is stored in the player.
+ * @param insertion The job element which should be inserted to the job list.
+ */
 void ai_jobs_insert(ai_jobs_t **root, ai_jobs_t *insertion)
 {
 	ai_jobs_t *job_iterator = NULL;
@@ -113,6 +131,11 @@ void ai_jobs_insert(ai_jobs_t **root, ai_jobs_t *insertion)
 	insertion->next = job_iterator_next;
 }
 
+/**
+ * This function prints all jobs of a existing job list.
+ * 
+ * @param root The list root element. This element is stored in the player.
+ */
 void ai_jobs_print(ai_jobs_t *root)
 {
 	ai_jobs_t *job_iterator = NULL;
@@ -126,10 +149,13 @@ void ai_jobs_print(ai_jobs_t *root)
 	{
 		core_debug("    (%s, %i, %i, %7.2f)", serialized_type[job_iterator->type], job_iterator->position_x, job_iterator->position_y, job_iterator->score);
 	}
-	
-	// core_debug("End of Jobs");
 }
 
+/**
+ * This function cleans all jobs of a existing job list.
+ * 
+ * @param root The list root element. This element is stored in the player.
+ */
 void ai_jobs_free(ai_jobs_t **root)
 {
 	ai_jobs_t *job_iterator = *root;
@@ -145,6 +171,15 @@ void ai_jobs_free(ai_jobs_t **root)
 	*root = NULL;
 }
 
+/**
+ * This function removes an existing job out of a job list. The job will be
+ * searched by position and type.
+ * 
+ * @param root The list root element. This element is stored in the player.
+ * @param position_x The x coordinate of the job which should be removed.
+ * @param position_y The y coordinate of the job which should be removed.
+ * @param type The type of the job which should be removed.
+ */
 void ai_jobs_remove(ai_jobs_t **root, int position_x, int position_y, ai_jobs_type_t type)
 {
 	ai_jobs_t *job_iterator = NULL;
@@ -155,6 +190,7 @@ void ai_jobs_remove(ai_jobs_t **root, int position_x, int position_y, ai_jobs_ty
 		return;
 	}
 	
+	// remove from list start
 	if((*root)->position_x == position_x && (*root)->position_y == position_y && (*root)->type == type)
 	{
 		next_backup = (*root)->next;
@@ -163,6 +199,7 @@ void ai_jobs_remove(ai_jobs_t **root, int position_x, int position_y, ai_jobs_ty
 		return;
 	}
 	
+	// remove a middle element
 	for(job_iterator = *root; job_iterator->next != NULL; job_iterator = job_iterator->next)
 	{
 		if(job_iterator->next != NULL && job_iterator->next->position_x == position_x && job_iterator->next->position_y == position_y && job_iterator->next->type == type)
@@ -175,6 +212,18 @@ void ai_jobs_remove(ai_jobs_t **root, int position_x, int position_y, ai_jobs_ty
 	}
 }
 
+/**
+ * This function returnes the optimal job. It acts as a decision algorithm to
+ * choose the best job. The criteria depend on the position of the user player,
+ * the own position of the AI player and the distances between them.
+ * 
+ * @param root The list root element. This element is stored in the player.
+ * @param position_x_user The x coordinate of the user player.
+ * @param position_y_user The y coordinate of the user player.
+ * @param position_x_ai The x coordinate of the AI player.
+ * @param position_y_ai The y coordinate of the AI player.
+ * @return The optimal choosed job.
+ */
 ai_jobs_t *ai_jobs_get_optimal(ai_jobs_t *root, int position_x_user, int position_y_user, int position_x_ai, int position_y_ai)
 {
 	ai_jobs_t *job_iterator = NULL;

@@ -27,6 +27,9 @@
 
 static void ai_simulation_reset_simulated(void);
 
+/**
+ * This function resets all normal simulation flags of the field.
+ */
 void ai_simulation_reset(void)
 {
 	int x = 0;
@@ -50,6 +53,9 @@ void ai_simulation_reset(void)
 }
 
 static void ai_simulation_reset_simulated(void)
+/**
+ * This function resets all special simulation flags of the field.
+ */
 {
 	int x = 0;
 	int y = 0;
@@ -71,6 +77,16 @@ static void ai_simulation_reset_simulated(void)
 	}
 }
 
+/**
+ * This function acts as a helper function to store a simulation flag in the
+ * field.
+ * 
+ * @param position_x The x coordinate of the tile.
+ * @param position_y The y coordinate of the tile.
+ * @param simulated The simulation flag which should be set. 0 means normal bomb
+ *                  on the field (placed by other players), 1 means virtual bomb
+ *                  (placed by the simulation algorithm).
+ */
 void ai_simulation_explosion_set_unwalkable(int position_x, int position_y, char simulated)
 {
 	gameplay_field_t *field = NULL;
@@ -92,17 +108,21 @@ void ai_simulation_explosion_set_unwalkable(int position_x, int position_y, char
 	}
 }
 
-// simulates an explosion. after that function it is possible to test where the
-// explosion will be. this can be superpositioned (called multiple times).
+/**
+ * This function simulates an explosion. It can simulate real bombs on the field
+ * or virtual bombs. After the execution of the function it is possible to test
+ * where the explosions will be. This can be called multiple times.
+ * 
+ * @param position_x The x coordinate of the simulated bomb.
+ * @param position_y The y coordinate of the simulated bomb.
+ * @param simulated The simulation flag which should be set. 0 means normal bomb
+ *                  on the field (placed by other players), 1 means virtual bomb
+ *                  (placed by the simulation algorithm).
+ */
 void ai_simulation_explosion(int position_x, int position_y, int explosion_radius, char simulated)
 {
 	int x = 0;
 	int y = 0;
-	
-	// if(simulated == 0)
-	// {
-	// 	core_debug("Simulate at (%i, %i)", position_x, position_y);
-	// }
 	
 	for(x = position_x; x < GAMEPLAY_FIELD_WIDTH && x < position_x + explosion_radius && gameplay_get_walkable(x, position_y, 1); x++)
 	{
@@ -125,6 +145,9 @@ void ai_simulation_explosion(int position_x, int position_y, int explosion_radiu
 	}
 }
 
+/**
+ * This function copies all fire flags from the field to the simulation field.
+ */
 void ai_simulation_copy_fire(void)
 {
 	int x = 0;
@@ -150,8 +173,16 @@ void ai_simulation_copy_fire(void)
 	}
 }
 
-// validates if a tile is valid. on a valid tile may be placed a bomb. the
-// validation tests if there are spots to hide from the explosion
+/**
+ * This function validates if a tile is valid. On a valid tile may be placed a
+ * bomb by the AI. The validation tests if there are spots to hide from the
+ * explosion. It returns the amount of possible hiding places.
+ * 
+ * @param explosion_radius The explosion radius of the simulated bomb.
+ * @param position_x The x coordinate of the simulated bomb.
+ * @param position_y The y coordinate of the simulated bomb.
+ * @return The amount of possible hiding places. 0 on error.
+ */
 int ai_simulation_validate_tile(int explosion_radius, int position_x, int position_y)
 {
 	int x = 0;
@@ -180,11 +211,16 @@ int ai_simulation_validate_tile(int explosion_radius, int position_x, int positi
 		}
 	}
 	
-	// core_debug("Found %i hiding places for (%i, %i)", count_hiding_places, position_x, position_y);
-	
 	return count_hiding_places;
 }
 
+/**
+ * This function returns if a simulated tile is walkable.
+ * 
+ * @param position_x The x coordinate of the tile.
+ * @param position_y The y coordinate of the tile.
+ * @return The simulation walkable flag. 0 on error.
+ */
 int ai_simulation_get_walkable(int position_x, int position_y)
 {
 	gameplay_field_t *field = NULL;

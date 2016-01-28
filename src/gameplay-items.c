@@ -28,6 +28,13 @@
 
 static gameplay_items_item_t *gameplay_items_items = NULL;
 
+/**
+ * This function adds an item to the item list.
+ * 
+ * @param type The type of the array.
+ * @param position_x The x coordinate of the new item.
+ * @param position_y The y coordinate of the new item.
+ */
 void gameplay_items_add_item(gameplay_items_item_type_t type, int position_x, int position_y)
 {
 	gameplay_items_item_t *item = NULL;
@@ -61,7 +68,9 @@ void gameplay_items_add_item(gameplay_items_item_type_t type, int position_x, in
 	core_debug("Added item %p at (%i, %i)", gameplay_items_items, position_x, position_y);
 }
 
-
+/**
+ * This function cleans up all items in the item list.
+ */
 void gameplay_items_cleanup(void)
 {
 	gameplay_items_item_t *current = NULL;
@@ -78,6 +87,12 @@ void gameplay_items_cleanup(void)
 	gameplay_items_items = NULL;
 }
 
+/**
+ * This function removes a item from the item list.
+ * 
+ * @param position_x The x coordinate of the item.
+ * @param position_y The y coordinate of the item.
+ */
 void gameplay_items_remove(int position_x, int position_y)
 {
 	gameplay_items_item_t *current = NULL;
@@ -119,7 +134,10 @@ void gameplay_items_remove(int position_x, int position_y)
 	}
 }
 
-void gameplay_items_item_update()
+/**
+ * This function updates all items. (Timing, etc.)
+ */
+void gameplay_items_item_update(void)
 {
 	gameplay_items_item_t *current = NULL;
 	
@@ -134,28 +152,56 @@ void gameplay_items_item_update()
 	}
 }
 
+/**
+ * This function returns if a item is placed at the given position.
+ * 
+ * @param position_x The x coordinate of the tile.
+ * @param position_y The y coordinate of the tile.
+ * @return 1 if a item is placed, 0 if not.
+ */
 int gameplay_items_item_placed(int position_x,int position_y)
 {
 	gameplay_items_item_t *current = NULL;
 	for(current = gameplay_items_items; current != NULL; current = current->next)
 	{
 		if(current->position_x == position_x && current->position_y == position_y)
+		{
 			return 1;
+		}
 	}
+	
 	return 0;
 }
 
-gameplay_items_item_type_t gameplay_items_get_item_type (int position_x, int position_y)
+/**
+ * This function returns the item type at the given position.
+ * 
+ * @param position_x The x coordinate of the tile.
+ * @param position_y The y coordinate of the tile.
+ * @return The item type on the tile or 0 if no item is on the tile.
+ */
+gameplay_items_item_type_t gameplay_items_get_item_type(int position_x, int position_y)
 {
 	gameplay_items_item_t *current = NULL;
 	for(current = gameplay_items_items; current != NULL; current = current->next)
 	{
 		if(current->position_x == position_x && current->position_y == position_y)
+		{
 			return current->type;
+		}
 	}
+	
 	return 0;
 }
 
+/**
+ * This function removes a item from the item list and returns if it was
+ * successful.
+ * 
+ * @param position_x The x coordinate of the item.
+ * @param position_y The y coordinate of the item.
+ * @return 1 on success (removal), else 0
+ */
 int gameplay_items_test_remove(int position_x, int position_y)
 {
 	if(gameplay_items_item_placed(position_x, position_y) == 1)
