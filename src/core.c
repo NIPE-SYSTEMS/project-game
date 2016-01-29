@@ -89,7 +89,6 @@ void core_main(void)
 			switch(character)
 			{
 				// <Q> or <Esc>: Quit game loop
-				// <H>: start win screen manually
 				// <C>: Show QR code
 				// <V>: Take screenshot
 				// <P>: Pause or resume game loop updating
@@ -109,14 +108,7 @@ void core_main(void)
 				{
 					core_debug("Invoked quit event.");
 					core_state = CORE_SHUTDOWN;
-					break;
-				}void gameplay_players_remove(int position_x, int position_y);
-				case 'h':
-				{
-					core_cutscene_reset = 1;
-					graphics_render_win_screen(core_cutscene_reset);
-					core_state = CORE_WIN;
-					gameplay_cleanup();
+					
 					break;
 				}
 				case 'v':
