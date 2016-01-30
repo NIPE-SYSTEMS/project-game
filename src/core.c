@@ -249,7 +249,7 @@ void core_main(void)
 					core_state = CORE_GAME_OVER;
 					gameplay_cleanup();
 				}
-				if(gameplay_players_ai_amount() == 0)
+				else if(gameplay_players_ai_amount() == 0)
 				{
 					core_state = CORE_WIN;
 					gameplay_cleanup();
